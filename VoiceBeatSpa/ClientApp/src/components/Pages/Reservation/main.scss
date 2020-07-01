@@ -1,0 +1,25 @@
+
+@import '~@fullcalendar/core/main.css';
+@import '~@fullcalendar/daygrid/main.css';
+
+
+
+.room-class-room1 .fc-content::before {
+    content: "|";
+    color: crimson;
+    font-weight: 999;
+  }
+.room-class-room2 .fc-content::before {
+    content: "|";
+    color: blue;
+    font-weight: 999;
+  }
+.room-class-room3 .fc-content::before {
+    content: "|";
+    color: gainsboro;
+    font-weight: 999;
+  }
+
+.fc-day-grid-event {
+  pointer-events: none;
+}

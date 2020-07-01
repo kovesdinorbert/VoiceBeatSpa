@@ -1,0 +1,12 @@
+
+.lang-selector-item img, .MuiSelect-select img {
+    width: 20px;
+    height: 100%;
+    margin-right: 5px;
+  }
+  .MuiSelect-select .lang-selector-language-name {
+    display: none;
+  }
+  .lang-selector-item .lang-selector-language-name {
+    margin-bottom: 0;
+  }
