@@ -43,6 +43,7 @@ namespace VoiceBeatSpa.Web.Controllers
                 var token = _userService.GenerateToken(user);
                 return Ok(new LoginResultDto() { Email = user.Email, Token = token, Id = user.Id });
             }
+
             return Unauthorized();
         }
 
