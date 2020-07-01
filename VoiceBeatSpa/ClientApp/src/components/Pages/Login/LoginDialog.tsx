@@ -39,9 +39,13 @@ export default class LoginDialog extends React.Component<any, IState>{
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.submitLogin = this.submitLogin.bind(this);
     this.login = this.login.bind(this);
+
+    this.props.closeNavbar();
   }
 
   handleClose() {
+
+    this.props.closeNavbar();
     if (!this.state.blocking) {
       this.clearState();
     }
@@ -89,7 +93,7 @@ export default class LoginDialog extends React.Component<any, IState>{
   public render() {    
     return (  
       <div>
-        <Button onClick={this.handleClickOpen}>
+        <Button className="text-light" onClick={this.handleClickOpen}>
           <FormattedMessage id="login" defaultMessage={'Belépés'}/>
         </Button>
           <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
@@ -110,7 +114,7 @@ export default class LoginDialog extends React.Component<any, IState>{
                   <p><FormattedMessage id="cancel" defaultMessage={'Mégse'}/></p>
                 </Button>
                 <h3><FormattedMessage id="login.noaccount" defaultMessage={'Nincs még fiókod?'}/></h3>
-                <Button onClick={_ => this.setState({open: false})}>
+                <Button onClick={_ => {this.setState({open: false}); this.props.closeNavbar();}}>
                   <NavLink to="/register"><p><FormattedMessage id="register" defaultMessage={'Regisztráció'}/></p></NavLink>
                 </Button>
               </DialogActions>

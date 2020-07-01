@@ -31,7 +31,7 @@ export class Layout extends Component {
         ? <Admin></Admin>
         : <> 
             <NavMenu changeLanguage={this.props.changeLanguage} currentLocale={this.props.currentLocale} />
-            <Container>
+            <Container className="content-container">
               {this.props.children}
             </Container>
           </>}

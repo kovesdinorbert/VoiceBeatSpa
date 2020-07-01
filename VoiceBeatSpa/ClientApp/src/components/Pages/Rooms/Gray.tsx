@@ -24,7 +24,7 @@ export default class Gray extends React.Component<any>{
           <>
             <div className="row">
               <div className="col-md-8">
-                <h4><FormattedMessage id="grayBlue" defaultMessage={'Szürke terem'}/> - 20 &#13217; </h4>
+                <h4><FormattedMessage id="roomsGray" defaultMessage={'Szürke terem'}/> - 20 &#13217; </h4>
               </div>
               <div className="col-md-4">
                 <h4><LivingText livingTextType={LivingTextTypeEnum.GrayRoomPrice}></LivingText></h4>

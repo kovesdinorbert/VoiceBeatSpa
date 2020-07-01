@@ -33,6 +33,7 @@ export class NavMenu extends Component<any, IState> {
     super(props);
 
     this.toggleNavbar = this.toggleNavbar.bind(this);
+    this.closeNavbar = this.closeNavbar.bind(this);
     this.logout = this.logout.bind(this);
     this.state = {
       collapsed: true,
@@ -57,57 +58,72 @@ export class NavMenu extends Component<any, IState> {
     });
   }
 
+  closeNavbar () {
+    this.setState({
+      collapsed: true
+    });
+  }
+
   logout () {
+    this.closeNavbar();
     this.authenticationService.instance().logout();
   }
 
   render () { 
     return (
       <header>
-        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
+        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3 navbar-main" light>
           <Container>
-            <NavbarBrand to="/">
-              <div className="row">
+              <div className="row"> 
+                 <div className="col-md-5"> 
+                   <img src={logo} className="logoImg" alt="Voice Beat próbaterem és stúdió"/> 
+                </div>
+                <div className="col-md-7"> 
+                  <label className="menu-phone text-light">+36 30 710 0661</label>
+                </div> 
+              </div> 
+            {/* <NavbarBrand to="/" src={}> */}
+              {/* <div className="row"> */}
                 {/* <div className="col-md-5"> */}
-                  <img src={logo} className="logoImg" alt="Voice Beat próbaterem és stúdió"/>
+                  {/* <img src={logo} className="logoImg" alt="Voice Beat próbaterem és stúdió"/> */}
                 {/* </div>
                 <div className="col-md-7"> */}
-                  <label className="menu-phone">+36 30 710 0661</label>
+                  {/* <label className="menu-phone">+36 30 710 0661</label> */}
                 {/* </div> */}
-              </div>
-            </NavbarBrand>
-            <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
-            <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
+              {/* </div> */}
+            {/* </NavbarBrand> */}
+            <NavbarToggler onClick={this.toggleNavbar} className="mr-2 navbar-dark" />
+            <Collapse className="d-sm-inline-flex flex-sm-row-reverse text-light" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">
               { !this.state.admin && 
                 <>
                   <NavItem>
-                    <NavLink exact className="text-dark" to="/about"><Button><FormattedMessage id="about" defaultMessage={'Rólunk'}/></Button></NavLink>
+                    <NavLink exact className="text-dark" to="/about"><Button onClick={this.closeNavbar} className="text-light"><FormattedMessage id="about" defaultMessage={'Rólunk'}/></Button></NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink className="text-dark" to="/news"><Button><FormattedMessage id="news" defaultMessage={'Hírek'}/></Button></NavLink>
+                    <NavLink className="text-dark" to="/news"><Button onClick={this.closeNavbar} className="text-light"><FormattedMessage id="news" defaultMessage={'Hírek'}/></Button></NavLink>
                   </NavItem>
                   <NavItem>
-                    <RoomMenuOpen></RoomMenuOpen>
+                    <RoomMenuOpen closeNavbar={this.closeNavbar}></RoomMenuOpen>
                   </NavItem>
                   <NavItem>
-                    <NavLink className="text-dark" to="/reservation"><Button><FormattedMessage id="reservation" defaultMessage={'Foglalás'}/></Button></NavLink>
+                    <NavLink className="text-dark" to="/reservation"><Button onClick={this.closeNavbar} className="text-light"><FormattedMessage id="reservation" defaultMessage={'Foglalás'}/></Button></NavLink>
                   </NavItem>
                   <NavItem>
-                    <NavLink className="text-dark" to="/contact"><Button><FormattedMessage id="contact" defaultMessage={'Kapcsolat'}/></Button></NavLink>
+                    <NavLink className="text-dark" to="/contact"><Button onClick={this.closeNavbar} className="text-light"><FormattedMessage id="contact" defaultMessage={'Kapcsolat'}/></Button></NavLink>
                   </NavItem>
                 </> }
                 { this.state.admin && 
                   <>
                     <NavItem>
-                      <NavLink exact className="text-dark" to="/admin"><Button><FormattedMessage id="admin" defaultMessage={'Adminisztráció'}/></Button></NavLink>
+                      <NavLink exact className="text-dark" to="/admin"><Button onClick={this.closeNavbar} className="text-light"><FormattedMessage id="admin" defaultMessage={'Adminisztráció'}/></Button></NavLink>
                     </NavItem>
                   </> }
                 { this.state.currentUser.token !== "" && !this.state.admin && 
-                  <NavItem><NavLink exact className="text-dark" to="/profil"><Button><FormattedMessage id="profil" defaultMessage={'Profil'}/></Button></NavLink></NavItem> }
+                  <NavItem><NavLink exact className="text-dark" to="/profil"><Button onClick={this.closeNavbar} className="text-light"><FormattedMessage id="profil" defaultMessage={'Profil'}/></Button></NavLink></NavItem> }
                 { this.state.currentUser.token !== "" && !this.state.admin         
-                  ? <NavItem><NavLink exact className="text-dark" to="/"><Button onClick={this.logout}><FormattedMessage id="logout" defaultMessage={'Kijelentkezés'}/></Button></NavLink></NavItem>
-                  : <LoginDialog />}
+                  ? <NavItem><NavLink exact className="text-dark" to="/"><Button className="text-light" onClick={this.logout}><FormattedMessage id="logout" defaultMessage={'Kijelentkezés'}/></Button></NavLink></NavItem>
+                  : <LoginDialog closeNavbar={this.closeNavbar} />}
                   <LanguageSelector locale={this.state.locale} changeLanguage={this.props.changeLanguage} setServiceValue={true}></LanguageSelector>
               </ul>
             </Collapse>

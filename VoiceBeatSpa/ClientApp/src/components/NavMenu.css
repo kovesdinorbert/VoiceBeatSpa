@@ -8,7 +8,7 @@
 html {
   font-size: 14px;
 }
-@media (min-width: 768px) {
+@media (min-width: 800px) {
   html {
     font-size: 16px;
   }
@@ -26,7 +26,7 @@ html {
 }
 
 
-@media (max-width: 768px) {
+@media (max-width: 800px) {
   .MuiMenu-paper > ul {
     display: inline !important;
   }
@@ -38,6 +38,26 @@ html {
   max-height: 45px;
   width: auto;
   height: auto;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.navbar-main {
+  padding: 2px;
+  background-color: black;
+  position: fixed;
+  width: 100%;
+  z-index: 1030;
+}
+
+.menu-phone {
+  padding-top: 10px;
+}
+
+@media (max-width: 1000px) {
+  .menu-phone {
+    display: none !important;
+  }
 }
 
 /* 
@@ -49,3 +69,12 @@ html {
   background-color: black;
   height: 60px;
 } */
+
+.content-container {
+  padding-top: 65px;
+}
+
+
+html{
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif !important;
+}

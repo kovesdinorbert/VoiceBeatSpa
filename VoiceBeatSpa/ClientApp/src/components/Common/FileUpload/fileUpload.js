@@ -4,7 +4,7 @@ export class UploadForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: 'get-id-from-somewhere',
+      id: 'up-id',
       file: null,
     };
   }

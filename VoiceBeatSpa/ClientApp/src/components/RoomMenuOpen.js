@@ -5,7 +5,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { NavLink } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 
-export default function RoomMenuOpen() {
+export default function RoomMenuOpen({closeNavbar}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -13,12 +13,13 @@ export default function RoomMenuOpen() {
   };
 
   const handleClose = () => {
+    closeNavbar();
     setAnchorEl(null);
   };
 
   return (
     <div>
-      <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+      <Button aria-controls="simple-menu" className="text-light" aria-haspopup="true" onClick={handleClick}>
         <FormattedMessage id="rooms" defaultMessage={'Termek'}/>
       </Button>
       <Menu

@@ -24,7 +24,7 @@ export default class Red extends React.Component<any>{
           <>
             <div className="row">
               <div className="col-md-8">
-                <h4><FormattedMessage id="redBlue" defaultMessage={'Piros terem'}/> - 30 &#13217; </h4>
+                <h4><FormattedMessage id="roomsRed" defaultMessage={'Piros terem'}/> - 30 &#13217; </h4>
               </div>
               <div className="col-md-4">
                 <h4><LivingText livingTextType={LivingTextTypeEnum.RedRoomPrice}></LivingText></h4>
