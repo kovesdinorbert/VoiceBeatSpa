@@ -5,3 +5,7 @@
 .fc-time {
     font-weight: bold;
 }
+
+#calendar-scheduler .rc-time-picker-input[disabled], #calendar-scheduler .MuiInputBase-root.Mui-disabled {
+    color:black;
+}

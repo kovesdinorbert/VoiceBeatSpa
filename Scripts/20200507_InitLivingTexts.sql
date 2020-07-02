@@ -94,12 +94,12 @@ INSERT INTO [dbo].[LivingTexts]
 INSERT INTO [dbo].[Translations]
            ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
      VALUES
-           (NEWID(),GETDATE(),@systemId,null,null,1,@huId,@currentText,'<h3>Áraink:</h3><ul><li>Próbaterem: 2500 Ft / óra</li><li>Stúdió: 5000 Ft / óra</li><li>Mastering: 15.000Ft / szám</li></ul>','')
+           (NEWID(),GETDATE(),@systemId,null,null,1,@huId,@currentText,'<h3>Áraink:</h3>','')
 
 INSERT INTO [dbo].[Translations]
            ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
      VALUES
-           (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'<h3>Our prices :</h3><ul><li> Rehearsal room: 2500 HUF / hour </li><li> Studio: 5000 HUF / hour </li><li> Mastering: 15.000 HUF / song </li></ul>','')
+           (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'<h3>Our prices :</h3>','')
 		   
 
 ------DiscountsText = 5,
@@ -298,4 +298,42 @@ INSERT INTO [dbo].[Translations]
            ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
      VALUES
            (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'Studio: 5000 Huf / hour - Master: 15.000 Huf / song','')
+		      
+
+------MasterPrice = 15,
+SET @currentText = NEWID();
+
+INSERT INTO [dbo].[LivingTexts]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LivingTextType],[IsHtmlEncoded])
+     VALUES
+           (@currentText,GETDATE(),@systemId,null,null,1,15,1)
+
+INSERT INTO [dbo].[Translations]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
+     VALUES
+           (NEWID(),GETDATE(),@systemId,null,null,1,@huId,@currentText,'15.000 Ft / szám','')
+
+INSERT INTO [dbo].[Translations]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
+     VALUES
+           (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'15.000 Huf / song','')
+		      
+
+------StudioRoomPrice = 16,
+SET @currentText = NEWID();
+
+INSERT INTO [dbo].[LivingTexts]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LivingTextType],[IsHtmlEncoded])
+     VALUES
+           (@currentText,GETDATE(),@systemId,null,null,1,16,1)
+
+INSERT INTO [dbo].[Translations]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
+     VALUES
+           (NEWID(),GETDATE(),@systemId,null,null,1,@huId,@currentText,'5000 Ft / óra','')
+
+INSERT INTO [dbo].[Translations]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
+     VALUES
+           (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'5000 Huf / hour','')
 		      

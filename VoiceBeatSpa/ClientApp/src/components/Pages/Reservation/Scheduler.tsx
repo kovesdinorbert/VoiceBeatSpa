@@ -102,7 +102,7 @@ export default class Scheduler extends React.Component<any, IState>{
 
     public render() {
       return (
-        <div>
+        <div id="calendar-scheduler">
           <FullCalendar 
             ref={this.schedulerRef} 
             schedulerLicenseKey="GPL-My-Project-Is-Open-Source" 
@@ -125,6 +125,8 @@ export default class Scheduler extends React.Component<any, IState>{
             allDaySlot={false}
             minTime="00:00:00"
             maxTime="24:00:00"
+            unselectAuto={false}
+            selectLongPressDelay={500}
             // height={1150}
             header={{
                 left: '',

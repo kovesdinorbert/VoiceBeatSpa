@@ -24,5 +24,8 @@ namespace VoiceBeatSpa.Core.Enums
         GrayRoomPrice = 12,
         StudioRoomText = 13,
         StudioRoomPrice = 14,
+
+        MasterPrice = 15,
+        StudioPrice = 16,
     }
 }

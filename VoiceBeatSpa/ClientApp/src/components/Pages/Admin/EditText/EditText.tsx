@@ -133,6 +133,8 @@ export default class EditText extends React.Component<any, IState>{
               <MenuItem value={LivingTextTypeEnum.GrayRoomText}>Szürke terem - leírás</MenuItem>
               <MenuItem value={LivingTextTypeEnum.StudioRoomPrice}>Stúdió - árak</MenuItem>
               <MenuItem value={LivingTextTypeEnum.StudioRoomText}>Stúdió - leírás</MenuItem>
+              <MenuItem value={LivingTextTypeEnum.MasterPrice}>Master árak</MenuItem>
+              <MenuItem value={LivingTextTypeEnum.StudioPrice}>Stúdió óradíj</MenuItem>
             </Select>
           </FormControl>
           <LanguageSelector locale={this.state.currentLanguage} changeLanguage={this.handleLanguageChange}></LanguageSelector>

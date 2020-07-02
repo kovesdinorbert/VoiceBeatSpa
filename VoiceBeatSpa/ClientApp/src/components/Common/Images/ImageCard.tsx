@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { IImage } from "./imageCard.model";
+
+import './images.scss';
     
 export class ImageCard extends Component<any, IImage> {
     render () {
 
       return (
-         <div className="card">
+         <div className="card images-card">
              {this.props.imageSettings.showTitle ?? <div className="title">{this.props.image.title}</div>}
              {this.props.image.fileContent &&
                  <div className="image">

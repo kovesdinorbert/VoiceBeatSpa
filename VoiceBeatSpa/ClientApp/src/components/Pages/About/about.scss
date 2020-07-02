@@ -1,0 +1,30 @@
+.about-container {
+    h3 {
+        display: flex !important;
+    }
+    h3:before, h3:after {
+        color: white;
+        content: '';
+        flex: 1;
+        border-bottom: groove 2px;
+        margin: auto 0.25em;
+        box-shadow: 0 -1px; /* ou 0 1px si border-style:ridge */
+    }
+    .price-card {
+        text-align: center;
+        margin: 10px 5px 10px 5px;
+        transition: transform .2s;
+        z-index: 1000;
+    }
+    .price-card:hover {
+        cursor: pointer;
+        transform: scale(1.1);
+        z-index: 1300;
+    }
+    @media (min-width: 768px) {
+        .col-md-4 {
+            flex: 0 0 33.333333%;
+            max-width: 100%;
+        }
+    }
+}
