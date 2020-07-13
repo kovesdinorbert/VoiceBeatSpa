@@ -53,6 +53,7 @@
     "react-i18next": "^11.7.0",
     "react-intl": "^4.7.5",
     "react-intl-translations-manager": "^5.0.3",
+    "react-material-ui-carousel": "^1.6.0",
     "react-material-ui-form-validator": "^2.0.10",
     "react-native": "^0.62.2",
     "react-native-loading-spinner-overlay": "^1.1.0",

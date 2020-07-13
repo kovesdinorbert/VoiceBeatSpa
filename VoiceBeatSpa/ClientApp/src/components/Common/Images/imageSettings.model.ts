@@ -7,4 +7,5 @@ export interface IImageSettings {
     width?: string;
     height?: string;
     cssProperties?: CSSProperties;
+    useCarousel?: boolean;
   }

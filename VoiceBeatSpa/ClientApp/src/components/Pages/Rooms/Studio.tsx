@@ -12,11 +12,14 @@ export default class Studio extends React.Component<any>{
         colCount: 2,
         showTitle: false,
         showBody: false,
+        width:"100%",
+        height:"450px",
         cssProperties: {
           width: "100%",
           height: "auto",
           marginBottom: "25px"
-        }
+        },
+        useCarousel: true
       }
 
       return (

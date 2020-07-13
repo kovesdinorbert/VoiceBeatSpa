@@ -15,7 +15,7 @@ export class ImageCard extends Component<any, IImage> {
                  </div>
              }
              {this.props.imageSettings.showBody ?? <div className="body">{this.props.image.body}</div>}
-         </div>
+             </div>
       );
     }
   }

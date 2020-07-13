@@ -4,6 +4,8 @@ import ImageCard from './ImageCard';
 import { ImageTypeEnum } from './imageTypeEnum';
 import { CircularProgress } from '@material-ui/core';
 import { Guid } from 'guid-typescript';
+import Carousel from 'react-material-ui-carousel';
+import { Container } from 'reactstrap';
 
 export interface IState {
     loading: boolean;
@@ -41,6 +43,17 @@ export class Images extends React.Component<any, IState>{
       let colC = "col-md-" + (12 / (this.props.imageSettings.colCount ? this.props.imageSettings.colCount : 12));
       let imageContents = this.state.loading
         ? <CircularProgress />
+        : this.props.imageSettings.useCarousel 
+          ?<Container style={{height:this.props.imageSettings.height?"450px":this.props.imageSettings.height, 
+                              width: this.props.imageSettings.width?"100%":this.props.imageSettings.width}}>
+            <Carousel>
+              {
+              this.state.images.map(image => (
+                        <ImageCard image={image} key={image.id.toString()} imageSettings={this.props.imageSettings}></ImageCard>
+                ))
+              }
+            </Carousel>
+          </Container>
         : this.state.images.map(image => (
             <div className={colC} key={'c-'+image.id.toString()}>
               <div className="card-content">
