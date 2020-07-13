@@ -10,3 +10,6 @@
   .lang-selector-item .lang-selector-language-name {
     margin-bottom: 0;
   }
+.language-selector svg {
+  color: whitesmoke;
+}

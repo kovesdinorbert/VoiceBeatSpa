@@ -2,11 +2,13 @@
   white-space: normal;
   text-align: center;
   word-break: break-all;
-  height: 35px;
 }
 
 html {
   font-size: 14px;
+}
+.nav-item-action-button span {
+  font-size: large;
 }
 @media (min-width: 800px) {
   html {
@@ -14,6 +16,9 @@ html {
   }
   .MuiMenu-paper > ul {
     display: block !important;
+  }
+  .nav-item-action-button span {
+    font-size: x-large;
   }
 }
 
@@ -35,23 +40,29 @@ html {
 
 .logoImg {
   display: block;
-  max-height: 45px;
+  max-height: 42px;
   width: auto;
   height: auto;
-  margin-top: 2px;
-  margin-bottom: 2px;
 }
 
 .navbar-main {
-  padding: 2px;
   background-color: black;
   position: fixed;
   width: 100%;
   z-index: 1030;
+  display: flex;
+  justify-content: space-between;
 }
 
-.menu-phone {
+
+.navbar-main nav {
+  width: 100%;
+  justify-content: space-between;
+}
+
+.menu-phone div p {
   padding-top: 10px;
+  width: max-content;
 }
 
 @media (max-width: 1000px) {
@@ -60,21 +71,56 @@ html {
   }
 }
 
-/* 
-.MuiButton-label, .menu-phone {
-  color: whitesmoke;
+@media (max-width: 750px) {
+  .menu-facebook {
+    display: none !important;
+  }
 }
 
-.navbar-expand-sm.navbar-toggleable-sm {
-  background-color: black;
-  height: 60px;
-} */
+@media (max-width: 576px) {
+  .menu-facebook {
+    display: flex !important;
+  }
+}
 
 .content-container {
-  padding-top: 65px;
+  padding-top: 80px;
+}
+
+.navbar-nav-item, .navbar-nav-item a, .navbar-nav-item div{
+  padding-left: 5px;
+}
+
+.navbar-nav-item-flex, .navbar-nav-item a, .navbar-nav-item div{
+  display: flex;
+}
+
+.nav-item-language-selector {
+  padding-left: 10px;
+  display: flex;
+}
+
+
+.nav-item-action-button {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  min-width: 45px !important;
+  font-size: x-large;
 }
 
 
 html{
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif !important;
+}
+
+.navbar-collapse {
+  flex-grow: unset !important;
+} 
+
+.navbar-actions-collapse .navbar-actions {
+  flex-direction: row;
+}
+
+.navbar-actions a {
+  margin: 0;
 }

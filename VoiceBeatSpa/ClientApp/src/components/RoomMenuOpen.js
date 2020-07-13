@@ -4,6 +4,8 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { NavLink } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function RoomMenuOpen({closeNavbar}) {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -20,7 +22,7 @@ export default function RoomMenuOpen({closeNavbar}) {
   return (
     <div>
       <Button aria-controls="simple-menu" className="text-light" aria-haspopup="true" onClick={handleClick}>
-        <FormattedMessage id="rooms" defaultMessage={'Termek'}/>
+        <FormattedMessage id="rooms" defaultMessage={'Termek'}/>  <FontAwesomeIcon className="" icon={faCaretDown} style={{marginLeft:"5px"}} />
       </Button>
       <Menu
         id="simple-menu"

@@ -20,5 +20,7 @@ export enum LivingTextTypeEnum {
     
     'MasterPrice' = 15,
     'StudioPrice' = 16,
+
+    'PhoneNumber' = 17,
   }
   

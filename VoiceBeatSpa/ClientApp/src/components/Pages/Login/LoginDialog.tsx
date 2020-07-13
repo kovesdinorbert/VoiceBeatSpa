@@ -13,6 +13,8 @@ import 'react-block-ui/style.css';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { NavLink } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
+import { faSignInAlt  } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export interface IState {
   open: boolean;
@@ -92,9 +94,9 @@ export default class LoginDialog extends React.Component<any, IState>{
   
   public render() {    
     return (  
-      <div>
-        <Button className="text-light" onClick={this.handleClickOpen}>
-          <FormattedMessage id="login" defaultMessage={'Belépés'}/>
+      <div className="navbar-nav-item-flex">
+        <Button className="text-light navbar-nav-item-flex nav-item-action-button" onClick={this.handleClickOpen}>
+          <FontAwesomeIcon className="" icon={faSignInAlt} />
         </Button>
           <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
             <BlockUi tag="div" blocking={this.state.blocking}>

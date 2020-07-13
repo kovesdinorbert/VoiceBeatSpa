@@ -337,3 +337,22 @@ INSERT INTO [dbo].[Translations]
      VALUES
            (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'5000 Huf / hour','')
 		      
+
+------PhoneNumber = 17,
+SET @currentText = NEWID();
+
+INSERT INTO [dbo].[LivingTexts]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LivingTextType],[IsHtmlEncoded])
+     VALUES
+           (@currentText,GETDATE(),@systemId,null,null,1,17,1)
+
+INSERT INTO [dbo].[Translations]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
+     VALUES
+           (NEWID(),GETDATE(),@systemId,null,null,1,@huId,@currentText,'+36 30 710 0661','')
+
+INSERT INTO [dbo].[Translations]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
+     VALUES
+           (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'+36 30 710 0661','')
+		      
