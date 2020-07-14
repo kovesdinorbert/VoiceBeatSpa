@@ -127,6 +127,7 @@ export default class Scheduler extends React.Component<any, IState>{
             maxTime="24:00:00"
             unselectAuto={false}
             selectLongPressDelay={500}
+            selectMirror={true}
             // height={1150}
             header={{
                 left: '',
@@ -139,31 +140,15 @@ export default class Scheduler extends React.Component<any, IState>{
                     duration:{days: 2},
             }}}
             resources={ [
-                { id: RoomTypeEnum.Room1.toString(), title: this.languageService.instance().currentLanguageCode == 'en' ? 'Red room' : 'Piros terem', eventColor: 'crimson' },
-                { id: RoomTypeEnum.Room2.toString(), title: this.languageService.instance().currentLanguageCode == 'en' ? 'Blue room' : 'Kék terem', eventColor: 'blue' },
-                { id: RoomTypeEnum.Room3.toString(), title: this.languageService.instance().currentLanguageCode == 'en' ? 'Gray room': 'Szürke terem', eventColor: 'gainsboro' },
+                { id: RoomTypeEnum.Room1.toString(), title: this.languageService.instance().currentLanguageCode == 'en' ? 'Red room' : 'Piros terem', eventColor: '#F44336', eventClassName:"red-room" },
+                { id: RoomTypeEnum.Room2.toString(), title: this.languageService.instance().currentLanguageCode == 'en' ? 'Blue room' : 'Kék terem', eventColor: '#2196F3', eventClassName:"blue-room" },
+                { id: RoomTypeEnum.Room3.toString(), title: this.languageService.instance().currentLanguageCode == 'en' ? 'Gray room': 'Szürke terem', eventColor: '#9E9E9E', eventClassName:"gray-room" },
             ]}
             events={this.props.onDayEvents}
             select={this.onEventSelected}
             eventClick={this.onEventClick}
           />
           <div className="pull-right">
-            <div className="row">
-              <> 
-                <TimePicker value={moment(this.state.selectedStart)} showSecond={false} minuteStep={30} disabled={true} onChange={this.startPickerChange}/>
-                <div style={{marginLeft:"25px",marginRight:"25px"}}>-</div>
-                <TimePicker  value={moment(this.state.selectedEnd)} showSecond={false} minuteStep={30} disabled={true} onChange={this.endPickerChange}/>
-                <div style={{marginLeft:"25px",marginRight:"25px"}}>-</div>
-                <div>       
-                  <Select value={this.state.selectedRoom ? this.state.selectedRoom : RoomTypeEnum.Room1} disabled={true} onChange={this.handleRoomChange}>
-                    <MenuItem value={RoomTypeEnum.Room1}><FormattedMessage id="roomsRed" defaultMessage={'Piros terem'}/></MenuItem>
-                    <MenuItem value={RoomTypeEnum.Room2}><FormattedMessage id="roomsBlue" defaultMessage={'Kék terem'}/></MenuItem>
-                    <MenuItem value={RoomTypeEnum.Room3}><FormattedMessage id="roomsGray" defaultMessage={'Szürke terem'}/></MenuItem>
-                  </Select>
-                </div>
-              </>
-            </div>
-            
             <div className="row">
               {this.state.isAdmin 
               ? <TextInput config={{

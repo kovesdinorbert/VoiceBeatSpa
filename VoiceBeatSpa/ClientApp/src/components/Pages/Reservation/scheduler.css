@@ -1,11 +1,23 @@
-.rc-time-picker-panel {
-    z-index: 1301 !important;
-}
 
-.fc-time {
+.fc-time span {
     font-weight: bold;
+    font-size: medium;
 }
 
 #calendar-scheduler .rc-time-picker-input[disabled], #calendar-scheduler .MuiInputBase-root.Mui-disabled {
     color:black;
+}
+
+.fc-event-container a {
+    cursor: pointer;
+}
+
+.fc-event-container .blue-room:hover {
+    background-color: #1976D2 !important;
+}
+.fc-event-container .red-room:hover {
+    background-color: #D32F2F !important;
+}
+.fc-event-container .gray-room:hover {
+    background-color: #757575 !important;
 }

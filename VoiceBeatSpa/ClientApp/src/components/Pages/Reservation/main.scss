@@ -6,17 +6,17 @@
 
 .room-class-room1 .fc-content::before {
     content: "|";
-    color: crimson;
+    color: #F44336;
     font-weight: 999;
   }
 .room-class-room2 .fc-content::before {
     content: "|";
-    color: blue;
+    color: #2196F3;
     font-weight: 999;
   }
 .room-class-room3 .fc-content::before {
     content: "|";
-    color: gainsboro;
+    color: #9E9E9E;
     font-weight: 999;
   }
 
@@ -24,12 +24,7 @@
   pointer-events: none;
 }
 
-.fc-highlight {
-  background: cadetblue;
-  opacity: 0.3;
-}
-
-.fc-highlight {
-  background: cadetblue;
-  opacity: 0.3;
+.fc-day-header {
+  background-color: #9E9E9E !important;
+  color: #F5F5F5 !important;
 }
