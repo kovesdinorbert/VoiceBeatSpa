@@ -4,10 +4,6 @@
     font-size: medium;
 }
 
-#calendar-scheduler .rc-time-picker-input[disabled], #calendar-scheduler .MuiInputBase-root.Mui-disabled {
-    color:black;
-}
-
 .fc-event-container a {
     cursor: pointer;
 }
@@ -20,4 +16,19 @@
 }
 .fc-event-container .gray-room:hover {
     background-color: #757575 !important;
+}
+
+
+.fc-head {
+    background-color:#616161 !important;
+    color: #F5F5F5 !important;
+}
+  
+.fc-body {
+  background-color: #F5F5F5 !important;
+}
+
+.reservation-alert-message {
+    color: red;
+    font-weight: bold;
 }

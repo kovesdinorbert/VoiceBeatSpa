@@ -124,3 +124,21 @@ html{
 .navbar-actions a {
   margin: 0;
 }
+
+.navbar-nav-item.navbar-nav-item-flex.nav-item div button:hover,
+.navbar-nav-item.navbar-nav-item-flex.nav-item a button:hover{
+  background-color: #757575;
+} 
+.navbar-nav-item.navbar-nav-item-flex.nav-item a.active button span{
+  text-decoration: underline;
+  text-decoration-color: whitesmoke;
+} 
+.navbar-nav-item.navbar-nav-item-flex.nav-item a button:focus{
+  outline: none;
+} 
+.navbar-nav-item.navbar-nav-item-flex.nav-item a{
+  text-decoration: none;
+} 
+.header-logo {
+  cursor: unset;
+}

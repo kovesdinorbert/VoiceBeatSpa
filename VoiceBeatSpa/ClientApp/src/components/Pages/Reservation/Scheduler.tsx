@@ -160,12 +160,12 @@ export default class Scheduler extends React.Component<any, IState>{
                    type: 'text',
                    }} value={this.state.subject} onInputValueChange={this.handleSubjectChange}>
                 </TextInput>
-              : this.state.showReservationWarning ? <FormattedMessage id="reservationPossible" defaultMessage={'Foglalás és időpont törlés csak minimum 2 nappal korábban lehetséges!'}/>
+              : this.state.showReservationWarning ? <div className="reservation-alert-message"><br /><FormattedMessage id="reservationPossible" defaultMessage={'Foglalás és időpont törlés csak minimum 2 nappal korábban lehetséges! Kérünk keress meg telefonon!'}/><br /></div>
                                                   : <></>}
             </div>
 
             <div className="row">
-              {this.state.deleteEventId 
+              {!this.state.showReservationWarning && this.state.deleteEventId 
               ?<Button onClick={e => this.props.submitReservation(e, 
                                                                  this.state.selectedStartStr, 
                                                                  this.state.selectedEndStr, 
@@ -175,15 +175,17 @@ export default class Scheduler extends React.Component<any, IState>{
                       color="primary" disabled={!this.state.isAdmin && moment().add(2, 'days').isSameOrAfter(this.state.selectedStart, 'day')}>
                 <p><FormattedMessage id="delete" defaultMessage={'Törlés'}/></p>
               </Button>
-              : <Button onClick={e => this.props.submitReservation(e, 
-                                                                 this.state.selectedStartStr, 
-                                                                 this.state.selectedEndStr, 
-                                                                 this.state.selectedRoom, 
-                                                                 this.state.subject,
-                                                                 this.state.deleteEventId )} 
-                      color="primary"  disabled={!this.state.isAdmin && moment().add(2, 'days').isSameOrAfter(this.state.selectedStart, 'day')}>
-                <p><FormattedMessage id="reservation" defaultMessage={'Foglalás'}/></p>
-              </Button>}
+              : !this.state.showReservationWarning 
+                ? <Button onClick={e => this.props.submitReservation(e, 
+                                                                     this.state.selectedStartStr, 
+                                                                     this.state.selectedEndStr, 
+                                                                     this.state.selectedRoom, 
+                                                                     this.state.subject,
+                                                                     this.state.deleteEventId )} 
+                          color="primary"  disabled={!this.state.isAdmin && moment().add(2, 'days').isSameOrAfter(this.state.selectedStart, 'day')}>
+                    <p><FormattedMessage id="reservation" defaultMessage={'Foglalás'}/></p>
+                  </Button>
+                : <></>}
               <Button onClick={this.props.handleClose} color="primary">
                 <p><FormattedMessage id="cancel" defaultMessage={'Mégse'}/></p>
               </Button>

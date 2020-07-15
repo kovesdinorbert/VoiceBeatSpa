@@ -1,14 +1,4 @@
-/* .admin-container {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-}
 
-
-.admin-container {
-    flex-grow: 1;
-} 
-*/
 .admin-container {
     display: flex;
     flex-direction: row;
@@ -23,6 +13,7 @@
 }
 
 .admin-content {
+    background-color: #fafafa !important;
     flex-grow: 1;
     padding: 20px;
 } 

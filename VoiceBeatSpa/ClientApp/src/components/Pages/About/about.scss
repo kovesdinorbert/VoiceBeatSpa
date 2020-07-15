@@ -21,10 +21,17 @@
         transform: scale(1.1);
         z-index: 1300;
     }
+    .price-card .MuiCardHeader-root {
+        background-color: lightgray;
+    }
+    .price-card .MuiCardContent-root {
+        background-color: #F5F5F5;
+    }
     @media (min-width: 768px) {
         .col-md-4 {
             flex: 0 0 33.333333%;
             max-width: 100%;
         }
     }
+
 }

@@ -4,20 +4,33 @@
 
 
 
-.room-class-room1 .fc-content::before {
+// .room-class-room1 .fc-content::before {
+//     content: "|";
+//     color: #F44336;
+//     font-weight: 999;
+//   }
+// .room-class-room2 .fc-content::before {
+//     content: "|";
+//     color: #2196F3;
+//     font-weight: 999;
+//   }
+// .room-class-room3 .fc-content::before {
+//     content: "|";
+//     color: #9E9E9E;
+//     font-weight: 999;
+//   }
+
+.room-class-room1 {
     content: "|";
-    color: #F44336;
-    font-weight: 999;
+    background-color: #F44336;
   }
-.room-class-room2 .fc-content::before {
+.room-class-room2 {
     content: "|";
-    color: #2196F3;
-    font-weight: 999;
+    background-color: #2196F3;
   }
-.room-class-room3 .fc-content::before {
+.room-class-room3 {
     content: "|";
-    color: #9E9E9E;
-    font-weight: 999;
+    background-color: #9E9E9E;
   }
 
 .fc-day-grid-event {
@@ -25,6 +38,26 @@
 }
 
 .fc-day-header {
-  background-color: #9E9E9E !important;
+  background-color:#616161 !important;
   color: #F5F5F5 !important;
+}
+
+.fc-day-top {
+  color: black !important;
+}
+
+.fc-body {
+  td:hover {
+    cursor: pointer;
+  }
+}
+
+.fc-view-container {
+  background-color: #F5F5F5 !important;
+}
+
+
+.fc-title {
+ color: black !important;
+ font-weight: 600 !important;
 }

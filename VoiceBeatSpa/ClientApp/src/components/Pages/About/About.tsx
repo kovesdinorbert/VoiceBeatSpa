@@ -19,7 +19,6 @@ export default class About extends React.Component<any>{
         cssProperties: {
           width: "100%",
           height: "auto",
-          marginBottom: "25px"
         }
       }
 
@@ -27,6 +26,7 @@ export default class About extends React.Component<any>{
         <div className="about-container">
           <><LivingText livingTextType={LivingTextTypeEnum.StartPageText}></LivingText></>
           <><Images imageType={ImageTypeEnum.AboutPagePicture} imageSettings={imageSettings}></Images></>
+          <br />
           <><LivingText livingTextType={LivingTextTypeEnum.PricesText}></LivingText></>
           <div className="row">
             <div className="col-md-4">

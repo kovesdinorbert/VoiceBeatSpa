@@ -44,8 +44,8 @@ export class Images extends React.Component<any, IState>{
       let imageContents = this.state.loading
         ? <CircularProgress />
         : this.props.imageSettings.useCarousel 
-          ?<Container style={{height:this.props.imageSettings.height?"450px":this.props.imageSettings.height, 
-                              width: this.props.imageSettings.width?"100%":this.props.imageSettings.width}}>
+          ?<Container style={{height:!this.props.imageSettings.height?"450px":this.props.imageSettings.height, 
+                              width: !this.props.imageSettings.width?"auto":this.props.imageSettings.width}}>
             <Carousel>
               {
               this.state.images.map(image => (

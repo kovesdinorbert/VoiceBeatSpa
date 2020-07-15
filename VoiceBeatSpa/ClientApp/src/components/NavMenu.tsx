@@ -79,7 +79,7 @@ export class NavMenu extends Component<any, IState> {
       <header>
         <div className="navbar-main">
           <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white box-shadow">
-                <NavbarBrand href="/"><img src={logo} className="logoImg" alt="Voice Beat próbaterem és stúdió"/></NavbarBrand>
+                <NavbarBrand className="header-logo" href="/"><img src={logo} className="logoImg" alt="Voice Beat próbaterem és stúdió"/></NavbarBrand>
                 <NavbarToggler onClick={this.toggleNavbar} className="mr-2 navbar-dark" />
                 <Collapse className="d-sm-inline-flex text-light" isOpen={!this.state.collapsed} navbar style={{flexBasis:"100%"}}>
                   <ul className="navbar-nav flex-grow navbar-actions">
@@ -111,10 +111,10 @@ export class NavMenu extends Component<any, IState> {
                   </NavbarBrand>
                   { this.state.currentUser.token !== "" && !this.state.admin && 
                     <NavItem className="navbar-nav-item-flex"><NavLink exact className="text-dark navbar-nav-item-flex" to="/profil"><Button onClick={this.closeNavbar} className="text-light nav-item-action-button"><FontAwesomeIcon icon={faUser} /></Button></NavLink></NavItem> }
+                  <div className="nav-item-language-selector" ><LanguageSelector locale={this.state.locale} changeLanguage={this.props.changeLanguage} setServiceValue={true}></LanguageSelector></div>
                   { this.state.currentUser.token !== "" && !this.state.admin         
                     ? <NavItem className="navbar-nav-item-flex"><NavLink exact className="text-dark navbar-nav-item-flex" to="/"><Button className="text-light nav-item-action-button" onClick={this.logout}><FontAwesomeIcon icon={faSignOutAlt} /></Button></NavLink></NavItem>
                     : <NavItem className="navbar-nav-item-flex"><LoginDialog closeNavbar={this.closeNavbar} /> </NavItem>}
-                    <div className="nav-item-language-selector" ><LanguageSelector locale={this.state.locale} changeLanguage={this.props.changeLanguage} setServiceValue={true}></LanguageSelector></div>
                 </ul>
               </Collapse>
           </Navbar>

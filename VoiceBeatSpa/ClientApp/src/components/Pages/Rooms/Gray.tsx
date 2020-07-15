@@ -12,12 +12,11 @@ export default class Gray extends React.Component<any>{
         colCount: 2,
         showTitle: false,
         showBody: false,
-        width:"100%",
+        width:"auto",
         height:"450px",
         cssProperties: {
-          width: "100%",
-          height: "auto",
-          marginBottom: "25px"
+          width: "auto",
+          height: "450px"
         },
         useCarousel: true
       }

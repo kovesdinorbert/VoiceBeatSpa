@@ -227,8 +227,9 @@ export default class Reservation extends React.Component<any, IState>{
               }}
               displayEventTime={true}
               displayEventEnd={true}
-              eventLimit={5}
+              eventLimit={4}
               eventLimitText={"további"}
+              height="auto"
               // navLinkWeekClick todo check
             />
           </>

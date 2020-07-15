@@ -34,7 +34,7 @@ export class Toastr extends Component<any, IToastrSettings> {
   render () {
   return (
     <div>
-      <Snackbar open={this.state.open} autoHideDuration={3000} onClose={this.handleClose}>
+      <Snackbar open={this.state.open} autoHideDuration={5000} onClose={this.handleClose}>
         <Alert onClose={this.handleClose} severity={this.state.severity}>
           {this.state.message}
         </Alert>
