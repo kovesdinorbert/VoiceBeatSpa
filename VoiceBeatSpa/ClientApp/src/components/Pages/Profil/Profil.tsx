@@ -12,6 +12,9 @@ import Toastr from '../../Common/Toastr/Toastr';
 import { PageLoading } from '../../Common/PageLoading/PageLoading';
 import { FormattedMessage } from 'react-intl';
 
+import './profil.css';
+import { Container } from 'reactstrap';
+
 export interface IState {
     email: string;
     phone: string;
@@ -230,13 +233,13 @@ export default class Profil extends React.Component<any>{
       return (
         <div>
           <PageLoading show={this.state.blocking}></PageLoading>
-          <div>
-            <h4><FormattedMessage id="profile.myprofile" defaultMessage={'Profilom'}/></h4>
+          <div className="form-container profil-container">
+            <h4 className="form-header-text"><FormattedMessage id="profile.myprofile" defaultMessage={'Profilom'}/></h4>
             <br />
             <><TextInput config={confEmail} value={this.state.email} onInputValueChange={this.handleEmailChange}></TextInput></>
             <><TextInput config={confPhone} value={this.state.phone} onInputValueChange={this.handlePhoneChange}></TextInput></>
-            <><Checkbox checked={this.state.newsletter} onChange={this.handleNewsletterChange}></Checkbox><FormattedMessage id="profile.newsletter" defaultMessage={'Hírlevél'}/></>
-            <><Agree text={<FormattedMessage id="profile.changepassword" defaultMessage={'Jelszó módosítása'}/>} handleChange={this.handlePasswordChange}></Agree></>
+            <Container><Checkbox checked={this.state.newsletter} onChange={this.handleNewsletterChange}></Checkbox><FormattedMessage id="profile.newsletter" defaultMessage={'Hírlevél'}/></Container>
+            <Container><Agree text={<FormattedMessage id="profile.changepassword" defaultMessage={'Jelszó módosítása'}/>} handleChange={this.handlePasswordChange}></Agree></Container>
             {this.state.passwordchange
             ?<>
               <><TextInput config={confPw} value={this.state.oldPassword} onInputValueChange={this.handleOldPasswordChange}></TextInput></>
@@ -244,8 +247,10 @@ export default class Profil extends React.Component<any>{
               <><TextInput config={confNewPw2} value={this.state.newPassword2} onInputValueChange={this.handleNewPassword2Change}></TextInput></>
             </>
             :<></>}
-            <Button onClick={_ => this.setState({deleteOpen: true})}><FormattedMessage id="delete" defaultMessage={'Törlés'}/></Button>
-            <Button onClick={this.submit}><FormattedMessage id="save" defaultMessage={'Mentés'}/></Button>
+            <Container>
+              <Button className="btn-action" onClick={_ => this.setState({deleteOpen: true})}><FormattedMessage id="delete" defaultMessage={'Törlés'}/></Button>
+              <Button className="btn-action" onClick={this.submit}><FormattedMessage id="save" defaultMessage={'Mentés'}/></Button>
+            </Container>
             <ConfirmDialog
               title={<FormattedMessage id="confirm" defaultMessage={'Megerősítés'}/>}
               open={this.state.deleteOpen}

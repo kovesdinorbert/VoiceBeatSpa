@@ -47,5 +47,17 @@ body:before {
 }
 
 .content-container.container{
-height: 100%;
+  height: 100%;
+}
+
+.form-container {
+  padding:15px;
+  margin:15px;
+  background-color: #fff;
+  -webkit-border-radius: 27px;  
+}
+
+.form-header-text {
+  color: black;
+  float: none; 
 }

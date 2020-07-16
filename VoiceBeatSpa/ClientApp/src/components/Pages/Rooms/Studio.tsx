@@ -13,10 +13,9 @@ export default class Studio extends React.Component<any>{
         showTitle: false,
         showBody: false,
         width:"auto",
-        height:"450px",
         cssProperties: {
-          width: "auto",
-          height: "450px"
+          width: "100%",
+          maxHeight: "auto"
         },
         useCarousel: true
       }

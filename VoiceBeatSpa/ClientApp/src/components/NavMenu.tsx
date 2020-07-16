@@ -79,7 +79,7 @@ export class NavMenu extends Component<any, IState> {
       <header>
         <div className="navbar-main">
           <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white box-shadow">
-                <NavbarBrand className="header-logo" href="/"><img src={logo} className="logoImg" alt="Voice Beat próbaterem és stúdió"/></NavbarBrand>
+                <NavbarBrand className="header-logo" href="/about"><img src={logo} className="logoImg" alt="Voice Beat próbaterem és stúdió"/></NavbarBrand>
                 <NavbarToggler onClick={this.toggleNavbar} className="mr-2 navbar-dark" />
                 <Collapse className="d-sm-inline-flex text-light" isOpen={!this.state.collapsed} navbar style={{flexBasis:"100%"}}>
                   <ul className="navbar-nav flex-grow navbar-actions">

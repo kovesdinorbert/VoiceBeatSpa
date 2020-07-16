@@ -32,3 +32,15 @@
     color: red;
     font-weight: bold;
 }
+
+.reservation-action-button {
+    margin-top: 15px;
+    float: right;
+}
+
+.reservation-action-button button {
+  margin-right: 5px;
+} 
+.reservation-action-button button:hover {
+  background-color: #BDBDBD;
+} 

@@ -10,6 +10,9 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import Toastr from '../../Common/Toastr/Toastr';
 import { PageLoading } from '../../Common/PageLoading/PageLoading';
 import { FormattedMessage } from 'react-intl';
+import { Container } from 'reactstrap';
+
+import './registration.css';
 
 export interface IState {
     email: string;
@@ -176,18 +179,18 @@ export default class Registration extends React.Component<any>{
       return (
         <div>
           <PageLoading show={this.state.blocking}></PageLoading>
-          <div>
-              <h4><FormattedMessage id="register" defaultMessage={'Regisztráció'}/></h4>
+          <div className="form-container registration-container">
+              <h4 className="form-header-text"><FormattedMessage id="register" defaultMessage={'Regisztráció'}/></h4>
               <br />
               <><TextInput config={confEmail} value={this.state.email} onInputValueChange={this.handleEmailChange}></TextInput></>
               <><TextInput config={confPhone} value={this.state.phone} onInputValueChange={this.handlePhoneChange}></TextInput></>
               <><TextInput config={confPw} value={this.state.password} onInputValueChange={this.handlePasswordChange}></TextInput></>
               <><TextInput config={confPw2} value={this.state.password2} onInputValueChange={this.handlePassword2Change}></TextInput></>
-              <><Agree text={<FormattedMessage id="register.newsletter" defaultMessage={'Hírlevél'}/>} handleChange={this.handleNewsletterChange}></Agree></>
+              <Container><Agree text={<FormattedMessage id="register.newsletter" defaultMessage={'Hírlevél'}/>} handleChange={this.handleNewsletterChange}></Agree></Container>
               <ReCAPTCHA sitekey="Your client site key" onChange={this.onCaptchaChange} />
-              <><Agree text={<FormattedMessage id="register.agree1" defaultMessage={''}/>} handleChange={this.handleR1Change}></Agree></>
-              <><Agree text={<FormattedMessage id="register.agree2" defaultMessage={''}/>} handleChange={this.handleR2Change}></Agree></>
-              <Button onClick={this.submit} disabled={!this.state.r1accepted || !this.state.r2accepted}><FormattedMessage id="save" defaultMessage={'Mentés'}/></Button>
+              <Container><Agree text={<FormattedMessage id="register.agree1" defaultMessage={''}/>} handleChange={this.handleR1Change}></Agree></Container>
+              <Container><Agree text={<FormattedMessage id="register.agree2" defaultMessage={''}/>} handleChange={this.handleR2Change}></Agree></Container>
+              <Container><Button className="btn-action" onClick={this.submit} disabled={!this.state.r1accepted || !this.state.r2accepted}><FormattedMessage id="save" defaultMessage={'Mentés'}/></Button></Container>
             <Toastr ref={this.toastrRef}></Toastr>
           </div>
         </div>

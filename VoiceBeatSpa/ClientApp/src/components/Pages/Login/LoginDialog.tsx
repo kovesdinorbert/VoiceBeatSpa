@@ -15,6 +15,7 @@ import { NavLink } from 'react-router-dom';
 import { FormattedMessage } from 'react-intl';
 import { faSignInAlt  } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Container } from 'reactstrap';
 
 export interface IState {
   open: boolean;
@@ -108,16 +109,18 @@ export default class LoginDialog extends React.Component<any, IState>{
                            email={this.state.login.email} 
                            password={this.state.login.password} />
               </DialogContent>
-              <DialogActions>
+              <DialogActions className="login-dialog-actions">
+                <Container>
                 <Button onClick={e => this.submitLogin(e)} color="primary">
-                  {!this.state.blocking ? <p><FormattedMessage id="login" defaultMessage={'Belépés'}/></p> : <CircularProgress />}
+                  {!this.state.blocking ? <FormattedMessage id="login" defaultMessage={'Belépés'}/> : <CircularProgress />}
                 </Button>
                 <Button onClick={this.handleClose} color="primary">
-                  <p><FormattedMessage id="cancel" defaultMessage={'Mégse'}/></p>
+                  <FormattedMessage id="cancel" defaultMessage={'Mégse'}/>
                 </Button>
+                </Container>
                 <h3><FormattedMessage id="login.noaccount" defaultMessage={'Nincs még fiókod?'}/></h3>
                 <Button onClick={_ => {this.setState({open: false}); this.props.closeNavbar();}}>
-                  <NavLink to="/register"><p><FormattedMessage id="register" defaultMessage={'Regisztráció'}/></p></NavLink>
+                  <NavLink to="/register"><FormattedMessage id="register" defaultMessage={'Regisztráció'}/></NavLink>
                 </Button>
               </DialogActions>
             </BlockUi>

@@ -11,6 +11,8 @@ import Toastr from '../../Common/Toastr/Toastr';
 import { PageLoading } from '../../Common/PageLoading/PageLoading';
 import { FormattedMessage } from 'react-intl';
 
+import './contact.css';
+
 export interface IState {
     email: string;
     name: string;
@@ -148,19 +150,19 @@ export default class Contact extends React.Component<any>{
       return (
         <div>
           <PageLoading show={this.state.blocking}></PageLoading>
-          <div className="parent row">
-            <div className="col-6 leftColumn">
-                <h4><FormattedMessage id="contact.leavemessage" defaultMessage={'Hagyj üzenetet!'}/></h4>
+          <div className="contact-container">
+            <div className="form-container">
+                <h4 className="form-header-text"><FormattedMessage id="contact.leavemessage" defaultMessage={'Hagyj üzenetet!'}/></h4>
                 <br />
                 <><TextInput config={confName} value={this.state.name} onInputValueChange={this.handleNameChange}></TextInput></>
                 <><TextInput config={confEmail} value={this.state.email} onInputValueChange={this.handleEmailChange}></TextInput></>
                 <><TextInput config={confSubject} value={this.state.subject} onInputValueChange={this.handleSubjectChange}></TextInput></>
                 <><TextInput config={confContent} value={this.state.body} onInputValueChange={this.handleContentChange}></TextInput></>
                 <ReCAPTCHA sitekey="Your client site key" onChange={this.onCaptchaChange} />
-                <Button onClick={this.sendEmail}><FormattedMessage id="contact.send" defaultMessage={'Küldés'}/></Button>
+                <Button className="btn-send-email" onClick={this.sendEmail}><FormattedMessage id="contact.send" defaultMessage={'Küldés'}/></Button>
             </div>
-            <div className="col-6 rightColumn">
-                <div className="row">
+            <div className="map-container">
+                <div>
                     <address>
                         <FormattedMessage id="contact.us" defaultMessage={'Voice-Beat próbaterem és stúdió'}/><br />
                         <FormattedMessage id="contact.address" defaultMessage={'Címünk: 1033 Budapest, Bogdáni út 1.'}/><br />
@@ -169,7 +171,7 @@ export default class Contact extends React.Component<any>{
                         <FormattedMessage id="contact.email" defaultMessage={'Email'}/>: <a href="mailto:voicebeat.bt@gmail.com">voicebeat.bt@gmail.com</a>
                     </address>
                 </div>
-                <div className="row">
+                <div>
                     <div className="" id="dvMap"><GMap></GMap></div>
                 </div>
             </div>

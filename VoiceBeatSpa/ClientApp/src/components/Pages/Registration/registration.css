@@ -1,0 +1,18 @@
+
+.btn-action {
+    float: right;
+    margin: 10px !important;
+    color: #3f51b5 !important;
+}
+.btn-action:hover {
+    background-color: #BDBDBD;
+}
+.registration-container {
+    display: flex;
+    flex-direction: column;
+    color: black;
+}
+
+.registration-container .Mui-disabled span{
+    color: gainsboro !important;
+}

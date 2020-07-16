@@ -1,0 +1,42 @@
+.contact-container {
+    display: flex;
+}
+
+.contact-container div {
+    flex-basis: 50%;
+}
+
+.map-container {
+    padding:15px;
+    margin:15px;
+    display: flex;
+    flex-direction: column;
+}
+
+.map-container div address{
+    font-size:large;
+}
+
+@media (min-width: 1000px) {
+    .map-container div address{
+        font-size:x-large;
+    }
+  }
+
+  
+
+@media (max-width: 750px) {
+    .contact-container {
+        display: flex;
+        flex-direction: column;
+    }
+  }
+  
+.btn-send-email {
+    float: right;
+    margin: 10px;
+    color: #3f51b5 !important;
+}
+.btn-send-email:hover {
+    background-color: #BDBDBD;
+}

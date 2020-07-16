@@ -79,6 +79,8 @@ export default class Reservation extends React.Component<any, IState>{
   }
   
   async getReservations() {
+    if (!this.calendarRef?.current)  return;
+
     this.setState({showScheduler: false, blocking: true, selectedDate : undefined, selectedDateStr : undefined });
     
     let start = moment(this.calendarRef?.current?.getApi().view.activeStart).toISOString();

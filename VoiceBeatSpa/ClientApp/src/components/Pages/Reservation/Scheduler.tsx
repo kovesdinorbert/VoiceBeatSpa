@@ -164,7 +164,7 @@ export default class Scheduler extends React.Component<any, IState>{
                                                   : <></>}
             </div>
 
-            <div className="row">
+            <div className="row reservation-action-button">
               {!this.state.showReservationWarning && this.state.deleteEventId 
               ?<Button onClick={e => this.props.submitReservation(e, 
                                                                  this.state.selectedStartStr, 
@@ -183,11 +183,11 @@ export default class Scheduler extends React.Component<any, IState>{
                                                                      this.state.subject,
                                                                      this.state.deleteEventId )} 
                           color="primary"  disabled={!this.state.isAdmin && moment().add(2, 'days').isSameOrAfter(this.state.selectedStart, 'day')}>
-                    <p><FormattedMessage id="reservation" defaultMessage={'Foglalás'}/></p>
+                    <FormattedMessage id="reservation" defaultMessage={'Foglalás'}/>
                   </Button>
                 : <></>}
               <Button onClick={this.props.handleClose} color="primary">
-                <p><FormattedMessage id="cancel" defaultMessage={'Mégse'}/></p>
+                <FormattedMessage id="cancel" defaultMessage={'Mégse'}/>
               </Button>
             </div>
 
