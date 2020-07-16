@@ -4,7 +4,6 @@ import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from "@fullcalendar/interaction";
 
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { CircularProgress } from '@material-ui/core';
@@ -71,8 +70,6 @@ export default class Reservation extends React.Component<any, IState>{
   }
   
   componentDidMount() {
-    //TODO - csak az aktuális intervall-ban kérje le az eventeket
-    //console.log(this.myRef?.current?.calendar?.state.dateProfile.activeRange); - de hol kapom el a change-et?
     this.getReservations();
     
     this.connection.start();
@@ -83,7 +80,11 @@ export default class Reservation extends React.Component<any, IState>{
   
   async getReservations() {
     this.setState({showScheduler: false, blocking: true, selectedDate : undefined, selectedDateStr : undefined });
-    const url = `${process.env.REACT_APP_API_PATH}/event`;
+    
+    let start = moment(this.calendarRef?.current?.getApi().view.activeStart).toISOString();
+    let end = moment(this.calendarRef?.current?.getApi().view.activeEnd).toISOString();
+
+    const url = `${process.env.REACT_APP_API_PATH}/event/`+start+'/'+ end;
     const requestOptions = {
       method: 'GET',
       headers: { 'Authorization': 'Bearer ' + this.authenticationService.instance().currentUserSubject.getValue().token },
@@ -230,7 +231,7 @@ export default class Reservation extends React.Component<any, IState>{
               eventLimit={4}
               eventLimitText={"további"}
               height="auto"
-              // navLinkWeekClick todo check
+              datesRender={this.getReservations}
             />
           </>
         : 
@@ -247,8 +248,6 @@ export default class Reservation extends React.Component<any, IState>{
                </Scheduler>
              }
             </DialogContent>
-            <DialogActions>
-           </DialogActions>
          </BlockUi>
        </Dialog>
         }
