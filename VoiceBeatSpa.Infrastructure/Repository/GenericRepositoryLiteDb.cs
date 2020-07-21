@@ -22,7 +22,7 @@ namespace VoiceBeatSpa.Infrastructure.Repository
             _dbLoc = _dbConfiguration.SqlLitePath;
         }
 
-        public async Task CreateAsync(T entity)
+        public async Task CreateAsync(T entity, Guid userId)
         {
             using (var db = new LiteRepository(_dbLoc))
             {
@@ -111,7 +111,7 @@ namespace VoiceBeatSpa.Infrastructure.Repository
             }
         }
 
-        public async Task UpdateAsync(T entity)
+        public async Task UpdateAsync(T entity, Guid userId)
         {
             using (var db = new LiteRepository(_dbLoc))
             {

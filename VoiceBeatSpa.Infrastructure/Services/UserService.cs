@@ -1,5 +1,4 @@
 ﻿using CryptSharp.Utility;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -38,11 +37,6 @@ namespace VoiceBeatSpa.Infrastructure.Services
             _voiceBeatConfiguration = voiceBeatConfiguration.Value;
         }
 
-        public async Task<bool> IsAdmin(Guid userId)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<User> Login(string email, string password)
         {
             User user = await GetUser(email);
@@ -63,7 +57,7 @@ namespace VoiceBeatSpa.Infrastructure.Services
                     user.LastWrongPassword = DateTime.UtcNow;
                 }
 
-                await _userRepository.UpdateAsync(user);
+                await _userRepository.UpdateAsync(user, user.Id);
                 if (wrongPassword)
                 {
                     user = null;
@@ -194,7 +188,7 @@ namespace VoiceBeatSpa.Infrastructure.Services
                 SetPassword(user, password);
             }
 
-            await _userRepository.UpdateAsync(user);
+            await _userRepository.UpdateAsync(user, user.Id);
         }
 
         public async Task CreateUser(User user, string password)
@@ -211,12 +205,12 @@ namespace VoiceBeatSpa.Infrastructure.Services
                 throw new NullReferenceException();
             }
 
-            await _userRepository.CreateAsync(user);
+            await _userRepository.CreateAsync(user, Guid.Empty);
 
             user.UserRoles.Add(new UserRole() {RoleId =  role.Id, UserId =  user.Id});
             SetPassword(user, password);
 
-            await _userRepository.UpdateAsync(user);
+            await _userRepository.UpdateAsync(user, user.Id);
 
             PasswordRecoveryConfirmation rec = new PasswordRecoveryConfirmation()
             {

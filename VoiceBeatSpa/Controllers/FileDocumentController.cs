@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using HeyRed.Mime;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -13,6 +15,7 @@ using VoiceBeatSpa.Core.Entities;
 using VoiceBeatSpa.Core.Enums;
 using VoiceBeatSpa.Core.Interfaces;
 using VoiceBeatSpa.Web.Dto;
+using VoiceBeatSpa.Web.Helpers;
 
 namespace VoiceBeatSpa.Web.Controllers
 {
@@ -23,16 +26,19 @@ namespace VoiceBeatSpa.Web.Controllers
         private readonly ILogger<FileDocumentController> _logger;
         private readonly IGenericRepository<FileDocument> _fileRepository;
         private readonly IGenericRepository<Image> _imageRepository;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
         public FileDocumentController(ILogger<FileDocumentController> logger,
                                       IGenericRepository<FileDocument> fileRepository,
                                       IGenericRepository<Image> imageRepository,
+                                      IUserService userService,
                                       IMapper mapper)
         {
             _logger = logger;
             _fileRepository = fileRepository;
             _mapper = mapper;
+            _userService = userService;
             _imageRepository = imageRepository;
         }
 
@@ -62,7 +68,6 @@ namespace VoiceBeatSpa.Web.Controllers
             }
 
             var content = new MultipartContent();
-            var ids = new List<int>() { 1, 2 };
 
             foreach(var file in files)
             {
@@ -106,10 +111,20 @@ namespace VoiceBeatSpa.Web.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Post([FromForm] IFormFile file, [FromForm] int fileType, [FromForm] int imageType)
         {
             try
             {
+                var email = ClaimHelper.GetClaimData(User, ClaimTypes.Name);
+
+                if (string.IsNullOrEmpty(email))
+                {
+                    throw new ArgumentOutOfRangeException();
+                }
+
+                var user = await _userService.GetUser(email);
+
                 switch ((FileTypeEnum)fileType)
                 {
                     case FileTypeEnum.Image:
@@ -119,11 +134,9 @@ namespace VoiceBeatSpa.Web.Controllers
                         image.Title = "Title";
                         image.Body = "Body";
                         image.FileType = FileTypeEnum.Image;
-                        await _imageRepository.CreateAsync(image);
+                        await _imageRepository.CreateAsync(image, user.Id);
                         break;
                 }
-                //var storedFile = _mapper.Map<FileDocument>(file);
-                //await _fileRepository.CreateAsync(storedFile);
             }
             catch (Exception exception)
             {
@@ -135,6 +148,7 @@ namespace VoiceBeatSpa.Web.Controllers
 
         [HttpDelete("{id:Guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid id)
         {
             await _fileRepository.DeleteAsync(id);

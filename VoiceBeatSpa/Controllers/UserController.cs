@@ -51,9 +51,9 @@ namespace VoiceBeatSpa.Web.Controllers
         [ProducesResponseType(typeof(List<UserListDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Get()
         {
-            //Todo admin only
             var users = await _userService.GetUsers();
             if (users.Any())
             {
@@ -73,6 +73,7 @@ namespace VoiceBeatSpa.Web.Controllers
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize]
         public async Task<IActionResult> Get(Guid id)
         {
             //TODO: csak a saját user vagy admin
@@ -95,6 +96,7 @@ namespace VoiceBeatSpa.Web.Controllers
         [HttpGet("isrulesaccepted/{id}")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> IsRulesAccepted(Guid id)
         {
             var user = await _userService.GetUser(id);
@@ -108,6 +110,7 @@ namespace VoiceBeatSpa.Web.Controllers
         [HttpPost("acceptrules")]
         [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> AcceptRules([FromForm] Guid userId)
         {
             var user = await _userService.GetUser(userId);
@@ -156,6 +159,7 @@ namespace VoiceBeatSpa.Web.Controllers
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> Update([FromBody] ProfilDto user)
         {
             try
@@ -192,6 +196,7 @@ namespace VoiceBeatSpa.Web.Controllers
 
         [HttpDelete("{id:Guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [Authorize]
         public async Task<IActionResult> Delete(Guid id)
         {
             //TODO only admin, if not self-delete

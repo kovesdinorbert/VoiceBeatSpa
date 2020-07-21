@@ -1,6 +1,9 @@
 import React from 'react'
 import { post } from 'axios';
+import { AuthenticationService } from '../../../services/authentication.service';
+
 export class UploadForm extends React.Component {
+  authenticationService = new AuthenticationService();
   constructor(props) {
     super(props);
     this.state = {
@@ -19,6 +22,7 @@ export class UploadForm extends React.Component {
     const config = {
       headers: {
         'content-type': 'multipart/form-data',
+        'Authorization': 'Bearer ' + this.authenticationService.instance().currentUserSubject.getValue().token
       },
     };
     try {

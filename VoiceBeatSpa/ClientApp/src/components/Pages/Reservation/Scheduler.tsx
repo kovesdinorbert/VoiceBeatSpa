@@ -37,12 +37,9 @@ export default class Scheduler extends React.Component<any, IState>{
     constructor (props: any) {
         super(props);
         this.onEventSelected = this.onEventSelected.bind(this);
-        this.formatTime = this.formatTime.bind(this);
         this.onEventClick = this.onEventClick.bind(this);
-        this.startPickerChange = this.startPickerChange.bind(this);
-        this.endPickerChange = this.endPickerChange.bind(this);
-        this.handleRoomChange = this.handleRoomChange.bind(this);
         this.handleSubjectChange = this.handleSubjectChange.bind(this);
+        this.checkOwnEvent = this.checkOwnEvent.bind(this);
         
         this.schedulerRef = React.createRef();
     }
@@ -69,35 +66,19 @@ export default class Scheduler extends React.Component<any, IState>{
     onEventClick(args: any) {
       this.setState({selectedEndStr: args.event.end.toString(), selectedStartStr: args.event.start.toString(), selectedEnd: args.event.end, selectedStart: args.event.start, selectedRoom: args.event.getResources()[0].id, deleteEventId: args.event.id}, );
     }
-
-    formatTime(time: Date): string {
-      if (!time) return "";
-      let hours = time.getHours() > 9  ? time.getHours().toString() : "0" + time.getHours();
-      let minutes = time.getMinutes() > 9  ? time.getMinutes().toString() : "0" + time.getMinutes();
-      return hours + ":" + minutes;
-    }
-
-    startPickerChange(newValue: any) {
-      if (newValue) {
-        this.schedulerRef?.current?.getApi().select({start: newValue.toDate(), end: this.state.selectedEnd , allDay: false , resourceId: this.state.selectedRoom?.toString() });
-      }
-    }
-
-    endPickerChange(newValue: any) {
-      if (newValue) {
-        this.schedulerRef?.current?.getApi().select({start: this.state.selectedStart, end: newValue.toDate(), allDay: false , resourceId: this.state.selectedRoom?.toString() });
-      }
-    }
-
-    handleRoomChange = (event: any) => {
-      event.preventDefault();
-      this.schedulerRef?.current?.getApi().select({start: this.state.selectedStart, end: this.state.selectedEnd , allDay: false , resourceId: event.target.value == 0 ? "0" : event.target.value });
-    }
     
     handleSubjectChange(subj: string) {
       let cState = this.state;
       cState.subject = subj;
       this.setState(cState);
+    }
+
+    checkOwnEvent() {
+      var event = this.props.onDayEvents.filter((e: any) => e.id === this.state.deleteEventId);
+      if (event && event[0] && event[0].title === this.authenticationService.instance().currentUserSubject.getValue().email) {
+        return true;
+      }
+      return false;
     }
 
     public render() {
@@ -128,7 +109,7 @@ export default class Scheduler extends React.Component<any, IState>{
             unselectAuto={false}
             selectLongPressDelay={500}
             selectMirror={true}
-            // height={1150}
+            // height={560}
             header={{
                 left: '',
                 center: 'title',
@@ -166,14 +147,15 @@ export default class Scheduler extends React.Component<any, IState>{
 
             <div className="row reservation-action-button">
               {!this.state.showReservationWarning && this.state.deleteEventId 
-              ?<Button onClick={e => this.props.submitReservation(e, 
+              ? (this.checkOwnEvent() || this.state.isAdmin) && <Button onClick={e => this.props.submitReservation(e, 
                                                                  this.state.selectedStartStr, 
                                                                  this.state.selectedEndStr, 
                                                                  this.state.selectedRoom, 
                                                                  this.state.subject,
                                                                  this.state.deleteEventId )} 
-                      color="primary" disabled={!this.state.isAdmin && moment().add(2, 'days').isSameOrAfter(this.state.selectedStart, 'day')}>
-                <p><FormattedMessage id="delete" defaultMessage={'Törlés'}/></p>
+                      color="primary" disabled={!this.state.isAdmin 
+                                                && moment().add(2, 'days').isSameOrAfter(this.state.selectedStart, 'day')}>
+                <FormattedMessage id="delete" defaultMessage={'Törlés'}/>
               </Button>
               : !this.state.showReservationWarning 
                 ? <Button onClick={e => this.props.submitReservation(e, 

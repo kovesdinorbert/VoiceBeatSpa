@@ -52,7 +52,7 @@ namespace Test
             if (user != null)
             {
                 user.Modified = now;
-                await _repository.UpdateAsync(user);
+                await _repository.UpdateAsync(user, Guid.Empty);
             }
 
             Assert.NotNull(user);
@@ -149,10 +149,10 @@ namespace Test
 
             var userRoles = new List<UserRole>() { new UserRole() { /*UserId = user2Id = "test role" */} };
 
-            await _repository.CreateAsync(new User() { Id = testGuid, IsActive = true, UserRoles = userRoles });
-            await _repository.CreateAsync(new User() { Id = user2Id, IsActive = false, UserRoles = userRoles });
-            await _repository.CreateAsync(new User() { Id = user3Id, IsActive = true, UserRoles = userRoles });
-            await _repository.CreateAsync(new User() { Id = user4Id, IsActive = true, UserRoles = userRoles });
+            await _repository.CreateAsync(new User() { Id = testGuid, IsActive = true, UserRoles = userRoles }, Guid.Empty);
+            await _repository.CreateAsync(new User() { Id = user2Id, IsActive = false, UserRoles = userRoles }, Guid.Empty);
+            await _repository.CreateAsync(new User() { Id = user3Id, IsActive = true, UserRoles = userRoles }, Guid.Empty);
+            await _repository.CreateAsync(new User() { Id = user4Id, IsActive = true, UserRoles = userRoles }, Guid.Empty);
         }
 
         private void DeleteTestDb()

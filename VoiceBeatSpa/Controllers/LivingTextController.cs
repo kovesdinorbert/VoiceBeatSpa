@@ -6,12 +6,15 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using VoiceBeatSpa.Core.Entities;
 using VoiceBeatSpa.Core.Enums;
 using VoiceBeatSpa.Core.Interfaces;
 using VoiceBeatSpa.Web.Dto;
+using VoiceBeatSpa.Web.Helpers;
 
 namespace VoiceBeatSpa.Web.Controllers
 {
@@ -22,16 +25,19 @@ namespace VoiceBeatSpa.Web.Controllers
         private readonly ILogger<LivingTextController> _logger;
         private readonly IGenericRepository<LivingText> _livingTextRepository;
         private readonly IGenericRepository<Translation> _translationRepository;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
         public LivingTextController(ILogger<LivingTextController> logger,
                                     IGenericRepository<LivingText> livingTextRepository,
                                     IGenericRepository<Translation> translationRepository,
+                                    IUserService userService,
                                     IMapper mapper)
         {
             _logger = logger;
             _livingTextRepository = livingTextRepository;
             _translationRepository = translationRepository;
+            _userService = userService;
             _mapper = mapper;
         }
 
@@ -85,6 +91,7 @@ namespace VoiceBeatSpa.Web.Controllers
         [HttpPut("{langCode}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Put(string langCode, [FromBody] LivingTextDto livingText)
         {
             var translationEntities = await _translationRepository.FindAllAsync(t => t.LivingTextId == livingText.Id && string.Equals(t.Language.Code, langCode));
@@ -96,7 +103,16 @@ namespace VoiceBeatSpa.Web.Controllers
             translationEntity.Text = livingText.Text;
             translationEntity.Subject = livingText.Subject;
 
-            await _translationRepository.UpdateAsync(translationEntity);
+            var email = ClaimHelper.GetClaimData(User, ClaimTypes.Name);
+
+            if (string.IsNullOrEmpty(email))
+            {
+                throw new ArgumentOutOfRangeException();
+            }
+
+            var user = await _userService.GetUser(email);
+
+            await _translationRepository.UpdateAsync(translationEntity, user.Id);
 
             return NoContent();
         }

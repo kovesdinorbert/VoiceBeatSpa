@@ -1,5 +1,4 @@
 ﻿using System;
-using VoiceBeatSpa.Core.Entities;
 
 namespace VoiceBeatSpa.Core.Interfaces
 {

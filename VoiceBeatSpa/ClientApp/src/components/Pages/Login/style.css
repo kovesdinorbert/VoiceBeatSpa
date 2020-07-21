@@ -16,3 +16,11 @@
     float: right;
     margin: 10px;
 }
+
+.btn-action:hover {
+    background-color: #BDBDBD !important;
+}
+
+.forgotten-password {
+    font-size: small;
+}

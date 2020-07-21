@@ -7,7 +7,6 @@ namespace VoiceBeatSpa.Core.Interfaces
 {
     public interface IUserService
     {
-        Task<bool> IsAdmin(Guid userId);
         Task<User> Login(string email, string password);
         string GenerateToken(User user);
         Task<List<User>> GetUsers();

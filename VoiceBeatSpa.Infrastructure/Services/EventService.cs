@@ -1,10 +1,11 @@
 ﻿using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 using VoiceBeatSpa.Core.Configuration;
 using VoiceBeatSpa.Core.Entities;
-using VoiceBeatSpa.Core.Enums;
 using VoiceBeatSpa.Core.Interfaces;
 
 namespace VoiceBeatSpa.Infrastructure.Services
@@ -24,86 +25,89 @@ namespace VoiceBeatSpa.Infrastructure.Services
             _eventRepository = eventRepository;
         }
 
-        public async Task AddNewEvent(Event newEvent, string userName)
+        public async Task AddNewEvent(Event newEvent, string userEmail)
         {
-            //string date;
-            //string startTime;
-            //string endTime;
-            var user = await _userService.GetUser(userName);
+            var user = await _userService.GetUser(userEmail);
 
             if (user == null)
             {
-                throw new NullReferenceException();
+                throw new AuthenticationException();
             }
 
-            DateTime mdate = new DateTime(newEvent.StartDate.Year, newEvent.StartDate.Month, newEvent.StartDate.Day);
-            TimeSpan ts = new TimeSpan(0, 0, 0);
-            mdate = mdate.Date + ts;
+            var isAdmin = user.UserRoles.Any(ur => string.Equals(ur.Role.Name.ToLower(), "admin"));
 
-            //if (HttpContext.User.Identity.IsAuthenticated)
-            //{
-                //if (string.IsNullOrEmpty(reserveTo)) reserveTo = HttpContext.User.Identity.Name;
+            if (!isAdmin && newEvent.StartDate.Date < DateTime.Today.AddDays(_voiceBeatConfiguration.DayBeforeUserReservation))
+            {
+                throw new ArgumentOutOfRangeException();
+            }
 
-                //TODO 2 nappal korábban foglalni -> irány a configba
-                if (mdate < DateTime.Today.AddDays(_voiceBeatConfiguration.DayBeforeUserReservation) && await _userService.IsAdmin(user.Id))
-                {
-                    //return Json("NOK1", JsonRequestBehavior.AllowGet);
-                }
+            var overlappingEvents = await _eventRepository.FindAllAsync(e => e.Room == newEvent.Room
+                                               && e.StartDate <= newEvent.EndDate && newEvent.EndDate <= e.EndDate);
 
-                //RoomEnum mroom = RoomEnum.Studio;
-                //if (room.ToLower() == "piros terem") mroom = RoomEnum.Room1;
-                //else if (room.ToLower() == "kék terem") mroom = RoomEnum.Room2;
-                //else if (room.ToLower() == "szürke terem") mroom = RoomEnum.Room3;
+            if (overlappingEvents.Any())
+            {
+                throw new ArgumentOutOfRangeException();
+            }
 
-
-                //var startDate = mdate.AddHours(Convert.ToDouble(startTime.Split(':').First()));
-                //startDate = startDate.AddMinutes(Convert.ToDouble(startTime.Split(':').Last()));
-                //var endDate = mdate.AddHours(Convert.ToDouble(endTime.Split(':').First()));
-                //endDate = endDate.AddMinutes(Convert.ToDouble(endTime.Split(':').Last()));
-
-                //if (mroom == RoomEnum.Studio)
-                //{
-                //    if (mdate < DateTime.Today.AddDays(7))
-                //    {
-                //        return Json("NOK", JsonRequestBehavior.AllowGet);
-                //    }
-                //}
-
-                //var phone = userService.FindAll(u => u.Email == HttpContext.User.Identity.Name).FirstOrDefault().PhoneNumber;
-                ////TODO: ellenőrizni, hogy ne legyen átfedés... just for case...
-                await _eventRepository.CreateAsync(new Event()
-                {
-                    Subject = newEvent.Subject,
-                    StartDate = newEvent.StartDate,
-                    EndDate = newEvent.EndDate,
-                    Room = newEvent.Room,
-                    ReservedDay = new DateTime(newEvent.StartDate.Year, newEvent.StartDate.Month, newEvent.StartDate.Day),
-                    //Description = phone
-                });
-
-                //string reservationString = (startDate.ToString("yyyy.MM.dd.") + ":" + "<br />");
-                //reservationString += startDate.Hour.ToString() + ":" + startDate.Minute.ToString() + " - "
-                //                     + endDate.Hour.ToString() + ":" + endDate.Minute.ToString();
-                //SendEmail(reservationString);
-            //}
-
-            //return GetReservationList(mdate);
+            await _eventRepository.CreateAsync(new Event()
+            {
+                Subject = newEvent.Subject,
+                StartDate = newEvent.StartDate,
+                EndDate = newEvent.EndDate,
+                Room = newEvent.Room,
+            }, user.Id);
         }
 
-        public async Task DeleteEvent(Guid eventToDelete)
+        public async Task DeleteEvent(Guid eventToDelete, string userEmail)
         {
+            var user = await _userService.GetUser(userEmail);
+
+            if (user == null)
+            {
+                throw new AuthenticationException();
+            }
+
+            var isAdmin = user.UserRoles.Any(ur => string.Equals(ur.Role.Name.ToLower(), "admin"));
+
+            var eventEntity = await _eventRepository.FindByIdAsync(eventToDelete);
+
+            if (!isAdmin && eventEntity.CreatedBy != user.Id)
+            {
+                throw new AuthenticationException();
+            }
+
             await _eventRepository.DeleteAsync(eventToDelete);
         }
 
-        public async Task<List<Event>> GetEvents(bool includeNotActive)
+        public async Task<List<Event>> GetEvents(bool includeNotActive, string userEmail)
         {
-            //TODO ütemező, az 1 évnél régebbi próbákat isactive false-ra.
-            return await _eventRepository.FindAllAsync(e => includeNotActive || e.IsActive);
+            var events = await _eventRepository.FindAllAsync(e => includeNotActive || e.IsActive);
+            return await AnonymizeEvents(events, userEmail);
         }
 
-        public async Task<List<Event>> GetEvents(DateTime start, DateTime end)
+        public async Task<List<Event>> GetEvents(DateTime start, DateTime end, string userEmail)
         {
-            return await _eventRepository.FindAllAsync(e => e.StartDate >= start && e.EndDate <= end);
+            var events = await _eventRepository.FindAllAsync(e => e.StartDate >= start && e.EndDate <= end);
+            return await AnonymizeEvents(events, userEmail);
+        }
+
+        private async Task<List<Event>> AnonymizeEvents(List<Event> events, string userEmail)
+        {
+            var user = await _userService.GetUser(userEmail);
+
+            if (user == null)
+            {
+                throw new AuthenticationException();
+            }
+
+            var isAdmin = user.UserRoles.Any(ur => string.Equals(ur.Role.Name.ToLower(), "admin"));
+
+            if (!isAdmin)
+            {
+                events.Where(e => e.CreatedBy != user.Id).ToList().ForEach(e => e.Subject = "N/A");
+            }
+
+            return events;
         }
     }
 }

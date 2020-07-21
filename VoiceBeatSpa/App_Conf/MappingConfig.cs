@@ -15,8 +15,7 @@ namespace VoiceBeatSpa.Web.App_Conf
     {
         public MappingConfig()
         {
-            CreateMap<Event, EventDto>()
-                .ForMember(dst => dst.StartHour, opt => opt.MapFrom(src => src.StartDate.Hour));
+            CreateMap<Event, EventDto>();
             CreateMap<EventDto, Event>()
                 .ForMember(dst => dst.Modified, opt => opt.MapFrom(src => DateTime.Now))
                 .ForMember(dst => dst.IsActive, opt => opt.Ignore())

@@ -32,6 +32,8 @@
   "reservationPossible": "Booking and cancellation is only possible at least 2 days in advance! Please call us on phone!",
   "required": "Field is required",
   "register": "Register",
+  "forgottenPw": "Forgotten password",
+  "newPassword": "New password",
   "ok": "Ok",
   "cancel": "Cancel",
   "delete": "Delete",

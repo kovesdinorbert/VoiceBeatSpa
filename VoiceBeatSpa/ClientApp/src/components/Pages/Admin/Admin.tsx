@@ -10,7 +10,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { faSignOutAlt, faUsers, faKeyboard, faCalendar, faFile, faBars, faChartArea  } from '@fortawesome/free-solid-svg-icons';
+import { faSignOutAlt, faUsers, faKeyboard, faCalendar, faFile, faBars, faChartArea, faEnvelopeOpen  } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AuthenticationService } from '../../../services/authentication.service';
 import Reservation from '../Reservation/Reservation';
@@ -23,7 +23,7 @@ import Charts from './Charts/Charts';
 
 export interface IState {
   mobileOpen : boolean, 
-  activeItem : 'reservation' | 'text' | 'image' | 'user' | 'chart'
+  activeItem : 'reservation' | 'text' | 'image' | 'user' | 'chart' | 'newletter'
 }
 
 
@@ -59,6 +59,8 @@ export default class Admin extends React.Component<any, IState>{
         return <Users></Users>;
       case 'text':
         return <EditText></EditText>;
+      case 'newletter':
+        return <div>Hirlevele</div>;
       case 'image':
         return <Image></Image>;
       case 'chart':
@@ -85,6 +87,12 @@ export default class Admin extends React.Component<any, IState>{
               <FontAwesomeIcon className="login-brand-icon" icon={faKeyboard} />
             </ListItemIcon>
             <ListItemText primary="Szövegek" />
+          </ListItem>
+          <ListItem button key="adminNewsletterK" onClick={() => this.setActive('newletter')}>
+            <ListItemIcon>
+              <FontAwesomeIcon className="login-brand-icon" icon={faEnvelopeOpen} />
+            </ListItemIcon>
+            <ListItemText primary="Hírlevél" />
           </ListItem>
           <ListItem button key="adminPicturesK" onClick={() => this.setActive('image')}>
             <ListItemIcon>

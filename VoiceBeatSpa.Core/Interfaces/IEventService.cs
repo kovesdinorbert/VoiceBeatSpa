@@ -8,9 +8,9 @@ namespace VoiceBeatSpa.Core.Interfaces
 {
     public interface IEventService
     {
-        Task<List<Event>> GetEvents(bool includeNotActive);
-        Task<List<Event>> GetEvents(DateTime start, DateTime end);
-        Task AddNewEvent(Event newEvent, string userName);
-        Task DeleteEvent(Guid eventToDelete);
+        Task<List<Event>> GetEvents(bool includeNotActive, string userEmail);
+        Task<List<Event>> GetEvents(DateTime start, DateTime end, string userEmail);
+        Task AddNewEvent(Event newEvent, string userEmail);
+        Task DeleteEvent(Guid eventToDelete, string userEmail);
     }
 }

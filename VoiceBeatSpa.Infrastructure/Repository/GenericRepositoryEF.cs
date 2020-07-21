@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 using VoiceBeatSpa.Core.Entities;
 using VoiceBeatSpa.Core.Interfaces;
@@ -23,11 +21,12 @@ namespace VoiceBeatSpa.Infrastructure.Repository
             _table = _context.Set<T>();
         }
 
-        public async Task CreateAsync(T entity)
+        public async Task CreateAsync(T entity, Guid userId)
         {
             if (typeof(T).IsSubclassOf(typeof(_CrudBase)))
             {
                 ((IHasCrud)entity).Created = DateTime.Now;
+                ((IHasCrud)entity).CreatedBy = userId;
                 ((IHasCrud)entity).IsActive = true;
             }
             if (typeof(IHasId).IsAssignableFrom(typeof(T)))
@@ -77,12 +76,12 @@ namespace VoiceBeatSpa.Infrastructure.Repository
             return await Task.FromResult(ret);
         }
 
-        public async Task UpdateAsync(T entity)
+        public async Task UpdateAsync(T entity, Guid userId)
         {
-            //TODO Crudbase
             if (typeof(T).IsSubclassOf(typeof(_CrudBase)))
             {
                 ((IHasCrud)entity).Modified = DateTime.Now;
+                ((IHasCrud)entity).ModifiedBy = userId;
             }
             _table.Update(entity);
             await _context.SaveChangesAsync();

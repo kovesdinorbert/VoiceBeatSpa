@@ -156,7 +156,6 @@ export default class Reservation extends React.Component<any, IState>{
           } else {
             this.toastrRef.current?.openSnackbar("Sikeres foglalás!", "success");
             this.connection.invoke('sendToAll', "add").catch();
-            //this.getReservations();
           }
           this.setState({showScheduler: false, blocking: false, selectedDate : undefined, selectedDateStr : undefined });
         })
@@ -175,7 +174,6 @@ export default class Reservation extends React.Component<any, IState>{
           if (!response.ok) {
             this.toastrRef.current?.openSnackbar("Sikertelen törlés! Kérjük próbálja meg újra később!", "error");
           } else {
-            //this.getReservations();
             this.toastrRef.current?.openSnackbar("Sikeres törlés!", "success");
 
             this.connection.invoke('sendToAll', "delete").catch();
@@ -203,9 +201,7 @@ export default class Reservation extends React.Component<any, IState>{
 
     return (
       <div>
-        {!this.state.showScheduler
-        ? 
-          <><PageLoading show={this.state.blocking}></PageLoading>
+        <><PageLoading show={this.state.blocking}></PageLoading>
             <FullCalendar
               ref={this.calendarRef} 
               locale={this.languageService.instance().currentLanguageCode}
@@ -236,7 +232,6 @@ export default class Reservation extends React.Component<any, IState>{
               datesRender={this.getReservations}
             />
           </>
-        : 
          <Dialog open={this.state.showScheduler} onClose={this.handleClose} aria-labelledby="form-dialog-title">
          <BlockUi tag="div" blocking={this.state.blocking}>
            <DialogTitle id="form-dialog-title"></DialogTitle>
@@ -252,7 +247,6 @@ export default class Reservation extends React.Component<any, IState>{
             </DialogContent>
          </BlockUi>
        </Dialog>
-        }
         <Toastr ref={this.toastrRef}></Toastr>
       </div>
       );

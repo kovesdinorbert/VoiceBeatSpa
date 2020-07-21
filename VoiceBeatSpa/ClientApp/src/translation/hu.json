@@ -32,6 +32,8 @@
   "reservationPossible": "Foglalás és időpont törlés csak minimum 2 nappal korábban lehetséges! Kérünk keress meg telefonon!",
   "required": "A mező kitöltése kötelező",
   "register": "Regisztráció",
+  "forgottenPw": "Elfelejtett jelszó",
+  "newPassword": "Új jelszó",
   "ok": "Ok",
   "cancel": "Mégse",
   "delete": "Törlés",
