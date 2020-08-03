@@ -33,6 +33,7 @@
   "required": "A mező kitöltése kötelező",
   "register": "Regisztráció",
   "forgottenPw": "Elfelejtett jelszó",
+  "forgottenPwSent": "Emlékeztető kiküldve",
   "newPassword": "Új jelszó",
   "ok": "Ok",
   "cancel": "Mégse",

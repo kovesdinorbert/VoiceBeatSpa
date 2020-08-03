@@ -9,12 +9,13 @@ namespace VoiceBeatSpa.Core.Interfaces
     {
         Task<User> Login(string email, string password);
         string GenerateToken(User user);
-        Task<List<User>> GetUsers();
-        Task<User> GetUser(string email);
-        Task<User> GetUser(Guid id);
-        Task UpdateUser(User user, string password);
+        Task<List<User>> GetUsers(string currentUserEmail);
+        Task<User> GetUser(string email, string currentUserEmail);
+        Task<User> GetUser(Guid id, string currentUserEmail);
+        Task<User> GetCurrentUserByEmail(string email);
+        Task UpdateUser(User user, string password, string currentUserEmail);
         Task CreateUser(User user, string password);
         string GetPasswordHash(string password, string salt, int costDivider = 1);
-        Task DeleteUser(Guid id);
+        Task DeleteUser(Guid id, string currentUserEmail);
     }
 }

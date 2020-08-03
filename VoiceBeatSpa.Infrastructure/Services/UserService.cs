@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using VoiceBeatSpa.Core.Configuration;
 using VoiceBeatSpa.Core.Entities;
+using VoiceBeatSpa.Core.Enums;
 using VoiceBeatSpa.Core.Interfaces;
 
 namespace VoiceBeatSpa.Infrastructure.Services
@@ -39,7 +40,7 @@ namespace VoiceBeatSpa.Infrastructure.Services
 
         public async Task<User> Login(string email, string password)
         {
-            User user = await GetUser(email);
+            User user = await GetCurrentUserByEmail(email);
 
             if (user != null && user.IsActive)
             {
@@ -83,14 +84,20 @@ namespace VoiceBeatSpa.Infrastructure.Services
             return tokenString;
         }
 
-        public async Task<List<User>> GetUsers()
+        public async Task<List<User>> GetUsers(string currentUserEmail)
         {
+            var currentUser = await GetCurrentUserByEmail(currentUserEmail);
+            if (!currentUser.UserRoles.Any(ur => string.Equals(ur.Role.Name.ToLower(), RoleEnum.Admin.ToString().ToLower())))
+            {
+                throw new ArgumentException($"Somebody from {currentUserEmail} wanted to get the list of users");
+            }
+
             var users = await _userRepository.FindAllAsync(u => !string.Equals(u.Email, "system"));
 
             return users;
         }
 
-        public async Task<User> GetUser(string email)
+        public async Task<User> GetUser(string email, string currentUserEmail)
         {
             User user = null;
 
@@ -109,6 +116,12 @@ namespace VoiceBeatSpa.Infrastructure.Services
             {
                 try
                 {
+                    var currentUser = await GetCurrentUserByEmail(currentUserEmail);
+                    if (currentUserEmail != email && !currentUser.UserRoles.Any(ur => string.Equals(ur.Role.Name.ToLower(), RoleEnum.Admin.ToString().ToLower())))
+                    {
+                        throw new ArgumentException($"Somebody from {currentUserEmail} wanted to get User {users.First().Id}");
+                    }
+
                     user = users.Single();
                 }
                 catch (Exception ex)
@@ -120,7 +133,7 @@ namespace VoiceBeatSpa.Infrastructure.Services
             return user;
         }
 
-        public async Task<User> GetUser(Guid id)
+        public async Task<User> GetUser(Guid id, string currentUserEmail)
         {
             User user = null;
 
@@ -139,11 +152,50 @@ namespace VoiceBeatSpa.Infrastructure.Services
             {
                 try
                 {
+
+                    var currentUser = await GetCurrentUserByEmail(currentUserEmail);
+
+                    if (currentUser.Id != users.First().Id && !currentUser.UserRoles.Any(ur => string.Equals(ur.Role.Name.ToLower(), RoleEnum.Admin.ToString().ToLower())))
+                    {
+                        throw new ArgumentException($"Somebody from {currentUserEmail} wanted to get User {id}");
+                    }
+
                     user = users.Single();
                 }
                 catch (Exception ex)
                 {
                     _logger.LogError($"More users found with id ({id}): " + ex.Message);
+                    user = users.First();
+                }
+            }
+            return user;
+        }
+
+        public async Task<User> GetCurrentUserByEmail(string email)
+        {
+            User user = null;
+
+            var includes = new Func<IQueryable<User>, IQueryable<User>>[]
+            {
+                source => source.Include(m => m.UserRoles)
+                    .ThenInclude(m => m.Role),
+            };
+
+            var users = await _userRepository.FindAllAsync(u => u.Email.ToLower() == email.ToLower()
+                                                                && u.IsActive
+                                                                && u.Password != ""
+                                                                && u.Salt != "",
+                includes);
+
+            if (users.Any())
+            {
+                try
+                {
+                    user = users.Single();
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError($"More users found with email ({email}): " + ex.Message);
                     user = users.First();
                 }
             }
@@ -176,8 +228,15 @@ namespace VoiceBeatSpa.Infrastructure.Services
             return claims;
         }
 
-        public async Task UpdateUser(User user, string password)
+        public async Task UpdateUser(User user, string password, string currentUserEmail)
         {
+            var currentUser = await GetCurrentUserByEmail(currentUserEmail);
+
+            if (currentUser.Id != user.Id)
+            {
+                throw new ArgumentException($"Somebody from {currentUserEmail} wanted to modify User {user.Id}");
+            }
+
             if (!IsValidEmail(user.Email))
             {
                 throw new ArgumentException("Invalid email address: " + user.Email);
@@ -198,7 +257,7 @@ namespace VoiceBeatSpa.Infrastructure.Services
                 throw new ArgumentException("Invalid email address: " + user.Email);
             }
 
-            var roleQ = await _roleRepository.FindAllAsync(r => r.Name.ToLower() == "user");
+            var roleQ = await _roleRepository.FindAllAsync(r => r.Name.ToLower() == RoleEnum.User.ToString().ToLower());
             var role = roleQ.FirstOrDefault();
             if (role == null)
             {
@@ -218,7 +277,7 @@ namespace VoiceBeatSpa.Infrastructure.Services
                 UserId = user.Id,
             };
             //passwordRecoveryConfirmationService.Create(rec);
-            //SendEmail(rec.Id.ToString(), user.Email);
+            //SendEmail(rec.Id.ToString(), User.Email);
             
         }
 
@@ -241,9 +300,15 @@ namespace VoiceBeatSpa.Infrastructure.Services
             }
         }
 
-        public async Task DeleteUser(Guid id)
+        public async Task DeleteUser(Guid id, string currentUserEmail)
         {
-            //TODO self and admin delete-logic
+            var currentUser = await GetCurrentUserByEmail(currentUserEmail);
+
+            if (currentUser.Id != id && !currentUser.UserRoles.Any(ur => string.Equals(ur.Role.Name.ToLower(), RoleEnum.Admin.ToString().ToLower())))
+            {
+                throw new ArgumentException($"Somebody from {currentUserEmail} wanted to delete User {id}");
+            }
+
             await _userRepository.DeleteAsync(id);
         }
     }

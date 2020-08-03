@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using VoiceBeatSpa.Core.Entities;
 using VoiceBeatSpa.Core.Interfaces;
 using VoiceBeatSpa.Web.Dto;
+using VoiceBeatSpa.Web.Helpers;
 
 namespace VoiceBeatSpa.Web.Controllers
 {
@@ -20,15 +22,18 @@ namespace VoiceBeatSpa.Web.Controllers
     {
         private readonly ILogger<UserController> _logger;
         private readonly IUserService _userService;
+        private readonly IEventService _eventService;
         private readonly IMapper _mapper;
 
         public UserController(ILogger<UserController> logger,
                               IUserService userService,
+                              IEventService eventService,
                               IMapper mapper)
         {
             _logger = logger;
             _userService = userService;
             _mapper = mapper;
+            _eventService = eventService;
         }
 
         [AllowAnonymous]
@@ -47,6 +52,19 @@ namespace VoiceBeatSpa.Web.Controllers
             return Unauthorized();
         }
 
+        [AllowAnonymous]
+        [HttpPost("forgottenpassword")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> ForgottenPassword([FromBody]string email)
+        {
+            var user = await _userService.GetCurrentUserByEmail(email);
+            if (user != null)
+            {
+                //TODO Send password remainder
+            }
+            return Ok();
+        }
+
         [HttpGet]
         [ProducesResponseType(typeof(List<UserListDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -54,7 +72,8 @@ namespace VoiceBeatSpa.Web.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Get()
         {
-            var users = await _userService.GetUsers();
+            var email = ClaimHelper.GetClaimData(User, ClaimTypes.Name);
+            var users = await _userService.GetUsers(email);
             if (users.Any())
             {
                 try
@@ -76,8 +95,8 @@ namespace VoiceBeatSpa.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Get(Guid id)
         {
-            //TODO: csak a saját user vagy admin
-            var user = await _userService.GetUser(id);
+            var email = ClaimHelper.GetClaimData(User, ClaimTypes.Name);
+            var user = await _userService.GetUser(id, email);
             if (user != null)
             {
                 try
@@ -99,7 +118,8 @@ namespace VoiceBeatSpa.Web.Controllers
         [Authorize(Roles = "User")]
         public async Task<IActionResult> IsRulesAccepted(Guid id)
         {
-            var user = await _userService.GetUser(id);
+            var email = ClaimHelper.GetClaimData(User, ClaimTypes.Name);
+            var user = await _userService.GetUser(id, email);
             if (user != null)
             {
                 return Ok(user.ReservationRuleAccepted);
@@ -113,11 +133,12 @@ namespace VoiceBeatSpa.Web.Controllers
         [Authorize(Roles = "User")]
         public async Task<IActionResult> AcceptRules([FromForm] Guid userId)
         {
-            var user = await _userService.GetUser(userId);
+            var email = ClaimHelper.GetClaimData(User, ClaimTypes.Name);
+            var user = await _userService.GetUser(userId, email);
             if (user != null)
             {
                 user.ReservationRuleAccepted = true;
-                await _userService.UpdateUser(user, string.Empty);
+                await _userService.UpdateUser(user, string.Empty, email);
                 return Ok(user.ReservationRuleAccepted);
             }
             return NotFound();
@@ -164,7 +185,8 @@ namespace VoiceBeatSpa.Web.Controllers
         {
             try
             {
-                var u = await _userService.GetUser(user.Id);
+                var email = ClaimHelper.GetClaimData(User, ClaimTypes.Name);
+                var u = await _userService.GetUser(user.Id, email);
                 if (u != null)
                 {
                     u.Email = user.Email;
@@ -177,7 +199,7 @@ namespace VoiceBeatSpa.Web.Controllers
                         return StatusCode(StatusCodes.Status500InternalServerError);
                     }
 
-                    await _userService.UpdateUser(u, user.NewPassword);
+                    await _userService.UpdateUser(u, user.NewPassword, email);
 
                     return StatusCode(StatusCodes.Status200OK);
                 }
@@ -199,8 +221,16 @@ namespace VoiceBeatSpa.Web.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(Guid id)
         {
-            //TODO only admin, if not self-delete
-            await _userService.DeleteUser(id);
+            try
+            {
+                var email = ClaimHelper.GetClaimData(User, ClaimTypes.Name);
+                await _eventService.HandleEventsWhenUserDelete(id, email);
+                await _userService.DeleteUser(id, email);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
             return NoContent();
         }
     }

@@ -24,3 +24,8 @@
 .forgotten-password {
     font-size: small;
 }
+
+.remainder-sent-text {
+    text-align: right;
+    color: #F44336;
+}

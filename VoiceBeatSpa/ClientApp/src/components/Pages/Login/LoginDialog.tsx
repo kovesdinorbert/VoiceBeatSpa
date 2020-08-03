@@ -8,6 +8,7 @@ import LoginForm from './LoginForm';
 import { ILogin } from './login.model';
 import { CircularProgress } from '@material-ui/core';
 import BlockUi from 'react-block-ui';
+import { Subscription } from 'rxjs';
 
 import 'react-block-ui/style.css';
 import { AuthenticationService } from '../../../services/authentication.service';
@@ -22,6 +23,7 @@ export interface IState {
   open: boolean;
   blocking: boolean;
   forgottenPw: boolean;
+  forgottenPwSent: boolean;
   login: ILogin;
 }
 
@@ -31,11 +33,15 @@ export default class LoginDialog extends React.Component<any, IState>{
     open: false,
     blocking: false,
     forgottenPw: false,
+    forgottenPwSent: false,
     login: {
       email : "",
       password : ""
     },
   };
+
+  authenticationService: AuthenticationService = new AuthenticationService();
+  obs: Subscription = new Subscription();
   
   constructor(props: any) {
     super(props);
@@ -49,6 +55,14 @@ export default class LoginDialog extends React.Component<any, IState>{
 
     this.props.closeNavbar();
   }
+  
+  public componentDidMount() {
+    this.obs = this.authenticationService.instance().currentUser.subscribe(val => {this.setState({blocking: false})});
+  }
+
+  componentWillUnmount() {
+    this.obs.unsubscribe();
+ }
 
   handleClose() {
 
@@ -81,20 +95,34 @@ export default class LoginDialog extends React.Component<any, IState>{
   
   async sendReminder(e: any) {
     e.preventDefault();
-    //TODO
+    const url = `${process.env.REACT_APP_API_PATH}/user/forgottenpassword`;
+    
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(this.state.login.email)
+    };
+    
+  fetch(url, requestOptions)
+    .then(async response => {
+        this.setState({forgottenPwSent: true});
+      })
+      .catch(error => {
+      });
   }
 
   login() {
     if (this.state.login.email != '' && this.state.login.password != ''){
       this.setState({blocking: true});
   
-      new AuthenticationService().instance().login(this.state.login.email, this.state.login.password);
+      this.authenticationService.instance().login(this.state.login.email, this.state.login.password);
     }
   }
 
   clearState() {
     this.setState({
       forgottenPw: false,
+      forgottenPwSent: false,
       open: false,
       blocking: false,
       login: {
@@ -145,6 +173,7 @@ export default class LoginDialog extends React.Component<any, IState>{
               :<>
                  <DialogContent>
                    <ForgottenPassword emailChange={this.handleEmailChange} />
+                   {this.state.forgottenPwSent && <div className="remainder-sent-text"><FormattedMessage id="forgottenPwSent" defaultMessage={'Emlékeztető kiküldve'}/></div>}
                  </DialogContent>
                  <DialogActions className="login-dialog-actions">
                    <Container>

@@ -42,6 +42,7 @@ export class AuthenticationService  {
         const data = await response.json();
       
         if (!response.ok) {
+            this.currentUserSubject.next({email:"",token:""});
             const error = (data && data.message) || response.status;
           } else {
             localStorage.setItem('currentUser', JSON.stringify(data));

@@ -110,7 +110,7 @@ namespace VoiceBeatSpa.Web.Controllers
                 throw new ArgumentOutOfRangeException();
             }
 
-            var user = await _userService.GetUser(email);
+            var user = await _userService.GetCurrentUserByEmail(email);
 
             await _translationRepository.UpdateAsync(translationEntity, user.Id);
 

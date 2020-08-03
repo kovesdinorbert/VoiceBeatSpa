@@ -12,5 +12,7 @@ namespace VoiceBeatSpa.Core.Interfaces
         Task<List<Event>> GetEvents(DateTime start, DateTime end, string userEmail);
         Task AddNewEvent(Event newEvent, string userEmail);
         Task DeleteEvent(Guid eventToDelete, string userEmail);
+        Task UpdateEvent(Event eventToUpdate, string userEmail);
+        Task HandleEventsWhenUserDelete(Guid userId, string currentUserEmail);
     }
 }
