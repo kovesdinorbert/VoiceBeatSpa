@@ -1,24 +1,14 @@
-
 @import '~@fullcalendar/core/main.css';
 @import '~@fullcalendar/daygrid/main.css';
 
-
-
-// .room-class-room1 .fc-content::before {
-//     content: "|";
-//     color: #F44336;
-//     font-weight: 999;
-//   }
-// .room-class-room2 .fc-content::before {
-//     content: "|";
-//     color: #2196F3;
-//     font-weight: 999;
-//   }
-// .room-class-room3 .fc-content::before {
-//     content: "|";
-//     color: #9E9E9E;
-//     font-weight: 999;
-//   }
+.accept-rules-btn {
+  background-color: whitesmoke !important;
+  font-weight: bold !important;
+  margin-left: 50px !important;  
+}
+.accept-rules-btn:hover {
+  background-color: #BDBDBD !important;
+}
 
 .room-class-room1 {
     content: "|";
@@ -63,5 +53,9 @@
 }
 
 .fc-today {
-  background: bisque !important;
+  background: cornsilk !important;
 } 
+
+span.fc-time {
+  white-space: normal;
+}

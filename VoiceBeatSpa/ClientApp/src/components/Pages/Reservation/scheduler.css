@@ -2,6 +2,7 @@
 .fc-time span {
     font-weight: bold;
     font-size: medium;
+    white-space: normal;
 }
 
 .fc-event-container a {

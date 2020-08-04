@@ -109,7 +109,7 @@ export default class Scheduler extends React.Component<any, IState>{
             unselectAuto={false}
             selectLongPressDelay={500}
             selectMirror={true}
-            // height={560}
+            // height={"parent"}
             header={{
                 left: '',
                 center: 'title',

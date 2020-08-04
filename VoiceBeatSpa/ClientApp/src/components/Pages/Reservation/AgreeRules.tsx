@@ -1,6 +1,6 @@
 import React from 'react';
 import Agree from '../../Common/Agree/Agree';
-import { Button } from '@material-ui/core';
+import { Button, Container } from '@material-ui/core';
 
 export interface IState {
     agreed: boolean;
@@ -27,8 +27,10 @@ export default class AgreeRules extends React.Component<any, IState>{
 
       return (
         <div>
+        <Container>
          <Agree text="Szabályok elfogadása" handleChange={this.handleChange}></Agree>
-         <div><Button onClick={this.props.onAcceptRules} disabled={!this.state.agreed}>OK</Button></div>
+         <Button className="accept-rules-btn" onClick={this.props.onAcceptRules} disabled={!this.state.agreed}>OK</Button>
+        </Container>
         </div>
         );
     }

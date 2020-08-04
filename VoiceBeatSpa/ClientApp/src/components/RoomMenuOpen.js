@@ -21,15 +21,16 @@ export default function RoomMenuOpen({closeNavbar}) {
 
   return (
     <div>
-      <Button aria-controls="simple-menu" className="text-light" aria-haspopup="true" onClick={handleClick}>
+      <Button aria-controls="room-menu" className="text-light" aria-haspopup="true" onClick={handleClick}>
         <FormattedMessage id="rooms" defaultMessage={'Termek'}/>  <FontAwesomeIcon className="" icon={faCaretDown} style={{marginLeft:"5px"}} />
       </Button>
       <Menu
-        id="simple-menu"
+        id="room-menu"
         anchorEl={anchorEl}
         keepMounted
         open={Boolean(anchorEl)}
         onClose={handleClose}
+        className="room-menu-container"
       >
         <MenuItem onClick={handleClose}><NavLink className="text-dark" to="/rooms/red"><FormattedMessage id="roomsRed" defaultMessage={'Piros terem'}/></NavLink></MenuItem>
         <MenuItem onClick={handleClose}><NavLink className="text-dark" to="/rooms/blue"><FormattedMessage id="roomsBlue" defaultMessage={'Kék terem'}/></NavLink></MenuItem>

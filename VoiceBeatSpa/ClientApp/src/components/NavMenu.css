@@ -136,6 +136,10 @@ html{
   text-decoration: underline;
   text-decoration-color: whitesmoke;
 } 
+.room-menu-container div ul li a.active{
+  text-decoration: underline;
+  text-decoration-color: black;
+} 
 .navbar-nav-item.navbar-nav-item-flex.nav-item div button:focus,
 .nav-item.navbar-nav-item-flex.nav-item div button:focus,
 .navbar-nav.flex-grow.navbar-actions a button:focus,

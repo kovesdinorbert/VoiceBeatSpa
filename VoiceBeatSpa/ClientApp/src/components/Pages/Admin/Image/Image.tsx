@@ -153,12 +153,12 @@ export default class Image extends React.Component<any, IState>{
                 {this.state.images == null ? <></> : this.state.images.map(image => (
                   <div key={'c-'+image.id.toString()}>
                     <div className="row">
-                      <div className="col-9">
+                      <div className="col-6">
                         <div className="card-content">
                           <ImageCard image={image} key={image.id.toString()} imageSettings={imageSettings}></ImageCard>
                         </div>
                       </div>
-                      <div className="col-3">
+                      <div className="col-6">
                         <Button onClick={_ => this.onDeleteClick(image.id)}>Törlés
                         </Button>
                       </div>
