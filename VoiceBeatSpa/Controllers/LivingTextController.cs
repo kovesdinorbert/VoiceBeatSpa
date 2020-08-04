@@ -25,12 +25,14 @@ namespace VoiceBeatSpa.Web.Controllers
         private readonly ILogger<LivingTextController> _logger;
         private readonly IGenericRepository<LivingText> _livingTextRepository;
         private readonly IGenericRepository<Translation> _translationRepository;
+        private readonly IGenericRepository<Language> _languageRepository;
         private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
         public LivingTextController(ILogger<LivingTextController> logger,
                                     IGenericRepository<LivingText> livingTextRepository,
                                     IGenericRepository<Translation> translationRepository,
+                                    IGenericRepository<Language> languageRepository,
                                     IUserService userService,
                                     IMapper mapper)
         {
@@ -38,6 +40,7 @@ namespace VoiceBeatSpa.Web.Controllers
             _livingTextRepository = livingTextRepository;
             _translationRepository = translationRepository;
             _userService = userService;
+            _languageRepository = languageRepository;
             _mapper = mapper;
         }
 
@@ -115,6 +118,38 @@ namespace VoiceBeatSpa.Web.Controllers
             await _translationRepository.UpdateAsync(translationEntity, user.Id);
 
             return NoContent();
+        }
+
+        [HttpPost("{newsletter}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Newsletter([FromBody] string text)
+        {
+            var email = ClaimHelper.GetClaimData(User, ClaimTypes.Name);
+            var user = await _userService.GetCurrentUserByEmail(email);
+            if (user != null)
+            {
+                var newsletter = new LivingText();
+
+                newsletter.LivingTextType = LivingTextTypeEnum.Newsletter;
+                newsletter.IsHtmlEncoded = true;
+                newsletter.IsActive = false;
+                var translation = new Translation();
+                translation.Text = text;
+                var hulang = await _languageRepository.FindAllAsync(l => l.Code == LanguageEnum.hu.ToString());
+                if (hulang.FirstOrDefault() != null)
+                {
+                    translation.LanguageId = hulang.First().Id;
+                    translation.Created = DateTime.Now;
+                    translation.CreatedBy = user.Id;
+                    newsletter.Translations.Add(translation);
+                    await _livingTextRepository.CreateAsync(newsletter, user.Id);
+                }
+
+                //TODO send news letter
+            }
+
+            return Ok();
         }
 
         private void SetTranslationToDto(LivingText livingText, LivingTextDto dto, string langCode)

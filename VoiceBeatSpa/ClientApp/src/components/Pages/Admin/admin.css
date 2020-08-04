@@ -5,6 +5,14 @@
     align-items: stretch;
 } 
 
+.btn-admin-save {
+    float: right;
+} 
+
+.active-admin-menu {
+    background-color: aliceblue !important;
+} 
+
 @media (min-width: 600px) {
     .admin-nav {
         flex-shrink: 0;

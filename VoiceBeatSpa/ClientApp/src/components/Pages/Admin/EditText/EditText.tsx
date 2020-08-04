@@ -157,7 +157,7 @@ export default class EditText extends React.Component<any, IState>{
             setContents={this.state.livingText.text}
           >
           </SunEditor>
-          <Button onClick={this.saveText}>
+          <Button onClick={this.saveText} className="btn-admin-save">
             <FontAwesomeIcon className="login-brand-icon" icon={faSave} />
           </Button>
         </div>

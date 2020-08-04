@@ -25,5 +25,7 @@
         StudioPrice = 16,
 
         PhoneNumber = 17,
+
+        Newsletter = 9999,
     }
 }

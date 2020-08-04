@@ -18,6 +18,7 @@ import Reservation from '../Reservation/Reservation';
 import './admin.css';
 import Users from './Users/Users';
 import EditText from './EditText/EditText';
+import Newsletter from './Newsletter/Newsletter';
 import Image from './Image/Image';
 import Charts from './Charts/Charts';
 
@@ -60,7 +61,7 @@ export default class Admin extends React.Component<any, IState>{
       case 'text':
         return <EditText></EditText>;
       case 'newletter':
-        return <div>Hirlevele</div>;
+        return <Newsletter></Newsletter>;
       case 'image':
         return <Image></Image>;
       case 'chart':
@@ -74,7 +75,7 @@ export default class Admin extends React.Component<any, IState>{
       <div className="admin-nav">
         <div/>
         <Divider />
-          <ListItem button key="adminReservationK" onClick={() => this.setActive('reservation')}>
+          <ListItem className={this.state.activeItem=='reservation'?'active-admin-menu': ''} button key="adminReservationK" onClick={() => this.setActive('reservation')}>
             <ListItemIcon>
               <FontAwesomeIcon className="login-brand-icon" icon={faCalendar} />
             </ListItemIcon>
@@ -82,32 +83,32 @@ export default class Admin extends React.Component<any, IState>{
           </ListItem>
         <Divider />
         <Divider />
-          <ListItem button key="adminLivingTextK" onClick={() => this.setActive('text')}>
+          <ListItem className={this.state.activeItem=='text'?'active-admin-menu': ''} button key="adminLivingTextK" onClick={() => this.setActive('text')}>
             <ListItemIcon>
               <FontAwesomeIcon className="login-brand-icon" icon={faKeyboard} />
             </ListItemIcon>
             <ListItemText primary="Szövegek" />
           </ListItem>
-          <ListItem button key="adminNewsletterK" onClick={() => this.setActive('newletter')}>
+          <ListItem className={this.state.activeItem=='newletter'?'active-admin-menu': ''} button key="adminNewsletterK" onClick={() => this.setActive('newletter')}>
             <ListItemIcon>
               <FontAwesomeIcon className="login-brand-icon" icon={faEnvelopeOpen} />
             </ListItemIcon>
             <ListItemText primary="Hírlevél" />
           </ListItem>
-          <ListItem button key="adminPicturesK" onClick={() => this.setActive('image')}>
+          <ListItem className={this.state.activeItem=='image'?'active-admin-menu': ''} button key="adminPicturesK" onClick={() => this.setActive('image')}>
             <ListItemIcon>
               <FontAwesomeIcon className="login-brand-icon" icon={faFile} />
             </ListItemIcon>
             <ListItemText primary="Képek" />
           </ListItem>
-          <ListItem button key="adminUsersK" onClick={() => this.setActive('user')}>
+          <ListItem className={this.state.activeItem=='user'?'active-admin-menu': ''} button key="adminUsersK" onClick={() => this.setActive('user')}>
             <ListItemIcon>
               <FontAwesomeIcon className="login-brand-icon" icon={faUsers} />
             </ListItemIcon>
             <ListItemText primary="Felhasználók" />
           </ListItem>
         <Divider />
-          <ListItem button key="adminGraphsK" onClick={() => this.setActive('chart')}>
+          <ListItem className={this.state.activeItem=='chart'?'active-admin-menu': ''} button key="adminGraphsK" onClick={() => this.setActive('chart')}>
             <ListItemIcon>
               <FontAwesomeIcon className="login-brand-icon" icon={faChartArea} />
             </ListItemIcon>
