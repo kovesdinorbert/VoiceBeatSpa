@@ -53,6 +53,14 @@ export class AuthenticationService  {
         });
     }
 
+    socialLogin(user: ICurrentUser) {
+      debugger;
+      if (user && user.token) {
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        this.currentUserSubject.next(user);
+      }
+    }
+
     logout() {
         localStorage.removeItem('currentUser');
         this.currentUserSubject.next({email:"", token:""});

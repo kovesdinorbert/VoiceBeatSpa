@@ -29,5 +29,6 @@ namespace VoiceBeatSpa.Core.Entities
         public string PhoneNumber { get; set; }
         public bool Newsletter { get; set; }
         public bool ReservationRuleAccepted { get; set; }
+        public bool SocialLogin { get; set; }
     }
 }

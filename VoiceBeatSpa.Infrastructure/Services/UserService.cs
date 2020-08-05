@@ -42,7 +42,7 @@ namespace VoiceBeatSpa.Infrastructure.Services
         {
             User user = await GetCurrentUserByEmail(email);
 
-            if (user != null && user.IsActive)
+            if (user != null && user.IsActive && !user.SocialLogin)
             {
                 bool wrongPassword = false;
                 if (GetPasswordHash(password, user.Salt.TrimEnd()) == user.Password 
@@ -255,6 +255,12 @@ namespace VoiceBeatSpa.Infrastructure.Services
             if (!IsValidEmail(user.Email))
             {
                 throw new ArgumentException("Invalid email address: " + user.Email);
+            }
+
+            var emailCheck = await _userRepository.FindAllAsync(u => u.Email == user.Email && !u.SocialLogin);
+            if (emailCheck.Any())
+            {
+                throw new ArgumentException("Already contains email: " + user.Email);
             }
 
             var roleQ = await _roleRepository.FindAllAsync(r => r.Name.ToLower() == RoleEnum.User.ToString().ToLower());

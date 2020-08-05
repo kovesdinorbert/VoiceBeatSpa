@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using VoiceBeatSpa.Core.Entities;
 using VoiceBeatSpa.Core.Interfaces;
 using VoiceBeatSpa.Web.Dto;
@@ -51,6 +55,56 @@ namespace VoiceBeatSpa.Web.Controllers
 
             return Unauthorized();
         }
+
+        [AllowAnonymous]
+        [HttpPost("googleauthenticate")]
+        [ProducesResponseType(typeof(LoginResultDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> GoogleAuthenticate([FromBody]string accessToken)
+        {
+            try
+            {
+                var payload = GoogleJsonWebSignature.ValidateAsync(accessToken, new GoogleJsonWebSignature.ValidationSettings()).Result;
+
+                var user = await _userService.GetCurrentUserByEmail(payload.Email);
+                if (user == null || !user.SocialLogin)
+                {
+                    user = new User();
+                    user.Email = payload.Email;
+                    user.Newsletter = false;
+                    user.IsActive = false;
+                    user.SocialLogin = true;
+                    await _userService.CreateUser(user, "123456789");
+                }
+                //var claims = new[]
+                //{
+                //    //new Claim(JwtRegisteredClaimNames.Sub, Security.Encrypt(AppSettings.appSettings.JwtEmailEncryption,user.email)),
+                //    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                //};
+
+                //var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("QlL6FbCY_A51FNJt_OPgv3FL"));
+                //var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+                //var token = new JwtSecurityToken(String.Empty,
+                //    String.Empty,
+                //    claims,
+                //    expires: DateTime.Now.AddSeconds(55 * 60),
+                //    signingCredentials: creds);
+                //return Ok(new
+                //{
+                //    token = new JwtSecurityTokenHandler().WriteToken(token)
+                //});
+                var token = _userService.GenerateToken(user);
+                return Ok(new LoginResultDto() { Email = user.Email, Token = token, Id = user.Id });
+            }
+            catch
+            {
+                //Helpers.SimpleLogger.Log(ex);
+                BadRequest();
+            }
+            return BadRequest();
+        }
+
 
         [AllowAnonymous]
         [HttpPost("forgottenpassword")]
@@ -189,6 +243,16 @@ namespace VoiceBeatSpa.Web.Controllers
                 var u = await _userService.GetUser(user.Id, email);
                 if (u != null)
                 {
+                    if (user.Email != u.Email)
+                    {
+                        var emailCheck = await _userService.GetCurrentUserByEmail(user.Email);
+                        if (emailCheck != null && !emailCheck.SocialLogin)
+                        {
+                            //email already exists
+                            return StatusCode(StatusCodes.Status500InternalServerError);
+                        }
+                    }
+
                     u.Email = user.Email;
                     u.PhoneNumber = user.PhoneNumber;
                     u.Newsletter = user.Newsletter;
