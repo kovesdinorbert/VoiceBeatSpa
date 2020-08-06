@@ -257,7 +257,7 @@ namespace VoiceBeatSpa.Infrastructure.Services
                 throw new ArgumentException("Invalid email address: " + user.Email);
             }
 
-            var emailCheck = await _userRepository.FindAllAsync(u => u.Email == user.Email && !u.SocialLogin);
+            var emailCheck = await _userRepository.FindAllAsync(u => u.Email == user.Email);
             if (emailCheck.Any())
             {
                 throw new ArgumentException("Already contains email: " + user.Email);

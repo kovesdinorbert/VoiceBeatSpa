@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
+using System.Net.Http;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Google.Apis.Auth;
@@ -11,7 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Logging;
-using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using VoiceBeatSpa.Core.Entities;
 using VoiceBeatSpa.Core.Interfaces;
 using VoiceBeatSpa.Web.Dto;
@@ -47,7 +46,7 @@ namespace VoiceBeatSpa.Web.Controllers
         public async Task<IActionResult> Authenticate([FromBody]LoginDto login)
         {
             var user = await _userService.Login(login.Email, login.Password);
-            if (user != null)
+            if (user != null && !user.SocialLogin)
             {
                 var token = _userService.GenerateToken(user);
                 return Ok(new LoginResultDto() { Email = user.Email, Token = token, Id = user.Id });
@@ -67,42 +66,81 @@ namespace VoiceBeatSpa.Web.Controllers
                 var payload = GoogleJsonWebSignature.ValidateAsync(accessToken, new GoogleJsonWebSignature.ValidationSettings()).Result;
 
                 var user = await _userService.GetCurrentUserByEmail(payload.Email);
-                if (user == null || !user.SocialLogin)
+                if (user == null)
                 {
                     user = new User();
                     user.Email = payload.Email;
                     user.Newsletter = false;
-                    user.IsActive = false;
+                    user.PhoneNumber = "-";
+                    user.IsActive = true;
                     user.SocialLogin = true;
                     await _userService.CreateUser(user, "123456789");
                 }
-                //var claims = new[]
-                //{
-                //    //new Claim(JwtRegisteredClaimNames.Sub, Security.Encrypt(AppSettings.appSettings.JwtEmailEncryption,user.email)),
-                //    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                //};
+                else
+                {
+                    user.LastLogin = DateTime.UtcNow;
+                    user.WrongPasswordCount = 0;
+                    await _userService.UpdateUser(user, string.Empty, user.Email);
+                }
 
-                //var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("QlL6FbCY_A51FNJt_OPgv3FL"));
-                //var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-                //var token = new JwtSecurityToken(String.Empty,
-                //    String.Empty,
-                //    claims,
-                //    expires: DateTime.Now.AddSeconds(55 * 60),
-                //    signingCredentials: creds);
-                //return Ok(new
-                //{
-                //    token = new JwtSecurityTokenHandler().WriteToken(token)
-                //});
                 var token = _userService.GenerateToken(user);
                 return Ok(new LoginResultDto() { Email = user.Email, Token = token, Id = user.Id });
             }
             catch
             {
-                //Helpers.SimpleLogger.Log(ex);
-                BadRequest();
+                return BadRequest();
             }
             return BadRequest();
+        }
+
+        [AllowAnonymous]
+        [HttpPost("facebookauthenticate")]
+        [ProducesResponseType(typeof(LoginResultDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<IActionResult> FacebookAuthenticate([FromBody]string accessToken)
+        {
+            try
+            {
+                var client = new HttpClient();
+
+                var verifyTokenEndPoint = string.Format("https://graph.facebook.com/me?access_token={0}&fields=email", accessToken);
+
+                var uri = new Uri(verifyTokenEndPoint);
+                var response = await client.GetAsync(uri);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    var userObj = JsonConvert.DeserializeObject<Dictionary<string,string>>(content);
+                    var email = userObj["email"];
+
+                    var user = await _userService.GetCurrentUserByEmail(email);
+                    if (user == null)
+                    {
+                        user = new User();
+                        user.Email = email;
+                        user.Newsletter = false;
+                        user.PhoneNumber = "-";
+                        user.IsActive = true;
+                        user.SocialLogin = true;
+                        await _userService.CreateUser(user, "123456789");
+                    }
+                    else
+                    {
+                        user.LastLogin = DateTime.UtcNow;
+                        user.WrongPasswordCount = 0;
+                        await _userService.UpdateUser(user, string.Empty, user.Email);
+                    }
+
+                    var token = _userService.GenerateToken(user);
+                    return Ok(new LoginResultDto() { Email = user.Email, Token = token, Id = user.Id });
+                }
+                return BadRequest();
+            }
+            catch
+            {
+                return BadRequest();
+            }
         }
 
 
@@ -246,7 +284,7 @@ namespace VoiceBeatSpa.Web.Controllers
                     if (user.Email != u.Email)
                     {
                         var emailCheck = await _userService.GetCurrentUserByEmail(user.Email);
-                        if (emailCheck != null && !emailCheck.SocialLogin)
+                        if (emailCheck != null)
                         {
                             //email already exists
                             return StatusCode(StatusCodes.Status500InternalServerError);
@@ -257,10 +295,16 @@ namespace VoiceBeatSpa.Web.Controllers
                     u.PhoneNumber = user.PhoneNumber;
                     u.Newsletter = user.Newsletter;
 
-                    if ((!string.IsNullOrEmpty(user.OldPassword) && !string.Equals(_userService.GetPasswordHash(user.OldPassword, u.Salt), u.Password))
-                        || (!string.IsNullOrEmpty(user.NewPassword) && string.IsNullOrEmpty(user.OldPassword)))
+                    if (!u.SocialLogin &&
+                        ((!string.IsNullOrEmpty(user.OldPassword) && !string.Equals(_userService.GetPasswordHash(user.OldPassword, u.Salt), u.Password))
+                        || (!string.IsNullOrEmpty(user.NewPassword) && string.IsNullOrEmpty(user.OldPassword))))
                     {
                         return StatusCode(StatusCodes.Status500InternalServerError);
+                    }
+
+                    if (!string.IsNullOrEmpty(user.NewPassword))
+                    {
+                        u.SocialLogin = false;
                     }
 
                     await _userService.UpdateUser(u, user.NewPassword, email);

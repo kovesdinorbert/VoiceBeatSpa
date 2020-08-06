@@ -10,5 +10,6 @@ namespace VoiceBeatSpa.Web.Dto
         public string NewPassword { get; set; }
         public string PhoneNumber { get; set; }
         public bool Newsletter { get; set; }
+        public bool SocialLogin { get; set; }
     }
 }

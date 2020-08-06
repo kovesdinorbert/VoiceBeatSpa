@@ -22,6 +22,7 @@ export interface IState {
     newPassword1?: string;
     newPassword2?: string;
     newsletter: boolean;
+    sociallogin: boolean;
     passwordchange: boolean;
     blocking : boolean, 
     deleteOpen : boolean, 
@@ -32,6 +33,7 @@ export default class Profil extends React.Component<any>{
       email : "",
       phone : "",
       newsletter : false,
+      sociallogin : false,
       passwordchange : false,
       blocking : false, 
       deleteOpen : false, 
@@ -67,7 +69,7 @@ export default class Profil extends React.Component<any>{
       .then((res) => {
         if (res.ok) {
           res.json().then((profil: IProfil) => {
-            this.setState({email: profil.email, phone: profil.phoneNumber, newsletter: profil.newsletter, blocking: false});
+            this.setState({sociallogin: profil.socialLogin, email: profil.email, phone: profil.phoneNumber, newsletter: profil.newsletter, blocking: false});
             }
           );
         } else {
@@ -112,7 +114,6 @@ export default class Profil extends React.Component<any>{
     
     handlePasswordChange(event: React.ChangeEvent<HTMLInputElement>){
         this.setState({passwordchange: event.target.checked});
-        console.log(this.state.passwordchange);
     }
 
     submit() {
@@ -125,6 +126,7 @@ export default class Profil extends React.Component<any>{
             id: this.authenticationService.currentUserSubject.getValue().id,
             phoneNumber: this.state.phone,
             newsletter: this.state.newsletter,
+            socialLogin: this.state.sociallogin,
             newPassword: this.state.newPassword1,
             oldPassword: this.state.oldPassword,
             email: this.state.email,
@@ -138,12 +140,17 @@ export default class Profil extends React.Component<any>{
           
         fetch(url, requestOptions)
           .then(async response => {
+            var pwChanged = false;
+            var socLogin = this.state.sociallogin;
             if (!response.ok) {
               this.toastrRef.current?.openSnackbar("Sikertelen mentés!", "error");
               } else {
+                if (this.state.newPassword1 !== "")
+                  pwChanged = true;
+
                 this.toastrRef.current?.openSnackbar("Sikeres mentés!", "success");
               }
-              this.setState({oldPassword: "", blocking: false, newPassword1 : "", newPassword2 : "" });
+              this.setState({oldPassword: "", blocking: false, newPassword1 : "", newPassword2 : "", sociallogin : pwChanged ? false : socLogin });
             })
             .catch(error => {
               this.setState({oldPassword: "", blocking: false, newPassword1 : "", newPassword2 : "" });
@@ -242,7 +249,7 @@ export default class Profil extends React.Component<any>{
             <Container><Agree text={<FormattedMessage id="profile.changepassword" defaultMessage={'Jelszó módosítása'}/>} handleChange={this.handlePasswordChange}></Agree></Container>
             {this.state.passwordchange
             ?<>
-              <><TextInput config={confPw} value={this.state.oldPassword} onInputValueChange={this.handleOldPasswordChange}></TextInput></>
+              <>{!this.state.sociallogin && <TextInput config={confPw} value={this.state.oldPassword} onInputValueChange={this.handleOldPasswordChange}></TextInput>}</>
               <><TextInput config={confNewPw1} value={this.state.newPassword1} onInputValueChange={this.handleNewPassword1Change}></TextInput></>
               <><TextInput config={confNewPw2} value={this.state.newPassword2} onInputValueChange={this.handleNewPassword2Change}></TextInput></>
             </>

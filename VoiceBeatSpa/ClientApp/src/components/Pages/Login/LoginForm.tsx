@@ -3,11 +3,10 @@ import { ITextInput } from '../../Common/TextInput/textInput.model';
 import TextInput from '../../Common/TextInput/TextInput';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelopeSquare, faLock,  } from '@fortawesome/free-solid-svg-icons';
-import { faFacebookF, faTwitterSquare, faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { faFacebookF, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { Button } from '@material-ui/core';
-import FacebookLogin from 'react-facebook-login';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props'
 import { GoogleLogin } from 'react-google-login';
-import { Subscription } from 'rxjs';
 
 import './style.css';
 import { FormattedMessage } from 'react-intl';
@@ -28,33 +27,22 @@ export default class LoginForm extends React.Component<any, IState>{
       blocking : false,
     };
     authenticationService: AuthenticationService = new AuthenticationService();
-    
-  //   obs: Subscription = new Subscription();
-  
-  //   public componentDidMount() {
-  //     this.obs = this.authenticationService.instance().currentUser.subscribe(val => {this.setState({blocking: false})});
-  //   }
-  
-  //   componentWillUnmount() {
-  //     this.obs.unsubscribe();
-  //  }
 
     facebookResponse = (response: any) => {
-      // const tokenBlob = new Blob([JSON.stringify({access_token: response.accessToken}, null, 2)], {type : 'application/json'});
-      // const options = {
-      //     method: 'POST',
-      //     body: tokenBlob,
-      //     mode: 'cors',
-      //     cache: 'default'
-      // };
-      // fetch('http://localhost:4000/api/v1/auth/facebook', options).then(r => {
-      //     const token = r.headers.get('x-auth-token');
-      //     r.json().then(user => {
-      //         if (token) {
-      //           console.log(user);
-      //         }
-      //     });
-      // })
+      this.setState({blocking: true});
+      let url = `${process.env.REACT_APP_API_PATH}/user/facebookauthenticate`;
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(response.accessToken)
+      };
+      
+      fetch(url, requestOptions).then(r => {
+          r.json().then(user => {
+            this.setState({blocking: false});
+            this.authenticationService.instance().socialLogin(user);
+          });
+      })
   };
 
   googleResponse = (response: any) => {
@@ -102,10 +90,13 @@ export default class LoginForm extends React.Component<any, IState>{
         return (
           <div>
             <PageLoading show={this.state.blocking}></PageLoading>
-            <FacebookLogin
-              appId=""
+            <FacebookLogin 
+              render={renderProps => (
+                <Button  onClick={renderProps.onClick}><FontAwesomeIcon className="login-brand-icon" icon={faFacebookF} /></Button>
+              )}
+              appId={process.env.REACT_APP_FACEBOOK_APPID+""}
               autoLoad={false}
-              fields="name,email,picture"
+              fields="email"
               callback={this.facebookResponse} />
             <GoogleLogin
               render={renderProps => (
