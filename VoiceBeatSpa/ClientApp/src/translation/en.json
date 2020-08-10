@@ -31,6 +31,7 @@
 
   "reservationPossible": "Booking and cancellation is only possible at least 2 days in advance! Please call us on phone!",
   "required": "Field is required",
+  "validemail": "Email address is not valid",
   "register": "Register",
   "forgottenPw": "Forgotten password",
   "forgottenPwSent": "Remainder sent if the email exists",

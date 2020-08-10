@@ -22,10 +22,8 @@ export default class ForgottenPassword extends React.Component<any, IState>{
       let confEmail : ITextInput = {
              label: <FormattedMessage id="login.email" defaultMessage={'Email cím'}/>,
              id: "email",
-             error: false,
-             success: false,
-             white: false,
              required: true,
+             email: true,
              icon: {icon: faEnvelopeSquare},
              type: 'email',
            }; 

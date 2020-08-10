@@ -192,19 +192,14 @@ export default class Profil extends React.Component<any>{
         let confEmail : ITextInput = {
                label: <FormattedMessage id="profile.email" defaultMessage={'Email cím'}/>,
                id: "email",
-               error: false,
-               success: false,
-               white: false,
                required: true,
+               email: true,
                icon: {icon: faEnvelopeSquare},
                type: 'email',
              }; 
         let confPhone : ITextInput = {
                label: <FormattedMessage id="profile.phone" defaultMessage={'Telefonszám'}/>,
                id: "subject",
-               error: false,
-               success: false,
-               white: false,
                required: true,
                icon: {icon: faPhone},
                type: 'text',
@@ -212,27 +207,18 @@ export default class Profil extends React.Component<any>{
         let confPw : ITextInput = {
                label: <FormattedMessage id="profile.oldpassword" defaultMessage={'Régi jelszó'}/>,
                id: "oldPw",
-               error: false,
-               success: false,
-               white: false,
                required: true,
                type: 'password',
              };  
         let confNewPw1 : ITextInput = {
                label: <FormattedMessage id="profile.new1password" defaultMessage={'Új jelszó'}/>,
                id: "newPw1",
-               error: false,
-               success: false,
-               white: false,
                required: true,
                type: 'password',
              };  
         let confNewPw2 : ITextInput = {
                label: <FormattedMessage id="profile.new2password" defaultMessage={'Új jelszó megerősítése'}/>,
                id: "newPw2",
-               error: false,
-               success: false,
-               white: false,
                required: true,
                type: 'password',
              };  
@@ -256,7 +242,7 @@ export default class Profil extends React.Component<any>{
             :<></>}
             <Container>
               <Button className="btn-action" onClick={_ => this.setState({deleteOpen: true})}><FormattedMessage id="delete" defaultMessage={'Törlés'}/></Button>
-              <Button className="btn-action" onClick={this.submit}><FormattedMessage id="save" defaultMessage={'Mentés'}/></Button>
+              <Button disabled={this.state.phone === "" || this.state.email === "" || !(/\S+@\S+\.\S+/.test(this.state.email))} className="btn-action" onClick={this.submit}><FormattedMessage id="save" defaultMessage={'Mentés'}/></Button>
             </Container>
             <ConfirmDialog
               title={<FormattedMessage id="confirm" defaultMessage={'Megerősítés'}/>}

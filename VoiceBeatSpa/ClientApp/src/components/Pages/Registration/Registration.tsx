@@ -138,19 +138,14 @@ export default class Registration extends React.Component<any>{
         let confEmail : ITextInput = {
                label: <FormattedMessage id="register.email" defaultMessage={'Email cím'}/>,
                id: "email",
-               error: false,
-               success: false,
-               white: false,
                required: true,
+               email: true,
                icon: {icon: faEnvelopeSquare},
                type: 'email',
              }; 
         let confPhone : ITextInput = {
                label: <FormattedMessage id="register.phone" defaultMessage={'Telefonszám'}/>,
                id: "subject",
-               error: false,
-               success: false,
-               white: false,
                required: true,
                icon: {icon: faPhone},
                type: 'text',
@@ -158,9 +153,6 @@ export default class Registration extends React.Component<any>{
         let confPw : ITextInput = {
                label: <FormattedMessage id="register.password1" defaultMessage={'Jelszó'}/> ,
                id: "password",
-               error: false,
-               success: false,
-               white: false,
                required: true,
                icon: {icon: faLock},
                type: 'password',
@@ -168,9 +160,6 @@ export default class Registration extends React.Component<any>{
         let confPw2 : ITextInput = {
                label: <FormattedMessage id="register.password2" defaultMessage={'Jelszó megerősítése'}/>,
                id: "password",
-               error: false,
-               success: false,
-               white: false,
                required: true,
                icon: {icon: faLock},
                type: 'password',
@@ -190,7 +179,7 @@ export default class Registration extends React.Component<any>{
               <ReCAPTCHA sitekey="Your client site key" onChange={this.onCaptchaChange} />
               <Container><Agree text={<FormattedMessage id="register.agree1" defaultMessage={''}/>} handleChange={this.handleR1Change}></Agree></Container>
               <Container><Agree text={<FormattedMessage id="register.agree2" defaultMessage={''}/>} handleChange={this.handleR2Change}></Agree></Container>
-              <Container><Button className="btn-action" onClick={this.submit} disabled={!this.state.r1accepted || !this.state.r2accepted}><FormattedMessage id="save" defaultMessage={'Mentés'}/></Button></Container>
+              <Container><Button className="btn-action" onClick={this.submit} disabled={!this.state.r1accepted || !this.state.r2accepted || this.state.password === "" || this.state.password2 === "" || this.state.phone === "" || this.state.email === "" || !(/\S+@\S+\.\S+/.test(this.state.email))}><FormattedMessage id="save" defaultMessage={'Mentés'}/></Button></Container>
             <Toastr ref={this.toastrRef}></Toastr>
           </div>
         </div>

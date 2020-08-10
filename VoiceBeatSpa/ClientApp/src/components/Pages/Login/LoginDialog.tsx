@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { RefObject } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -18,6 +18,7 @@ import { faSignInAlt  } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Container } from 'reactstrap';
 import ForgottenPassword from './ForgottenPassword';
+import Toastr from '../../Common/Toastr/Toastr';
 
 export interface IState {
   open: boolean;
@@ -42,6 +43,7 @@ export default class LoginDialog extends React.Component<any, IState>{
 
   authenticationService: AuthenticationService = new AuthenticationService();
   obs: Subscription = new Subscription();
+  toastrRef : RefObject<Toastr>;
   
   constructor(props: any) {
     super(props);
@@ -54,10 +56,12 @@ export default class LoginDialog extends React.Component<any, IState>{
     this.sendReminder = this.sendReminder.bind(this);
 
     this.props.closeNavbar();
+    this.toastrRef = React.createRef();
   }
   
   public componentDidMount() {
-    this.obs = this.authenticationService.instance().currentUser.subscribe(val => {this.setState({blocking: false})});
+    this.obs = this.authenticationService.instance().currentUser.subscribe(val => {this.setState({blocking: false}); if (val.token === "") {
+      this.toastrRef.current?.openSnackbar("Hibás felhasználónév vagy jelszó!", "error");}});
   }
 
   componentWillUnmount() {
@@ -112,7 +116,7 @@ export default class LoginDialog extends React.Component<any, IState>{
   }
 
   login() {
-    if (this.state.login.email != '' && this.state.login.password != ''){
+    if (this.state.login.email != '' && this.state.login.password != '' && (/\S+@\S+\.\S+/.test(this.state.login.email))){
       this.setState({blocking: true});
   
       this.authenticationService.instance().login(this.state.login.email, this.state.login.password);
@@ -138,6 +142,7 @@ export default class LoginDialog extends React.Component<any, IState>{
           <FontAwesomeIcon className="" icon={faSignInAlt} />
         </Button>
           <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+          <Toastr ref={this.toastrRef}></Toastr>
             <BlockUi tag="div" blocking={this.state.blocking}>
               <DialogTitle id="form-dialog-title">
                 {this.state.forgottenPw ?<FormattedMessage id="forgottenPw" defaultMessage={'Elfelejtett jelszó'}/>
@@ -157,7 +162,7 @@ export default class LoginDialog extends React.Component<any, IState>{
                     <NavLink onClick={_ => {this.setState({forgottenPw: true});}} className="forgotten-password" to="/about"><FormattedMessage id="forgottenPw" defaultMessage={'Elfelejtett jelszó'}/></NavLink>
                   </Container>
                   <Container>
-                  <Button className="btn-action" onClick={e => this.submitLogin(e)} color="primary">
+                  <Button disabled={!(this.state.login.email != '' && this.state.login.password != '' && (/\S+@\S+\.\S+/.test(this.state.login.email)))} className="btn-action" onClick={e => this.submitLogin(e)} color="primary">
                     {!this.state.blocking ? <FormattedMessage id="login" defaultMessage={'Belépés'}/> : <CircularProgress />}
                   </Button>
                   <Button className="btn-action" onClick={this.handleClose} color="primary">

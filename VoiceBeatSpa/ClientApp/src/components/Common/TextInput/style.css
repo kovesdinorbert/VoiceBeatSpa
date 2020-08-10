@@ -1,3 +1,14 @@
 .MuiFormControl-fullWidth {
     width: 100%;
+    margin-bottom: 10px !important;
+}
+
+.validation-error-message {
+    color: red;
+    font-size: small;
+}
+
+label.required-label:after {
+        content: ' *';
+        color: red;
 }

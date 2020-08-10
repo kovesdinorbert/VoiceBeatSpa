@@ -70,19 +70,14 @@ export default class LoginForm extends React.Component<any, IState>{
       let confEmail : ITextInput = {
              label: <FormattedMessage id="login.email" defaultMessage={'Email cím'}/>,
              id: "email",
-             error: false,
-             success: false,
-             white: false,
              required: true,
+             email: true,
              icon: {icon: faEnvelopeSquare},
              type: 'email',
            }; 
       let confPassword : ITextInput = {
              label: <FormattedMessage id="login.password" defaultMessage={'Jelszó'}/>,
              id: "password",
-             error: false,
-             success: false,
-             white: false,
              required: true,
              icon: {icon: faLock},
              type: 'password',

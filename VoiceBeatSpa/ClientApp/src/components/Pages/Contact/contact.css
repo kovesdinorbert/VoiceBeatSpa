@@ -40,3 +40,7 @@
 .btn-send-email:hover {
     background-color: #BDBDBD;
 }
+
+.Mui-disabled span {
+    color: lightgray;
+}

@@ -20,6 +20,7 @@ export interface IState {
     body: string;
     blocking : boolean, 
     showMessage : boolean, 
+    formIsValid : boolean, 
   }
 
 export default class Contact extends React.Component<any>{
@@ -30,6 +31,7 @@ export default class Contact extends React.Component<any>{
       body : "",
       blocking : false, 
       showMessage : false, 
+      formIsValid : false, 
     };
     
     authenticationService: AuthenticationService = new AuthenticationService();
@@ -51,6 +53,7 @@ export default class Contact extends React.Component<any>{
     handleEmailChange(email: string) {
       let cState = this.state;
       cState.email = email;
+      cState.formIsValid = !(this.state.body === "" || this.state.email === "" || !(/\S+@\S+\.\S+/.test(this.state.email)));
       this.setState(cState);
     }
   
@@ -69,6 +72,7 @@ export default class Contact extends React.Component<any>{
     handleContentChange(content: string) {
       let cState = this.state;
       cState.body = content;
+      cState.formIsValid = !(this.state.body === "" || this.state.email === "" || !(/\S+@\S+\.\S+/.test(this.state.email)));
       this.setState(cState);
     }
 
@@ -77,71 +81,64 @@ export default class Contact extends React.Component<any>{
     }
 
     sendEmail() {
-        let url = `${process.env.REACT_APP_API_PATH}/contact`;
-        this.setState({body: "", blocking: true, subject : "", name : "", email: "" });
+      if (!this.state.formIsValid) {
+        return;
+      }
+
+      let url = `${process.env.REACT_APP_API_PATH}/contact`;
+      this.setState({blocking: true});
+      
+      let email: IEmail = {
+        subject: this.state.subject,
+        body: this.state.body,
+        email: this.state.email,
+        name: this.state.name,
+      }
+      const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 
+                   'Authorization': 'Bearer ' + this.authenticationService.instance().currentUserSubject.getValue().token },
+        body: JSON.stringify(email)
+      };
         
-        let email: IEmail = {
-          subject: this.state.subject,
-          body: this.state.body,
-          email: this.state.email,
-          name: this.state.name,
-        }
-        const requestOptions = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 
-                     'Authorization': 'Bearer ' + this.authenticationService.instance().currentUserSubject.getValue().token },
-          body: JSON.stringify(email)
-        };
-          
-        fetch(url, requestOptions)
-          .then(async response => {
-            if (!response.ok) {
-              } else {
-                this.toastrRef.current?.openSnackbar("Sikertelen üzenet küldés!", "error");
-              }
-              this.toastrRef.current?.openSnackbar("Sikeres üzenet küldés!", "success");
-              this.setState({body: "", blocking: false, subject : "", name : "", email: "", showMessage: true });
-            })
-            .catch(error => {
+      fetch(url, requestOptions)
+        .then(async response => {
+          if (!response.ok) {
+            } else {
               this.toastrRef.current?.openSnackbar("Sikertelen üzenet küldés!", "error");
-            });
+            }
+            this.toastrRef.current?.openSnackbar("Sikeres üzenet küldés!", "success");
+            this.setState({body: "", blocking: false, subject : "", name : "", email: "", showMessage: true });
+          })
+          .catch(error => {
+            this.toastrRef.current?.openSnackbar("Sikertelen üzenet küldés!", "error");
+          });
     }
 
     public render() {
         let confEmail : ITextInput = {
                label: <FormattedMessage id="contact.email" defaultMessage={'Email'}/>,
                id: "email",
-               error: false,
-               success: false,
-               white: false,
                required: true,
+               email: true,
                icon: {icon: faEnvelopeSquare},
                type: 'email',
              }; 
         let confName : ITextInput = {
                label: <FormattedMessage id="contact.name" defaultMessage={'Név'}/>,
                id: "name",
-               error: false,
-               success: false,
-               white: false,
                icon: {icon: faUserCircle},
                type: 'text',
              };  
         let confSubject : ITextInput = {
                label: <FormattedMessage id="contact.subject" defaultMessage={'Tárgy'}/>,
                id: "subject",
-               error: false,
-               success: false,
-               white: false,
                icon: {icon: faBook},
                type: 'text',
              };  
         let confContent : ITextInput = {
                label: <FormattedMessage id="contact.message" defaultMessage={'Üzenet'}/>,
                id: "subject",
-               error: false,
-               success: false,
-               white: false,
                required: true,
                type: 'text',
                otherProps: { multiline: true,  rows: 6 }
@@ -159,7 +156,7 @@ export default class Contact extends React.Component<any>{
                 <><TextInput config={confSubject} value={this.state.subject} onInputValueChange={this.handleSubjectChange}></TextInput></>
                 <><TextInput config={confContent} value={this.state.body} onInputValueChange={this.handleContentChange}></TextInput></>
                 <ReCAPTCHA sitekey="Your client site key" onChange={this.onCaptchaChange} />
-                <Button className="btn-send-email" onClick={this.sendEmail}><FormattedMessage id="contact.send" defaultMessage={'Küldés'}/></Button>
+                <Button disabled={!this.state.formIsValid} className="btn-send-email" onClick={this.sendEmail}><FormattedMessage id="contact.send" defaultMessage={'Küldés'}/></Button>
             </div>
             <div className="map-container">
                 <div>

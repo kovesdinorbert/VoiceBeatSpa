@@ -29,3 +29,7 @@
     text-align: right;
     color: #F44336;
 }
+
+.Mui-disabled span {
+    color: lightgray;
+}
