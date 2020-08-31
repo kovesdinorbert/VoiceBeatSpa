@@ -42,7 +42,7 @@ export class NavMenu extends Component<any, IState> {
     this.logout = this.logout.bind(this);
     this.state = {
       collapsed: true,
-      currentUser: {email: "", token: ""},
+      currentUser: {email: "", token: "", phoneNumber: ""},
       admin: false,
       locale: this.props.currentLocale
     };

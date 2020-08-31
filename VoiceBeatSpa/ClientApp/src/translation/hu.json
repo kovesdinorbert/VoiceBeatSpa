@@ -30,8 +30,11 @@
 "register.agree2": "Kijelentem továbbá, hogy adataimat a honlapon, az adatkezelési tájékoztató elolvasását követően önként és a program által megadott módon adom meg.",
 
   "reservationPossible": "Foglalás és időpont törlés csak minimum 2 nappal korábban lehetséges! Kérünk keress meg telefonon!",
+  "reservationMissingPhoneNumber": "Teremfoglalás előtt meg kell adnia a profilján a telefonszámát!",
   "required": "A mező kitöltése kötelező",
   "validemail": "Nem érvényes email cím",
+  "validminlength": "Minimális karakterszám: ",
+  "passwordMismatch": "A két jelszó nem egyezik",
   "register": "Regisztráció",
   "forgottenPw": "Elfelejtett jelszó",
   "forgottenPwSent": "Emlékeztető kiküldve",

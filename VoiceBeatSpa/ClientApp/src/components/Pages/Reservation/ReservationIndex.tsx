@@ -15,7 +15,7 @@ export default class ReservationIndex extends React.Component<any, IState>{
     public state: IState = { 
         rulesAccepted: false,
         loading: false,
-        currentUser:  {email:"",token:""} 
+        currentUser:  {email:"",token:"", phoneNumber:""} 
     };
 
     _isMounted: boolean;
@@ -52,7 +52,7 @@ export default class ReservationIndex extends React.Component<any, IState>{
                     }
                   );
                 } else {
-                    this.setState({currentUser: {email:"",token:""}, rulesAccepted: false})
+                    this.setState({currentUser: {email:"",token:"", phoneNumber:""}, rulesAccepted: false})
                 }
             }});
       }

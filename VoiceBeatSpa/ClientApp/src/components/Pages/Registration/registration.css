@@ -16,3 +16,8 @@
 .registration-container .Mui-disabled span{
     color: gainsboro !important;
 }
+
+.validation-password-mismatch {
+    color: red;
+    font-size: small;
+}

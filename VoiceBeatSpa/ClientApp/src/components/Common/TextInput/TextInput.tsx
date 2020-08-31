@@ -24,6 +24,7 @@ export class TextInput extends React.Component<any, IState>{
     this.handleBlur = this.handleBlur.bind(this);
     this.validateRequired = this.validateRequired.bind(this);
     this.validateEmail = this.validateEmail.bind(this);
+    this.validateLength = this.validateLength.bind(this);
   }
 
   handleChange (event: React.ChangeEvent<HTMLInputElement>){
@@ -39,7 +40,8 @@ export class TextInput extends React.Component<any, IState>{
  validate() {
    return {
     required: this.validateRequired(),
-    email: this.validateEmail()
+    email: this.validateEmail(),
+    minLength: this.validateLength()
   };
  }
 
@@ -48,6 +50,9 @@ validateRequired() :boolean {
 }
 validateEmail() :boolean {
   return this.props.config.email && !(/\S+@\S+\.\S+/.test(this.props.value));
+}
+validateLength() :boolean {
+  return this.props.config.minLength && !(this.props.value.length >= this.props.config.minLength);
 }
 
  handleBlur() {
@@ -84,6 +89,7 @@ validateEmail() :boolean {
             />
             {this.state.touched && errors.required ?<div className="validation-error-message"><FormattedMessage id="required" defaultMessage={'A mező kitöltése kötelező'}/></div> : <></>}
             {this.state.touched && errors.email ?<div className="validation-error-message"><FormattedMessage id="validemail" defaultMessage={'Nem érvényes email cím'}/></div> : <></>}
+            {this.state.touched && errors.minLength ?<div className="validation-error-message"><FormattedMessage id="validminlength" defaultMessage={'Minimális karakterszám: '}/>{this.props.config.minLength}</div> : <></>}
           </FormControl>
       );
     }

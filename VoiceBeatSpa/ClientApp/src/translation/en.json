@@ -30,8 +30,11 @@
 "register.agree2": "I further declare that I will provide my data on the website, after reading the data management information, voluntarily and in the manner provided by the program.",
 
   "reservationPossible": "Booking and cancellation is only possible at least 2 days in advance! Please call us on phone!",
+  "reservationMissingPhoneNumber": "Booking and cancellation is only possible after phone number is filled in your profile",
   "required": "Field is required",
   "validemail": "Email address is not valid",
+  "validminlength": "Minimum length: ",
+  "passwordMismatch": "Password mismatch",
   "register": "Register",
   "forgottenPw": "Forgotten password",
   "forgottenPwSent": "Remainder sent if the email exists",

@@ -148,6 +148,8 @@ export default class Profil extends React.Component<any>{
                 if (this.state.newPassword1 !== "")
                   pwChanged = true;
 
+                  this.authenticationService.instance().userProfileUpdated(profil.email, profil.phoneNumber);
+
                 this.toastrRef.current?.openSnackbar("Sikeres mentés!", "success");
               }
               this.setState({oldPassword: "", blocking: false, newPassword1 : "", newPassword2 : "", sociallogin : pwChanged ? false : socLogin });
@@ -201,6 +203,7 @@ export default class Profil extends React.Component<any>{
                label: <FormattedMessage id="profile.phone" defaultMessage={'Telefonszám'}/>,
                id: "subject",
                required: true,
+               minLength: 7,
                icon: {icon: faPhone},
                type: 'text',
              };  
@@ -214,12 +217,14 @@ export default class Profil extends React.Component<any>{
                label: <FormattedMessage id="profile.new1password" defaultMessage={'Új jelszó'}/>,
                id: "newPw1",
                required: true,
+               minLength: 8,
                type: 'password',
              };  
         let confNewPw2 : ITextInput = {
                label: <FormattedMessage id="profile.new2password" defaultMessage={'Új jelszó megerősítése'}/>,
                id: "newPw2",
                required: true,
+               minLength: 8,
                type: 'password',
              };  
 
@@ -242,7 +247,7 @@ export default class Profil extends React.Component<any>{
             :<></>}
             <Container>
               <Button className="btn-action" onClick={_ => this.setState({deleteOpen: true})}><FormattedMessage id="delete" defaultMessage={'Törlés'}/></Button>
-              <Button disabled={this.state.phone === "" || this.state.email === "" || !(/\S+@\S+\.\S+/.test(this.state.email))} className="btn-action" onClick={this.submit}><FormattedMessage id="save" defaultMessage={'Mentés'}/></Button>
+              <Button disabled={this.state.phone === "" || this.state.phone.length < 7 || this.state.email === "" || !(/\S+@\S+\.\S+/.test(this.state.email))} className="btn-action" onClick={this.submit}><FormattedMessage id="save" defaultMessage={'Mentés'}/></Button>
             </Container>
             <ConfirmDialog
               title={<FormattedMessage id="confirm" defaultMessage={'Megerősítés'}/>}

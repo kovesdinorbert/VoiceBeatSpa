@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Google.Apis.Auth;
+using Google.Apis.Http;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -49,7 +50,7 @@ namespace VoiceBeatSpa.Web.Controllers
             if (user != null && !user.SocialLogin)
             {
                 var token = _userService.GenerateToken(user);
-                return Ok(new LoginResultDto() { Email = user.Email, Token = token, Id = user.Id });
+                return Ok(CreateLoginResultDto(user, token));
             }
 
             return Unauthorized();
@@ -84,7 +85,7 @@ namespace VoiceBeatSpa.Web.Controllers
                 }
 
                 var token = _userService.GenerateToken(user);
-                return Ok(new LoginResultDto() { Email = user.Email, Token = token, Id = user.Id });
+                return Ok(CreateLoginResultDto(user, token));
             }
             catch
             {
@@ -133,7 +134,7 @@ namespace VoiceBeatSpa.Web.Controllers
                     }
 
                     var token = _userService.GenerateToken(user);
-                    return Ok(new LoginResultDto() { Email = user.Email, Token = token, Id = user.Id });
+                    return Ok(CreateLoginResultDto(user, token));
                 }
                 return BadRequest();
             }
@@ -141,6 +142,12 @@ namespace VoiceBeatSpa.Web.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        private LoginResultDto CreateLoginResultDto(User user, string token)
+        {
+            return new LoginResultDto()
+                {Email = user.Email, Token = token, Id = user.Id, PhoneNumber = user.PhoneNumber.Length > 6 ? user.PhoneNumber  : ""};
         }
 
 

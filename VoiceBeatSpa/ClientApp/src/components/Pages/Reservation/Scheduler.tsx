@@ -142,7 +142,9 @@ export default class Scheduler extends React.Component<any, IState>{
                    }} value={this.state.subject} onInputValueChange={this.handleSubjectChange}>
                 </TextInput>
               : this.state.showReservationWarning ? <div className="reservation-alert-message"><br /><FormattedMessage id="reservationPossible" defaultMessage={'Foglalás és időpont törlés csak minimum 2 nappal korábban lehetséges! Kérünk keress meg telefonon!'}/><br /></div>
-                                                  : <></>}
+                  : <></>}
+              { !this.state.isAdmin && this.authenticationService.instance().currentUserSubject.getValue().phoneNumber === ""
+                && <div className="reservation-alert-message"><br /><FormattedMessage id="reservationMissingPhoneNumber" defaultMessage={'Teremfoglalás előtt meg kell adnia a profilján a telefonszámát!'}/><br /></div>}
             </div>
 
             <div className="row reservation-action-button">
@@ -164,7 +166,7 @@ export default class Scheduler extends React.Component<any, IState>{
                                                                      this.state.selectedRoom, 
                                                                      this.state.subject,
                                                                      this.state.deleteEventId )} 
-                          color="primary"  disabled={!this.state.isAdmin && moment().add(2, 'days').isSameOrAfter(this.state.selectedStart, 'day')}>
+                          color="primary"  disabled={!this.state.isAdmin && ( moment().add(2, 'days').isSameOrAfter(this.state.selectedStart, 'day') || this.authenticationService.instance().currentUserSubject.getValue().phoneNumber === "")}>
                     <FormattedMessage id="reservation" defaultMessage={'Foglalás'}/>
                   </Button>
                 : <></>}

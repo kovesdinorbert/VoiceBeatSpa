@@ -19,6 +19,7 @@ export interface IState {
     phone: string;
     password: string;
     password2: string;
+    passwordMismatch: boolean;
     newsletter: boolean;
     blocking : boolean, 
     r1accepted : boolean, 
@@ -31,6 +32,7 @@ export default class Registration extends React.Component<any>{
       phone : "",
       password : "",
       password2 : "",
+      passwordMismatch : false,
       newsletter : false,
       blocking : false, 
       r1accepted : false, 
@@ -72,12 +74,14 @@ export default class Registration extends React.Component<any>{
     handlePasswordChange(pw: string) {
       let cState = this.state;
       cState.password = pw;
+      cState.passwordMismatch = pw !== this.state.password2;
       this.setState(cState);
     }
   
     handlePassword2Change(pw: string) {
       let cState = this.state;
       cState.password2 = pw;
+      cState.passwordMismatch = pw !== this.state.password;
       this.setState(cState);
     }
     
@@ -147,6 +151,7 @@ export default class Registration extends React.Component<any>{
                label: <FormattedMessage id="register.phone" defaultMessage={'Telefonszám'}/>,
                id: "subject",
                required: true,
+               minLength: 7,
                icon: {icon: faPhone},
                type: 'text',
              };  
@@ -154,6 +159,7 @@ export default class Registration extends React.Component<any>{
                label: <FormattedMessage id="register.password1" defaultMessage={'Jelszó'}/> ,
                id: "password",
                required: true,
+               minLength: 8,
                icon: {icon: faLock},
                type: 'password',
              };  
@@ -175,11 +181,12 @@ export default class Registration extends React.Component<any>{
               <><TextInput config={confPhone} value={this.state.phone} onInputValueChange={this.handlePhoneChange}></TextInput></>
               <><TextInput config={confPw} value={this.state.password} onInputValueChange={this.handlePasswordChange}></TextInput></>
               <><TextInput config={confPw2} value={this.state.password2} onInputValueChange={this.handlePassword2Change}></TextInput></>
+              {this.state.passwordMismatch && <div className="validation-password-mismatch"><FormattedMessage id="passwordMismatch" defaultMessage={'A két jelszó nem egyezik'}/></div>}
               <Container><Agree text={<FormattedMessage id="register.newsletter" defaultMessage={'Hírlevél'}/>} handleChange={this.handleNewsletterChange}></Agree></Container>
               <ReCAPTCHA sitekey="Your client site key" onChange={this.onCaptchaChange} />
               <Container><Agree text={<FormattedMessage id="register.agree1" defaultMessage={''}/>} handleChange={this.handleR1Change}></Agree></Container>
               <Container><Agree text={<FormattedMessage id="register.agree2" defaultMessage={''}/>} handleChange={this.handleR2Change}></Agree></Container>
-              <Container><Button className="btn-action" onClick={this.submit} disabled={!this.state.r1accepted || !this.state.r2accepted || this.state.password === "" || this.state.password2 === "" || this.state.phone === "" || this.state.email === "" || !(/\S+@\S+\.\S+/.test(this.state.email))}><FormattedMessage id="save" defaultMessage={'Mentés'}/></Button></Container>
+              <Container><Button className="btn-action" onClick={this.submit} disabled={!this.state.r1accepted || !this.state.r2accepted || this.state.password === "" || this.state.password2 === "" || this.state.passwordMismatch || this.state.phone === "" || this.state.phone.length < 7 || this.state.email === "" || !(/\S+@\S+\.\S+/.test(this.state.email)) || this.state.password.length < 8}><FormattedMessage id="save" defaultMessage={'Mentés'}/></Button></Container>
             <Toastr ref={this.toastrRef}></Toastr>
           </div>
         </div>

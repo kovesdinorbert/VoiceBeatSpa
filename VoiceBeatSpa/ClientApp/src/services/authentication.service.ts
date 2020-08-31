@@ -13,7 +13,7 @@ export class AuthenticationService  {
       if (storedUser !== null) {
         this.currentUserSubject = new BehaviorSubject<ICurrentUser>(JSON.parse(localStorage.getItem('currentUser') as string));
       } else {
-        this.currentUserSubject = new BehaviorSubject<ICurrentUser>({email:"",token:""});
+        this.currentUserSubject = new BehaviorSubject<ICurrentUser>({email:"",token:"", phoneNumber:""});
       }
       this.currentUser = this.currentUserSubject.asObservable();
     }
@@ -42,7 +42,7 @@ export class AuthenticationService  {
         const data = await response.json();
       
         if (!response.ok) {
-            this.currentUserSubject.next({email:"",token:""});
+            this.currentUserSubject.next({email:"",token:"", phoneNumber:""});
             const error = (data && data.message) || response.status;
           } else {
             localStorage.setItem('currentUser', JSON.stringify(data));
@@ -51,6 +51,18 @@ export class AuthenticationService  {
         })
         .catch(error => {
         });
+    }
+
+    userProfileUpdated(email:string, phone: string) {
+      let user: ICurrentUser = {
+        phoneNumber: phone,
+        email: email,
+        token: this.currentUserSubject.getValue().token,
+        id: this.currentUserSubject.getValue().id,
+      } 
+      
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      this.currentUserSubject.next(user);
     }
 
     socialLogin(user: ICurrentUser) {
@@ -62,7 +74,7 @@ export class AuthenticationService  {
 
     logout() {
         localStorage.removeItem('currentUser');
-        this.currentUserSubject.next({email:"", token:""});
+        this.currentUserSubject.next({email:"", token:"", phoneNumber:""});
     }
 
     isAdmin(token: string) {
