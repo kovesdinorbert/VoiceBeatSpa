@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Options;
 using System;
-using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
+using Hangfire;
 using VoiceBeatSpa.Core.Configuration;
-using VoiceBeatSpa.Core.Entities;
-using VoiceBeatSpa.Core.Enums;
 using VoiceBeatSpa.Core.Interfaces;
 
 namespace VoiceBeatSpa.Infrastructure.Services
@@ -12,54 +12,65 @@ namespace VoiceBeatSpa.Infrastructure.Services
     public class EmailService : IEmailService
     {
         private readonly VoiceBeatConfiguration _voiceBeatConfiguration;
-        private readonly IGenericRepository<LivingText> _livingTextRepository;
-        private readonly IGenericRepository<User> _userRepository;
 
-        public EmailService(IOptions<VoiceBeatConfiguration> voiceBeatConfiguration,
-                            IGenericRepository<LivingText> livingTextRepository,
-                            IGenericRepository<User> userRepository)
+        public EmailService(IOptions<VoiceBeatConfiguration> voiceBeatConfiguration)
         {
             _voiceBeatConfiguration = voiceBeatConfiguration.Value;
-            _livingTextRepository = livingTextRepository;
-            _userRepository = userRepository;
         }
 
-        public async Task SendContactEmail(string from, string to, string subject, string body, string senderName)
+        public async Task SendEmail(string from, string to, string subject, string body, string fromDisplayName)
         {
-            throw new NotImplementedException();
+            BackgroundJob.Enqueue(() => DoSendEmail(from, to, subject, body, fromDisplayName));
         }
 
-        public async Task SendBasicEmail(string from, string to, string subject, string body)
+        public void DoSendEmail(string from, string to, string subject, string body, string fromDisplayName)
         {
-            throw new NotImplementedException();
-        }
+            MailMessage mailMessage = new MailMessage
+            {
+                Body = body,
+                From = string.IsNullOrEmpty(fromDisplayName) ? new MailAddress(from) : new MailAddress(from, fromDisplayName),
+                Subject = subject,
+                IsBodyHtml = true
+            };
+            mailMessage.To.Add(to);
 
-        public async Task SendSystemEmail(string from, string to, LivingTextTypeEnum type)
-        {
-            var livingTextQ = await _livingTextRepository.FindAllAsync(lt => lt.LivingTextType == type && lt.IsActive);
-            var livingText = livingTextQ.FirstOrDefault();
-            var body = ReplacePlaceholder(livingText);
+            string smtpHost = _voiceBeatConfiguration.SmtpHost;
+            string smtpUser = _voiceBeatConfiguration.SmtpUser;
+            string smtpPassword = _voiceBeatConfiguration.SmtpPassword;
+            int smtpPort = _voiceBeatConfiguration.SmtpPort;
+            bool smtpUseSsl = _voiceBeatConfiguration.SmtpUseSsl;
 
+            if (!string.IsNullOrEmpty(smtpHost))
+            {
+                try
+                {
+                    SmtpClient client = new SmtpClient(smtpHost, smtpPort)
+                    {
+                        EnableSsl = smtpUseSsl
+                    };
 
-            throw new NotImplementedException();
-        }
+                    if (!string.IsNullOrEmpty(smtpUser) && !string.IsNullOrEmpty(smtpPassword))
+                    {
+                        client.Credentials = new NetworkCredential(smtpUser, smtpPassword);
+                    }
+                    else
+                    {
+                        client.Credentials = CredentialCache.DefaultNetworkCredentials;
+                    }
 
-        private string ReplacePlaceholder(LivingText livingText)
-        {
-            //var body = livingText.Text;
-            var body = "";
-            //foreach (var placeholder in livingText.LivingTextPlaceholderEnums)
-            //{
-            //    switch (placeholder)
-            //    {
-                    //case (int)LivingTextPlaceholderEnum.NewRegistrationGuid:
-                    //    body = body.Replace($"{{{placeholder.ToString()}}}", "errrrrereplacellllltem");
-                    //    break;
-                    //case (int)LivingTextPlaceholderEnum.UserName:
-                    //    break;
-            //    }
-            //}
-            return body;
+                    client.Send(mailMessage);
+                }
+                catch (Exception ex)
+                {
+                    //log
+                    //{
+                    //    Message = ex.Message,
+                    //    Id = Guid.NewGuid(),
+                    //    Created = DateTime.Now,
+                    //    IsActive = true,
+                    //});
+                }
+            }
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -15,6 +16,8 @@ using VoiceBeatSpa.Infrastructure.Data;
 using VoiceBeatSpa.Infrastructure.Repository;
 using VoiceBeatSpa.Infrastructure.Services;
 using VoiceBeatSpa.Web.Controllers;
+using Hangfire;
+using Hangfire.SqlServer;
 
 namespace VoiceBeatSpa
 {
@@ -42,9 +45,23 @@ namespace VoiceBeatSpa
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-            var str = Configuration.GetConnectionString("DefaultConnection");
+
             services.AddDbContext<VoiceBeatContext>(x => x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))); ;
-            //services.AddDbContext<VoiceBeatContext>();
+
+            services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(Configuration.GetConnectionString("DefaultConnection"), new SqlServerStorageOptions
+                {
+                    CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                    SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                    QueuePollInterval = TimeSpan.Zero,
+                    UseRecommendedIsolationLevel = true,
+                    DisableGlobalLocks = true,
+                    PrepareSchemaIfNecessary = true
+                }));
+            services.AddHangfireServer();
 
             services.AddAutoMapper(typeof(Startup));
 
@@ -54,7 +71,6 @@ namespace VoiceBeatSpa
             services.AddScoped(typeof(IEmailService), typeof(EmailService));
 
             services.AddCors();
-            //services.AddControllers();
 
             services.AddAuthentication(x =>
             {

@@ -126,7 +126,7 @@ export default class Reservation extends React.Component<any, IState>{
   async submitReservation(e: any, start: any, end: any, selectedRoom: RoomTypeEnum, subject: string, deleteEventId?: Guid) {
     e.preventDefault();
 
-    let url = `${process.env.REACT_APP_API_PATH}/event`;
+    let url = `${process.env.REACT_APP_API_PATH}/event`+'/'+this.languageService.instance().currentLanguageCode;
     this.setState({showScheduler: true, blocking: true, selectedDate : undefined, selectedDateStr : undefined });
   
     if (!deleteEventId) {

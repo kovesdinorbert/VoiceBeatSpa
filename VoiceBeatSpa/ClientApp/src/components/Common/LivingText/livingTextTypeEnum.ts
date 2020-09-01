@@ -22,5 +22,7 @@ export enum LivingTextTypeEnum {
     'StudioPrice' = 16,
 
     'PhoneNumber' = 17,
+    
+    'EmailReservationDelete' = 18,
   }
   

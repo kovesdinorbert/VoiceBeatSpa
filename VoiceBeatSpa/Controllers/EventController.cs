@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using VoiceBeatSpa.Core.Entities;
+using VoiceBeatSpa.Core.Enums;
 using VoiceBeatSpa.Core.Interfaces;
 using VoiceBeatSpa.Web.Dto;
 using VoiceBeatSpa.Web.Helpers;
@@ -56,14 +57,14 @@ namespace VoiceBeatSpa.Controllers
             return Ok(_mapper.Map<List<EventDto>>(events));
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete("{langCode}/{id}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(string langCode, Guid id)
         {
             try
             {
                 var email = ClaimHelper.GetClaimData(User, ClaimTypes.Name);
-                await _eventService.DeleteEvent(id, email);
+                await _eventService.DeleteEvent(id, email, langCode == "en" ? LanguageEnum.en : LanguageEnum.hu);
             }
             catch (Exception exception)
             {
@@ -73,17 +74,17 @@ namespace VoiceBeatSpa.Controllers
             return NoContent();
         }
 
-        [HttpPost]
+        [HttpPost("{langCode}")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Create([FromBody] EventDto newEvent)
+        public async Task<IActionResult> Create([FromBody] EventDto newEvent, string langCode)
         {
             try
             {
                 var email = ClaimHelper.GetClaimData(User, ClaimTypes.Name);
 
-                await _eventService.AddNewEvent(_mapper.Map<Event>(newEvent), email);
+                await _eventService.AddNewEvent(_mapper.Map<Event>(newEvent), email, langCode == "en" ? LanguageEnum.en : LanguageEnum.hu);
                 return StatusCode(StatusCodes.Status201Created);
             }
             catch (AuthenticationException)

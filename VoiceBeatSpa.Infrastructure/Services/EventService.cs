@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
+using Hangfire;
+using Microsoft.EntityFrameworkCore;
 using VoiceBeatSpa.Core.Configuration;
 using VoiceBeatSpa.Core.Entities;
 using VoiceBeatSpa.Core.Enums;
@@ -15,18 +17,24 @@ namespace VoiceBeatSpa.Infrastructure.Services
     {
         private readonly VoiceBeatConfiguration _voiceBeatConfiguration;
         private readonly IUserService _userService;
+        private readonly IEmailService _emailService;
         private readonly IGenericRepository<Event> _eventRepository;
+        private readonly IGenericRepository<LivingText> _livingTextRepository;
 
         public EventService(IOptions<VoiceBeatConfiguration> voiceBeatConfiguration, 
                             IUserService userService,
-                            IGenericRepository<Event> eventRepository)
+                            IEmailService emailService,
+                            IGenericRepository<Event> eventRepository,
+                            IGenericRepository<LivingText> livingTextRepository)
         {
             _voiceBeatConfiguration = voiceBeatConfiguration.Value;
             _userService = userService;
+            _emailService = emailService;
             _eventRepository = eventRepository;
+            _livingTextRepository = livingTextRepository;
         }
 
-        public async Task AddNewEvent(Event newEvent, string userEmail)
+        public async Task AddNewEvent(Event newEvent, string userEmail, LanguageEnum languageCode)
         {
             var user = await _userService.GetCurrentUserByEmail(userEmail);
 
@@ -50,6 +58,9 @@ namespace VoiceBeatSpa.Infrastructure.Services
                 throw new ArgumentOutOfRangeException();
             }
 
+            var translationQ = await GetTranslatedEmailTemplate(LivingTextTypeEnum.EmailReservationSent, languageCode);
+            var translationQHu = await GetTranslatedEmailTemplate(LivingTextTypeEnum.EmailReservationSent, LanguageEnum.hu);
+
             await _eventRepository.CreateAsync(new Event()
             {
                 Subject = newEvent.Subject,
@@ -57,9 +68,26 @@ namespace VoiceBeatSpa.Infrastructure.Services
                 EndDate = newEvent.EndDate,
                 Room = newEvent.Room,
             }, user.Id);
+
+            List<string> adminEmails = _voiceBeatConfiguration.SendEmailTo.Split(';').ToList();
+            string internalEmail = _voiceBeatConfiguration.SendEmailFromDomain;
+
+            if (!isAdmin)
+            {
+                var body = translationQ.Text.Replace("#Times#", $"{newEvent.StartDate.ToShortDateString()} {newEvent.StartDate.ToShortTimeString()}-{newEvent.EndDate.ToShortTimeString()}");
+
+                await _emailService.SendEmail(internalEmail, userEmail, translationQ.Subject, body, "Voice-Beat");
+            }
+
+            var bodyHu = translationQHu.Text.Replace("#Times#", $"{newEvent.StartDate.ToShortDateString()} {newEvent.StartDate.ToShortTimeString()}-{newEvent.EndDate.ToShortTimeString()}");
+            foreach (var adminEmail in adminEmails)
+            {
+                await _emailService.SendEmail(internalEmail, adminEmail, translationQHu.Subject, bodyHu, "Voice-Beat");
+            }
+
         }
 
-        public async Task DeleteEvent(Guid eventToDelete, string userEmail)
+        public async Task DeleteEvent(Guid eventToDelete, string userEmail, LanguageEnum languageCode)
         {
             var user = await _userService.GetCurrentUserByEmail(userEmail);
 
@@ -75,6 +103,26 @@ namespace VoiceBeatSpa.Infrastructure.Services
             if (!isAdmin && eventEntity.CreatedBy != user.Id)
             {
                 throw new AuthenticationException();
+            }
+
+            var translationQ = await GetTranslatedEmailTemplate(LivingTextTypeEnum.EmailReservationDelete, languageCode);
+            var translationQHu = await GetTranslatedEmailTemplate(LivingTextTypeEnum.EmailReservationDelete, LanguageEnum.hu);
+
+
+            List<string> adminEmails = _voiceBeatConfiguration.SendEmailTo.Split(';').ToList();
+            string internalEmail = _voiceBeatConfiguration.SendEmailFromDomain;
+
+            if (!isAdmin)
+            {
+                var body = translationQ.Text.Replace("#Times#", $"{eventEntity.StartDate.ToShortDateString()} {eventEntity.StartDate.ToShortTimeString()}-{eventEntity.EndDate.ToShortTimeString()}");
+
+                await _emailService.SendEmail(internalEmail, userEmail, translationQ.Subject, body, "Voice-Beat");
+            }
+
+            var bodyHu = translationQHu.Text.Replace("#Times#", $"{eventEntity.StartDate.ToShortDateString()} {eventEntity.StartDate.ToShortTimeString()}-{eventEntity.EndDate.ToShortTimeString()}");
+            foreach (var adminEmail in adminEmails)
+            {
+                await _emailService.SendEmail(internalEmail, adminEmail, translationQHu.Subject, bodyHu, "Voice-Beat");
             }
 
             await _eventRepository.DeleteAsync(eventToDelete);
@@ -134,16 +182,27 @@ namespace VoiceBeatSpa.Infrastructure.Services
             {
                 for (int i = futureEvents.Count() - 1; i >= 0; i--)
                 {
-                    await DeleteEvent(futureEvents.ElementAt(i).Id, user.Email);
+                    await DeleteEvent(futureEvents.ElementAt(i).Id, user.Email, LanguageEnum.hu);
                 }
             }
             if (pastEvents.Any())
             {
-                pastEvents.ForEach(pe => pe.Subject = "Törölt felhasználó");
-                for (int i = pastEvents.Count() - 1; i >= 0; i--)
-                {
-                    await UpdateEvent(pastEvents.ElementAt(i), user.Email);
-                }
+                await Anonymize(pastEvents, user.Email);
+            }
+            if (remainingEvents.Any())
+            {
+                BackgroundJob.Schedule(
+                    () => Anonymize(remainingEvents, user.Email),
+                    TimeSpan.FromDays(3));
+            }
+        }
+
+        public async Task Anonymize(List<Event> events, string email)
+        {
+            events.ForEach(pe => pe.Subject = "Törölt felhasználó");
+            for (int i = events.Count() - 1; i >= 0; i--)
+            {
+                await UpdateEvent(events.ElementAt(i), email);
             }
         }
 
@@ -164,6 +223,29 @@ namespace VoiceBeatSpa.Infrastructure.Services
             }
 
             return events;
+        }
+
+        private async Task<Translation> GetTranslatedEmailTemplate(LivingTextTypeEnum livingTextType, LanguageEnum languageCode)
+        {
+            var livingTextQ = await
+                _livingTextRepository.FindAllAsync(lt => lt.LivingTextType == livingTextType,
+                    new Func<IQueryable<LivingText>, IQueryable<LivingText>>[]
+                    {
+                        source => source.Include(m => m.Translations)
+                            .ThenInclude(m => m.Language),
+                    });
+            if (livingTextQ.FirstOrDefault() == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            var translation = livingTextQ.First().Translations.FirstOrDefault(t => t.Language.Code.ToLower() == languageCode.ToString());
+            if (translation == null)
+            {
+                throw new ArgumentNullException();
+            }
+
+            return translation;
         }
     }
 }

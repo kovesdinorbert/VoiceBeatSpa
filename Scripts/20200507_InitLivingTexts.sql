@@ -18,12 +18,12 @@ INSERT INTO [dbo].[LivingTexts]
 INSERT INTO [dbo].[Translations]
            ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
      VALUES
-           (NEWID(),GETDATE(),@systemId,null,null,1,@huId,@currentText,'hu szoveg','hu subject')
+           (NEWID(),GETDATE(),@systemId,null,null,1,@huId,@currentText,'<p><span style=\"font-weight: bold; color: rgb(0, 0, 0);\">Kedves Felhasználó!</span></p><p><span style=\"color: rgb(0, 0, 0);\">Új foglalás érkezett a következő időpontokra:</span></p><p><span style=\"color: rgb(0, 0, 0);\">#Times#</span></p><p><span style=\"font-weight: bold; color: rgb(0, 0, 0);\">Üdv:<br>VoiceBeat próbaterem</span></p><br /><br /><p>Ez egy automatikus üzenet, kérem ne válaszoljon rá! Kapcsolat: voicebeat.bt@gmail.com</p>','Voice-Beat teremfoglalás')
 
 INSERT INTO [dbo].[Translations]
            ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
      VALUES
-           (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'en szoveg','en subject')
+           (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'<p><span style=\"font-weight: bold; color: rgb(0, 0, 0);\">Dear User,</span></p><p><span style=\"color: rgb(0, 0, 0);\">New reservation at the following time:</span></p><p><span style=\"color: rgb(0, 0, 0);\">#Times#</span></p><p><span style=\"font-weight: bold; color: rgb(0, 0, 0);\">Best Regards,<br>VoiceBeat staff</span></p><br /><br /><p>This is an automated message, please don not reply! Contact: voicebeat.bt@gmail.com</p>','Voice-Beat reservation')
 
 
 ------EmailRegistration = 1,
@@ -355,4 +355,23 @@ INSERT INTO [dbo].[Translations]
            ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
      VALUES
            (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'+36 30 710 0661','')
+		      
+
+------EmailReservationDelete = 18,
+SET @currentText = NEWID();
+
+INSERT INTO [dbo].[LivingTexts]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LivingTextType],[IsHtmlEncoded])
+     VALUES
+           (@currentText,GETDATE(),@systemId,null,null,1,18,1)
+
+INSERT INTO [dbo].[Translations]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
+     VALUES
+           (NEWID(),GETDATE(),@systemId,null,null,1,@huId,@currentText,'<p><span style=\"font-weight: bold; color: rgb(0, 0, 0);\">Kedves Felhasználó!</span></p><p><span style=\"color: rgb(0, 0, 0);\">A következő időpontokra történt foglalást töröltük:</span></p><p><span style=\"color: rgb(0, 0, 0);\">#Times#</span></p><p><span style=\"font-weight: bold; color: rgb(0, 0, 0);\">Üdv:<br>Voice-Beat próbaterem</span></p><br /><br /><p>Ez egy automatikus üzenet, kérem ne válaszoljon rá! Kapcsolat: voicebeat.bt@gmail.com</p>','Voice-Beat foglalás törlés')
+
+INSERT INTO [dbo].[Translations]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
+     VALUES
+           (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'<p><span style=\"font-weight: bold; color: rgb(0, 0, 0);\">Dear User,</span></p><p><span style=\"color: rgb(0, 0, 0);\">Reservations for the following dates have been canceled:</span></p><p><span style=\"color: rgb(0, 0, 0);\">#Times#</span></p><p><span style=\"font-weight: bold; color: rgb(0, 0, 0);\">Best regards, <br>Voice-Beat</span></p><br /><br /><p>This is an automated message, please don not reply! Contact: voicebeat.bt@gmail.com</p>','Voice-Beat deleted reservation')
 		      

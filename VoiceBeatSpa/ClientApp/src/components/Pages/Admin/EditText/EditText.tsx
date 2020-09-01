@@ -125,6 +125,7 @@ export default class EditText extends React.Component<any, IState>{
               <MenuItem value={LivingTextTypeEnum.EmailReservationSent}>Email - Foglalás elküldve</MenuItem>
               <MenuItem value={LivingTextTypeEnum.EmailRegistration}>Email - regisztráció</MenuItem>
               <MenuItem value={LivingTextTypeEnum.EmailForgottenPassword}>Email - elfelejtett jelszó</MenuItem>
+              <MenuItem value={LivingTextTypeEnum.EmailReservationDelete}>Email - Foglalás törlés</MenuItem>
               <MenuItem value={LivingTextTypeEnum.RedRoomPrice}>Piros terem - árak</MenuItem>
               <MenuItem value={LivingTextTypeEnum.RedRoomText}>Piros terem - leírás</MenuItem>
               <MenuItem value={LivingTextTypeEnum.BlueRoomPrice}>Kék terem - árak</MenuItem>

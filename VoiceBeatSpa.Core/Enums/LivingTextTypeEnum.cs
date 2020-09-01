@@ -26,6 +26,8 @@
 
         PhoneNumber = 17,
 
+        EmailReservationDelete = 18,
+
         Newsletter = 9999,
     }
 }
