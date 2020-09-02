@@ -23,7 +23,6 @@ export default class ForgottenPassword extends React.Component<any, IState>{
              label: <FormattedMessage id="login.email" defaultMessage={'Email cím'}/>,
              id: "email",
              required: true,
-             email: true,
              icon: {icon: faEnvelopeSquare},
              type: 'email',
            }; 

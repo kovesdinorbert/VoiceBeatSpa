@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VoiceBeatSpa.Core.Entities;
+using VoiceBeatSpa.Core.Enums;
 
 namespace VoiceBeatSpa.Core.Interfaces
 {
@@ -14,8 +15,10 @@ namespace VoiceBeatSpa.Core.Interfaces
         Task<User> GetUser(Guid id, string currentUserEmail);
         Task<User> GetCurrentUserByEmail(string email);
         Task UpdateUser(User user, string password, string currentUserEmail);
-        Task CreateUser(User user, string password);
+        Task CreateUser(User user, string password, bool isSocial, LanguageEnum languageCode = LanguageEnum.hu);
         string GetPasswordHash(string password, string salt, int costDivider = 1);
         Task DeleteUser(Guid id, string currentUserEmail);
+        Task SendPasswordRemainder(string email, LanguageEnum languageCode);
+        Task RecoverPassword(Guid id, string password1, string password2);
     }
 }

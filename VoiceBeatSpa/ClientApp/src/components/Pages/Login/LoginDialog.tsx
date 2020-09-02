@@ -19,6 +19,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Container } from 'reactstrap';
 import ForgottenPassword from './ForgottenPassword';
 import Toastr from '../../Common/Toastr/Toastr';
+import { LanguageService } from '../../../services/language.service';
 
 export interface IState {
   open: boolean;
@@ -44,6 +45,7 @@ export default class LoginDialog extends React.Component<any, IState>{
   authenticationService: AuthenticationService = new AuthenticationService();
   obs: Subscription = new Subscription();
   toastrRef : RefObject<Toastr>;
+  languageService: LanguageService = new LanguageService();
   
   constructor(props: any) {
     super(props);
@@ -99,7 +101,7 @@ export default class LoginDialog extends React.Component<any, IState>{
   
   async sendReminder(e: any) {
     e.preventDefault();
-    const url = `${process.env.REACT_APP_API_PATH}/user/forgottenpassword`;
+    const url = `${process.env.REACT_APP_API_PATH}/user/forgottenpassword`+'/'+this.languageService.instance().currentLanguageCode;
     
     const requestOptions = {
       method: 'POST',
@@ -177,7 +179,7 @@ export default class LoginDialog extends React.Component<any, IState>{
               </>
               :<>
                  <DialogContent>
-                   <ForgottenPassword emailChange={this.handleEmailChange} />
+                   <ForgottenPassword emailChange={this.handleEmailChange}  enterPressed={this.sendReminder} />
                    {this.state.forgottenPwSent && <div className="remainder-sent-text"><FormattedMessage id="forgottenPwSent" defaultMessage={'Emlékeztető kiküldve'}/></div>}
                  </DialogContent>
                  <DialogActions className="login-dialog-actions">

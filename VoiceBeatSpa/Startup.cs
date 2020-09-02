@@ -69,6 +69,7 @@ namespace VoiceBeatSpa
             services.AddScoped(typeof(IUserService), typeof(UserService));
             services.AddScoped(typeof(IEventService), typeof(EventService));
             services.AddScoped(typeof(IEmailService), typeof(EmailService));
+            services.AddScoped(typeof(ILanguageService), typeof(LanguageService));
 
             services.AddCors();
 

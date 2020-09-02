@@ -37,7 +37,7 @@
   "passwordMismatch": "Password mismatch",
   "register": "Register",
   "forgottenPw": "Forgotten password",
-  "forgottenPwSent": "Remainder sent if the email exists",
+  "forgottenPwSent": "Remainder sent",
   "newPassword": "New password",
   "ok": "Ok",
   "cancel": "Cancel",

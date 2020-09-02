@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Google.Apis.Auth;
-using Google.Apis.Http;
+using System.IO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +16,7 @@ using VoiceBeatSpa.Core.Entities;
 using VoiceBeatSpa.Core.Interfaces;
 using VoiceBeatSpa.Web.Dto;
 using VoiceBeatSpa.Web.Helpers;
+using VoiceBeatSpa.Core.Enums;
 
 namespace VoiceBeatSpa.Web.Controllers
 {
@@ -75,7 +76,7 @@ namespace VoiceBeatSpa.Web.Controllers
                     user.PhoneNumber = "-";
                     user.IsActive = true;
                     user.SocialLogin = true;
-                    await _userService.CreateUser(user, "123456789");
+                    await _userService.CreateUser(user, "123456789", true);
                 }
                 else
                 {
@@ -124,7 +125,7 @@ namespace VoiceBeatSpa.Web.Controllers
                         user.PhoneNumber = "-";
                         user.IsActive = true;
                         user.SocialLogin = true;
-                        await _userService.CreateUser(user, "123456789");
+                        await _userService.CreateUser(user, "123456789", true);
                     }
                     else
                     {
@@ -152,15 +153,29 @@ namespace VoiceBeatSpa.Web.Controllers
 
 
         [AllowAnonymous]
-        [HttpPost("forgottenpassword")]
+        [HttpPost("forgottenpassword/{langCode}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> ForgottenPassword([FromBody]string email)
+        public async Task<IActionResult> ForgottenPassword([FromBody]string email, string langCode)
         {
-            var user = await _userService.GetCurrentUserByEmail(email);
-            if (user != null)
+            await _userService.SendPasswordRemainder(email, langCode == "en" ? LanguageEnum.en : LanguageEnum.hu);
+
+            return Ok();
+        }
+
+        [AllowAnonymous]
+        [HttpPost("recoverpassword")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> RecoverPassword([FromBody]RecoverPasswordDto recoverPassword)
+        {
+            try
             {
-                //TODO Send password remainder
+                await _userService.RecoverPassword(recoverPassword.Id, recoverPassword.Password1, recoverPassword.Password2);
             }
+            catch (Exception e)
+            {
+                return NotFound();
+            }
+
             return Ok();
         }
 
@@ -247,7 +262,7 @@ namespace VoiceBeatSpa.Web.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Create([FromBody] RegisterDto user)
+        public async Task<IActionResult> Create([FromBody] RegisterDto user, string langCode)
         {
             try
             {
@@ -258,9 +273,9 @@ namespace VoiceBeatSpa.Web.Controllers
                         Email = user.Email,
                         PhoneNumber = user.PhoneNumber,
                         Newsletter = user.Newsletter,
-                        IsActive = true, //TODO false => confirmation email
+                        IsActive = false,
                     };
-                    await _userService.CreateUser(u, user.Password);
+                    await _userService.CreateUser(u, user.Password, false, langCode == "en" ? LanguageEnum.en : LanguageEnum.hu);
                     return StatusCode(StatusCodes.Status200OK);
                 }
                 else

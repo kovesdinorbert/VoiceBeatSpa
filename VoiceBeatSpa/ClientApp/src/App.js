@@ -23,6 +23,7 @@ import { LanguageService } from './services/language.service'
 import messages_hu from './translation/hu.json';
 import messages_en from './translation/en.json';
 import { IntlProvider } from 'react-intl';
+import RecoverPassword from './components/Pages/RecoverPassword/RecoverPassword';
 
 
 const messages = {
@@ -98,6 +99,7 @@ export default class App extends Component {
             <Route path='/rooms/studio' component={Studio} />
             <AuthRoute {...anonymRouteProps} path='/register' component={Registration} />
             <Route exact path='/about' component={About}/>
+            <Route exact path='/recoverpassword' component={RecoverPassword}/>
             <Route exact path='/' component={About}/>
           </Switch>
         </Layout>

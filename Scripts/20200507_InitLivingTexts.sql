@@ -37,12 +37,12 @@ INSERT INTO [dbo].[LivingTexts]
 INSERT INTO [dbo].[Translations]
            ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
      VALUES
-           (NEWID(),GETDATE(),@systemId,null,null,1,@huId,@currentText,'hu EmailRegistration szoveg','hu subject')
+           (NEWID(),GETDATE(),@systemId,null,null,1,@huId,@currentText,'<p><span style=\"color: rgb(0, 0, 0); font-size: 18px;\">Kedves Felhasználó!</span></p><p><span style=\"color: rgb(0, 0, 0);\">A regisztráció aktiválásához kérjük kattintson az alábbi linkre, vagy ha nem működik, másolja ki és nyissa meg új ablakban:</span></p><p><span style=\"color: rgb(0, 0, 0);\"><a href=\"#MAINURL#ActivateUser/#NEWGUID#\">#MAINURL#ActivateUser/#NEWGUID#</a></span></p><p><span style=\"font-size: 18px; color: rgb(0, 0, 0);\">Üdvözlettel:</span><br><span style=\"color: rgb(0, 0, 0); font-size: 18px;\">Voice-Beat</span></p>','Voice-Beat regisztráció')
 
 INSERT INTO [dbo].[Translations]
            ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
      VALUES
-           (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'en EmailRegistration szoveg','en subject')
+           (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'<p><span style=\"color: rgb(0, 0, 0); font-size: 18px;\">Dear User,</span></p><p><span style=\"color: rgb(0, 0, 0);\">To activate the registration, please click on the link below, or if it does not work, copy and open it in a new window:</span></p><p><span style=\"color: rgb(0, 0, 0);\"><a href=\"#MAINURL#ActivateUser/#NEWGUID#\">#MAINURL#ActivateUser/#NEWGUID#</a></span></p><p><span style=\"font-size: 18px; color: rgb(0, 0, 0);\">Best regards:</span><br><span style=\"color: rgb(0, 0, 0); font-size: 18px;\">Voice-Beat</span></p>','Voice-Beat registration')
 		   
 
 ------EmailForgottenPassword = 2,
@@ -56,12 +56,12 @@ INSERT INTO [dbo].[LivingTexts]
 INSERT INTO [dbo].[Translations]
            ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
      VALUES
-           (NEWID(),GETDATE(),@systemId,null,null,1,@huId,@currentText,'hu EmailForgottenPassword szoveg','hu subject')
+           (NEWID(),GETDATE(),@systemId,null,null,1,@huId,@currentText,'<p><span style=\"color: rgb(0, 0, 0); font-size: 18px;\">Kedves Felhasználó!</span></p><p><span style=\"color: rgb(0, 0, 0);\">Valaki értesítést kért elfelejtett jelszóról. Amennyiben nem ön volt, ezt az email figyelmen kívül hagyhatja. <br />Amennyiben Ön kért jelszóemlékeztetőt, kérem kattintson az alábbi linkre, és írja be a mellékelt verifikációs kódot, amely 24 óráig érvényes:</span></p><p><span style=\"color: rgb(0, 0, 0);\"><a href=\"#MAINURL#RecoverPassword/#NEWGUID#\">Elfelejtett jelszó</a></span></p><p><span style=\"font-size: 18px; color: rgb(0, 0, 0);\">Üdvözlettel:</span><br><span style=\"color: rgb(0, 0, 0); font-size: 18px;\">Voice-beat</span></p>','Elfelejtett jelszó')
 
 INSERT INTO [dbo].[Translations]
            ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
      VALUES
-           (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'en EmailForgottenPassword szoveg','en subject')
+           (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'<p><span style=\"color: rgb(0, 0, 0); font-size: 18px;\">Dear User,</span></p><p><span style=\"color: rgb(0, 0, 0);\">Someone requested notification of a forgotten password. If you werent, you can ignore this email. <br />If you have requested a password reminder, please click on the link below and enter the attached verification code, which is valid for 24 hours:</span></p><p><span style=\"color: rgb(0, 0, 0);\"><a href=\"#MAINURL#RecoverPassword/#NEWGUID#\">Forgotten password</a></span></p><p><span style=\"font-size: 18px; color: rgb(0, 0, 0);\">Best regards:</span><br><span style=\"color: rgb(0, 0, 0); font-size: 18px;\">Voice-beat</span></p>','Forgotten password')
 		   
 
 ------StartPageText = 3,

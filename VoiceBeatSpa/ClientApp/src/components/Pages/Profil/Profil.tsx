@@ -19,13 +19,14 @@ export interface IState {
     email: string;
     phone: string;
     oldPassword?: string;
-    newPassword1?: string;
-    newPassword2?: string;
+    newPassword1: string;
+    newPassword2: string;
     newsletter: boolean;
     sociallogin: boolean;
     passwordchange: boolean;
     blocking : boolean, 
     deleteOpen : boolean, 
+    passwordMismatch: boolean;
   }
 
 export default class Profil extends React.Component<any>{
@@ -34,9 +35,12 @@ export default class Profil extends React.Component<any>{
       phone : "",
       newsletter : false,
       sociallogin : false,
+      newPassword1: "",
+      newPassword2: "",
       passwordchange : false,
       blocking : false, 
       deleteOpen : false, 
+      passwordMismatch : false,
     };
     
     authenticationService: AuthenticationService = new AuthenticationService();
@@ -93,12 +97,14 @@ export default class Profil extends React.Component<any>{
     handleNewPassword1Change(pw: string) {
       let cState = this.state;
       cState.newPassword1 = pw;
+      cState.passwordMismatch = pw !== this.state.newPassword2;
       this.setState(cState);
     }
   
     handleNewPassword2Change(pw: string) {
       let cState = this.state;
       cState.newPassword2 = pw;
+      cState.passwordMismatch = pw !== this.state.newPassword1;
       this.setState(cState);
     }
   
@@ -243,6 +249,7 @@ export default class Profil extends React.Component<any>{
               <>{!this.state.sociallogin && <TextInput config={confPw} value={this.state.oldPassword} onInputValueChange={this.handleOldPasswordChange}></TextInput>}</>
               <><TextInput config={confNewPw1} value={this.state.newPassword1} onInputValueChange={this.handleNewPassword1Change}></TextInput></>
               <><TextInput config={confNewPw2} value={this.state.newPassword2} onInputValueChange={this.handleNewPassword2Change}></TextInput></>
+              {this.state.passwordMismatch && <div className="validation-password-mismatch"><FormattedMessage id="passwordMismatch" defaultMessage={'A két jelszó nem egyezik'}/></div>}
             </>
             :<></>}
             <Container>

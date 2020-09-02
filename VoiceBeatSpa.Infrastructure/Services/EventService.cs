@@ -5,7 +5,6 @@ using System.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using Hangfire;
-using Microsoft.EntityFrameworkCore;
 using VoiceBeatSpa.Core.Configuration;
 using VoiceBeatSpa.Core.Entities;
 using VoiceBeatSpa.Core.Enums;
@@ -19,19 +18,19 @@ namespace VoiceBeatSpa.Infrastructure.Services
         private readonly IUserService _userService;
         private readonly IEmailService _emailService;
         private readonly IGenericRepository<Event> _eventRepository;
-        private readonly IGenericRepository<LivingText> _livingTextRepository;
+        private readonly ILanguageService _languageService;
 
         public EventService(IOptions<VoiceBeatConfiguration> voiceBeatConfiguration, 
                             IUserService userService,
                             IEmailService emailService,
                             IGenericRepository<Event> eventRepository,
-                            IGenericRepository<LivingText> livingTextRepository)
+                            ILanguageService languageService)
         {
             _voiceBeatConfiguration = voiceBeatConfiguration.Value;
             _userService = userService;
             _emailService = emailService;
             _eventRepository = eventRepository;
-            _livingTextRepository = livingTextRepository;
+            _languageService = languageService;
         }
 
         public async Task AddNewEvent(Event newEvent, string userEmail, LanguageEnum languageCode)
@@ -58,8 +57,8 @@ namespace VoiceBeatSpa.Infrastructure.Services
                 throw new ArgumentOutOfRangeException();
             }
 
-            var translationQ = await GetTranslatedEmailTemplate(LivingTextTypeEnum.EmailReservationSent, languageCode);
-            var translationQHu = await GetTranslatedEmailTemplate(LivingTextTypeEnum.EmailReservationSent, LanguageEnum.hu);
+            var translationQ = await _languageService.GetTranslatedEmailTemplate(LivingTextTypeEnum.EmailReservationSent, languageCode);
+            var translationQHu = await _languageService.GetTranslatedEmailTemplate(LivingTextTypeEnum.EmailReservationSent, LanguageEnum.hu);
 
             await _eventRepository.CreateAsync(new Event()
             {
@@ -105,8 +104,8 @@ namespace VoiceBeatSpa.Infrastructure.Services
                 throw new AuthenticationException();
             }
 
-            var translationQ = await GetTranslatedEmailTemplate(LivingTextTypeEnum.EmailReservationDelete, languageCode);
-            var translationQHu = await GetTranslatedEmailTemplate(LivingTextTypeEnum.EmailReservationDelete, LanguageEnum.hu);
+            var translationQ = await _languageService.GetTranslatedEmailTemplate(LivingTextTypeEnum.EmailReservationDelete, languageCode);
+            var translationQHu = await _languageService.GetTranslatedEmailTemplate(LivingTextTypeEnum.EmailReservationDelete, LanguageEnum.hu);
 
 
             List<string> adminEmails = _voiceBeatConfiguration.SendEmailTo.Split(';').ToList();
@@ -225,27 +224,5 @@ namespace VoiceBeatSpa.Infrastructure.Services
             return events;
         }
 
-        private async Task<Translation> GetTranslatedEmailTemplate(LivingTextTypeEnum livingTextType, LanguageEnum languageCode)
-        {
-            var livingTextQ = await
-                _livingTextRepository.FindAllAsync(lt => lt.LivingTextType == livingTextType,
-                    new Func<IQueryable<LivingText>, IQueryable<LivingText>>[]
-                    {
-                        source => source.Include(m => m.Translations)
-                            .ThenInclude(m => m.Language),
-                    });
-            if (livingTextQ.FirstOrDefault() == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            var translation = livingTextQ.First().Translations.FirstOrDefault(t => t.Language.Code.ToLower() == languageCode.ToString());
-            if (translation == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            return translation;
-        }
     }
 }
