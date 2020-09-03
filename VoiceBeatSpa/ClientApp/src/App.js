@@ -24,6 +24,7 @@ import messages_hu from './translation/hu.json';
 import messages_en from './translation/en.json';
 import { IntlProvider } from 'react-intl';
 import RecoverPassword from './components/Pages/RecoverPassword/RecoverPassword';
+import ActivateUser from './components/Pages/ActivateUser/ActivateUser';
 
 
 const messages = {
@@ -100,6 +101,7 @@ export default class App extends Component {
             <AuthRoute {...anonymRouteProps} path='/register' component={Registration} />
             <Route exact path='/about' component={About}/>
             <Route exact path='/recoverpassword' component={RecoverPassword}/>
+            <Route exact path='/activateuser' component={ActivateUser}/>
             <Route exact path='/' component={About}/>
           </Switch>
         </Layout>

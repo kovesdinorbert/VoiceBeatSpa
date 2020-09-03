@@ -20,5 +20,6 @@ namespace VoiceBeatSpa.Core.Interfaces
         Task DeleteUser(Guid id, string currentUserEmail);
         Task SendPasswordRemainder(string email, LanguageEnum languageCode);
         Task RecoverPassword(Guid id, string password1, string password2);
+        Task ActivateUser(Guid id);
     }
 }

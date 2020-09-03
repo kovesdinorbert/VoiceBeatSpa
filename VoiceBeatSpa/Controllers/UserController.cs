@@ -179,6 +179,23 @@ namespace VoiceBeatSpa.Web.Controllers
             return Ok();
         }
 
+        [AllowAnonymous]
+        [HttpPost("activateuser")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> ActivateUser([FromBody]Guid id)
+        {
+            try
+            {
+                await _userService.ActivateUser(id);
+            }
+            catch (Exception e)
+            {
+                return NotFound();
+            }
+
+            return Ok();
+        }
+
         [HttpGet]
         [ProducesResponseType(typeof(List<UserListDto>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]

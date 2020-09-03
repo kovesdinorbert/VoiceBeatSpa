@@ -100,7 +100,7 @@ export default class LoginDialog extends React.Component<any, IState>{
   }
   
   async sendReminder(e: any) {
-    e.preventDefault();
+    e?.preventDefault();
     const url = `${process.env.REACT_APP_API_PATH}/user/forgottenpassword`+'/'+this.languageService.instance().currentLanguageCode;
     
     const requestOptions = {

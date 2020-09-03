@@ -310,6 +310,24 @@ namespace VoiceBeatSpa.Infrastructure.Services
             }
         }
 
+        public async Task ActivateUser(Guid id)
+        {
+            var confirmation = await _passwordRecoveryConfirmationRepository.FindAllAsync(prc => prc.Id == id,
+                new Func<IQueryable<PasswordRecoveryConfirmation>, IQueryable<PasswordRecoveryConfirmation>>[]
+                {
+                    source => source.Include(m => m.User)
+                });
+
+            if (confirmation.SingleOrDefault() == null || confirmation.Single().User == null)
+            {
+                throw new NullReferenceException();
+            }
+
+            var user = confirmation.Single().User;
+            user.IsActive = true;
+            await _userRepository.UpdateAsync(user, user.Id);
+        }
+
         private void SetPassword(User u, string password)
         {
             u.Salt = new string(Enumerable.Range(0, 16).Select(p => saltChars[random.Next(0, saltChars.Length)]).ToArray());
