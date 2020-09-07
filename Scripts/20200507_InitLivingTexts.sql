@@ -113,12 +113,12 @@ INSERT INTO [dbo].[LivingTexts]
 INSERT INTO [dbo].[Translations]
            ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
      VALUES
-           (NEWID(),GETDATE(),@systemId,null,null,1,@huId,@currentText,'<h3>Kedvezmények:</h3><p><br></p><p>Ha diákigazolvánnyal rendelkezel 50% kedvezményt kapsz a próba rád eso részébol!</p><p><br></p><p>A diákkedvezmény,csak a kék teremre vonatkozik minden nap 17:00-ig!</p><p><br></p><p><br></p><p>Minden rendszeresen próbáló vendégeink részére (legalább</p><p>heti egy), törzs kártyát adunk, amivel minden 10. óra ingyenes!</p><p><br></p><p>A törzskártya érvényes 2020.01.01-visszavonásig!</p><p><br></p><p><br></p><p>(A kedvezmények nem összevonhatók!)</p>','')
+           (NEWID(),GETDATE(),@systemId,null,null,1,@huId,@currentText,'<h3>Kedvezmények:</h3><p><br></p><p>Ha diákigazolvánnyal rendelkezel 50% kedvezményt kapsz a próba rád eso részébol!</p><p>A diákkedvezmény,csak a kék teremre vonatkozik minden nap 17:00-ig!</p><p>Minden rendszeresen próbáló vendégeink részére (legalább</p><p>heti egy), törzs kártyát adunk, amivel minden 10. óra ingyenes!</p><p>A törzskártya érvényes 2020.01.01-visszavonásig!</p><p>(A kedvezmények nem összevonhatók!)</p>','')
 
 INSERT INTO [dbo].[Translations]
            ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
      VALUES
-           (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'<h3>Discounts:</h3><p><br> </p><p> If you have a student ID card, you will get a 50% discount on your part of the rehearsal! </p><p><br> </p><p>The student discount only applies to the blue room until 17:00 every day!</p><p><br> </p><p><br> </p><p> For all our regular guests (at least </p><p> one weekly), we give you a loyalty card, which is free every 10 hours! </p><p><br> </p><p> The loyalty card is valid until 01.01.2020 revocation! </p><p><br> </p><p><br> </p><p> (Discounts cannot be combined!) </p>','')
+           (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'<h3>Discounts:</h3><p><br> </p><p> If you have a student ID card, you will get a 50% discount on your part of the rehearsal! </p><p>The student discount only applies to the blue room until 17:00 every day!</p><p> For all our regular guests (at least </p><p> one weekly), we give you a loyalty card, which is free every 10 hours! </p><p> The loyalty card is valid until 01.01.2020 revocation! </p><p> (Discounts cannot be combined!) </p>','')
 		   
 
 ------ReservationRulesText = 6,

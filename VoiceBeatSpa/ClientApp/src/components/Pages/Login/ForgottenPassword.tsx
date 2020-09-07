@@ -3,7 +3,7 @@ import { ITextInput } from '../../Common/TextInput/textInput.model';
 import TextInput from '../../Common/TextInput/TextInput';
 import { faEnvelopeSquare } from '@fortawesome/free-solid-svg-icons';
 
-import './style.css';
+import './style.scss';
 import { FormattedMessage } from 'react-intl';
 
 export interface IState {

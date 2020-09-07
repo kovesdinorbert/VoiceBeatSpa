@@ -137,6 +137,7 @@ export default class Scheduler extends React.Component<any, IState>{
                    id: "aSubject",
                    error: false,
                    success: false,
+                   required: true,
                    white: false,
                    type: 'text',
                    }} value={this.state.subject} onInputValueChange={this.handleSubjectChange}>
@@ -166,7 +167,7 @@ export default class Scheduler extends React.Component<any, IState>{
                                                                      this.state.selectedRoom, 
                                                                      this.state.subject,
                                                                      this.state.deleteEventId )} 
-                          color="primary"  disabled={!this.state.isAdmin && ( moment().add(2, 'days').isSameOrAfter(this.state.selectedStart, 'day') || this.authenticationService.instance().currentUserSubject.getValue().phoneNumber === "")}>
+                          color="primary"  disabled={(this.state.isAdmin && !this.state.subject) || (!this.state.isAdmin && ( moment().add(2, 'days').isSameOrAfter(this.state.selectedStart, 'day') || this.authenticationService.instance().currentUserSubject.getValue().phoneNumber === ""))}>
                     <FormattedMessage id="reservation" defaultMessage={'Foglalás'}/>
                   </Button>
                 : <></>}

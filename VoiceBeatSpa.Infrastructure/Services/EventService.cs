@@ -174,7 +174,6 @@ namespace VoiceBeatSpa.Infrastructure.Services
             var pastEvents = events.Where(e => e.StartDate >= DateTime.MinValue && e.EndDate <= DateTime.Today).ToList();
             var futureEvents = events.Where(e => e.StartDate >= DateTime.Today.AddDays(3) && e.EndDate <= DateTime.MaxValue).ToList();
 
-            //TODO - events between past and future events will be anonymized later - add scheduler task
             var remainingEvents = events.Where(e => pastEvents.All(pe => pe.Id != e.Id) && futureEvents.All(fe => fe.Id != e.Id)).ToList();
 
             if (futureEvents.Any())
@@ -201,7 +200,7 @@ namespace VoiceBeatSpa.Infrastructure.Services
             events.ForEach(pe => pe.Subject = "Törölt felhasználó");
             for (int i = events.Count() - 1; i >= 0; i--)
             {
-                await UpdateEvent(events.ElementAt(i), email);
+                await _eventRepository.UpdateAsync(events.ElementAt(i), Guid.Empty);
             }
         }
 

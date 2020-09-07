@@ -419,5 +419,15 @@ namespace VoiceBeatSpa.Infrastructure.Services
                 throw new NullReferenceException();
             }
         }
+
+        public async Task SendNewsLetter(string body)
+        {
+            var users = await _userRepository.FindAllAsync(u => !string.Equals(u.Email, "system") && u.Newsletter);
+
+            foreach (var user in users)
+            {
+                await _emailService.SendEmail(_voiceBeatConfiguration.SendEmailFromDomain, user.Email, "Voice-Beat hírlevél", body, "Voice-Beat");
+            }
+        }
     }
 }

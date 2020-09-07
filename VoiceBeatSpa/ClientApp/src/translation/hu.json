@@ -12,6 +12,7 @@
 "login.password": "Jelszó",
 "login.login": "Bejelentkezés",
 "login.noaccount": "Nincs még fiókod?",
+"login.loginor": "vagy",
 "profile.email": "Email cím",
 "profile.phone": "Telefonszám",
 "profile.oldpassword": "Régi jelszó",

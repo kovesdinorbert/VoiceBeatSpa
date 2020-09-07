@@ -20,6 +20,9 @@ import { Container } from 'reactstrap';
 import ForgottenPassword from './ForgottenPassword';
 import Toastr from '../../Common/Toastr/Toastr';
 import { LanguageService } from '../../../services/language.service';
+import SocialForm from './SocialForm';
+
+import './style.scss';
 
 export interface IState {
   open: boolean;
@@ -139,14 +142,14 @@ export default class LoginDialog extends React.Component<any, IState>{
   
   public render() {    
     return (  
-      <div className="navbar-nav-item-flex">
+      <div className="navbar-nav-item-flex login-container login-dialog-form">
         <Button className="text-light navbar-nav-item-flex nav-item-action-button" onClick={this.handleClickOpen}>
           <FontAwesomeIcon className="" icon={faSignInAlt} />
         </Button>
           <Dialog open={this.state.open} onClose={this.handleClose} aria-labelledby="form-dialog-title">
           <Toastr ref={this.toastrRef}></Toastr>
             <BlockUi tag="div" blocking={this.state.blocking}>
-              <DialogTitle id="form-dialog-title">
+              <DialogTitle id="form-dialog-title" className="login-header">
                 {this.state.forgottenPw ?<FormattedMessage id="forgottenPw" defaultMessage={'Elfelejtett jelszó'}/>
                                         :<FormattedMessage id="login.login" defaultMessage={'Bejelentkezés'}/>}
               </DialogTitle>
@@ -171,6 +174,11 @@ export default class LoginDialog extends React.Component<any, IState>{
                     <FormattedMessage id="cancel" defaultMessage={'Mégse'}/>
                   </Button>
                   </Container>
+                  <h3><FormattedMessage id="login.loginor" defaultMessage={'Vagy'}/></h3>
+                  <DialogContent>
+                    <SocialForm />
+                  </DialogContent>
+                  <br></br>
                   <h3><FormattedMessage id="login.noaccount" defaultMessage={'Nincs még fiókod?'}/></h3>
                   <Button onClick={_ => {this.setState({open: false}); this.props.closeNavbar();}}>
                     <NavLink to="/register"><FormattedMessage id="register" defaultMessage={'Regisztráció'}/></NavLink>

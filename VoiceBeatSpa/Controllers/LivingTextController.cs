@@ -27,6 +27,7 @@ namespace VoiceBeatSpa.Web.Controllers
         private readonly IGenericRepository<Translation> _translationRepository;
         private readonly IGenericRepository<Language> _languageRepository;
         private readonly IUserService _userService;
+        private readonly IEmailService _emailService;
         private readonly IMapper _mapper;
 
         public LivingTextController(ILogger<LivingTextController> logger,
@@ -34,12 +35,14 @@ namespace VoiceBeatSpa.Web.Controllers
                                     IGenericRepository<Translation> translationRepository,
                                     IGenericRepository<Language> languageRepository,
                                     IUserService userService,
+                                    IEmailService emailService,
                                     IMapper mapper)
         {
             _logger = logger;
             _livingTextRepository = livingTextRepository;
             _translationRepository = translationRepository;
             _userService = userService;
+            _emailService = emailService;
             _languageRepository = languageRepository;
             _mapper = mapper;
         }
@@ -146,7 +149,7 @@ namespace VoiceBeatSpa.Web.Controllers
                     await _livingTextRepository.CreateAsync(newsletter, user.Id);
                 }
 
-                //TODO send news letter
+                await _userService.SendNewsLetter(text);
             }
 
             return Ok();

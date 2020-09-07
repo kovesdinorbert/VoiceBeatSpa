@@ -12,6 +12,7 @@
 "login.password": "Password",
 "login.login": "Login",
 "login.noaccount": "Don't have an account?",
+"login.loginor": "or",
 "profile.email": "Email",
 "profile.phone": "Phone number",
 "profile.oldpassword": "Old password",
