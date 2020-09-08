@@ -34,15 +34,15 @@ export default class ActivateUser extends React.Component<any>{
         fetch(url, requestOptions)
           .then(async response => {
             if (!response.ok) {
-              this.toastrRef.current?.openSnackbar("Sikertelen aktiválás!", "error");
+              this.toastrRef.current?.openSnackbar("message.unsuccess.activation", "error");
               } else {
-                this.toastrRef.current?.openSnackbar("Sikeres aktiválás, most már bejelentkezhet!", "success");
+                this.toastrRef.current?.openSnackbar("message.success.activation", "success");
               }
               this.setState({blocking: false });
             })
             .catch(error => {
               this.setState({blocking: false});
-              this.toastrRef.current?.openSnackbar("Sikertelen aktiválás!", "error");
+              this.toastrRef.current?.openSnackbar("message.unsuccess.activation", "error");
             });
     }
 

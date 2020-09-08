@@ -64,7 +64,7 @@ export default class Charts extends React.Component<any, IState>{
     .then(async response => {
       const data: IEvent[] = await response.json();
       if (!response.ok) {
-          this.toastrRef.current?.openSnackbar("Nem sikerült az időpontok lekérése, vagy nincs találat! Kérjük próbálja meg újra később!", "error");
+          this.toastrRef.current?.openSnackbar("message.unsuccess.chart.notfound", "error");
           this.setState({loading: false, resultsFound : false});
         } else {
         this.everyEvents = data;
@@ -202,7 +202,7 @@ export default class Charts extends React.Component<any, IState>{
         }
       })
       .catch(error => {
-        this.toastrRef.current?.openSnackbar("Nem sikerült az időpontok lekérése, váratlan hiba történt! Kérjük próbálja meg újra később!", "error");
+        this.toastrRef.current?.openSnackbar("message.unsuccess.chart.error", "error");
         this.setState({loading: false, resultsFound : false});
       });
   }

@@ -105,13 +105,13 @@ export default class Contact extends React.Component<any>{
         .then(async response => {
           if (!response.ok) {
             } else {
-              this.toastrRef.current?.openSnackbar("Sikertelen üzenet küldés!", "error");
+              this.toastrRef.current?.openSnackbar("message.unsuccess.contact.send", "error");
             }
-            this.toastrRef.current?.openSnackbar("Sikeres üzenet küldés!", "success");
+            this.toastrRef.current?.openSnackbar("message.success.contact.send", "success");
             this.setState({body: "", blocking: false, subject : "", name : "", email: "", showMessage: true });
           })
           .catch(error => {
-            this.toastrRef.current?.openSnackbar("Sikertelen üzenet küldés!", "error");
+            this.toastrRef.current?.openSnackbar("message.unsuccess.contact.send", "error");
           });
     }
 

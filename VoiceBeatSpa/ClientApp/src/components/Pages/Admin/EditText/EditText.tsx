@@ -69,11 +69,11 @@ export default class EditText extends React.Component<any, IState>{
             }
           );
         } else {
-          this.toastrRef.current?.openSnackbar("Sikertelen minta betöltés! Kérjük jelezze a fejlesztőnek!", "error");
+          this.toastrRef.current?.openSnackbar("message.unsuccess.edittext", "error");
         }
       })
       .catch(error => {
-          this.toastrRef.current?.openSnackbar("Sikertelen minta betöltés! Kérjük jelezze a fejlesztőnek!", "error");
+          this.toastrRef.current?.openSnackbar("message.unsuccess.edittext", "error");
         });;
   }
 
@@ -95,14 +95,14 @@ export default class EditText extends React.Component<any, IState>{
   fetch(url, requestOptions)
     .then(async response => {
       if (!response.ok) {
-        this.toastrRef.current?.openSnackbar("Sikertelen mentés! Kérjük próbálja meg újra később!", "error");
+        this.toastrRef.current?.openSnackbar("message.unsuccess.save", "error");
       } else {
-        this.toastrRef.current?.openSnackbar("Sikeres mentés!", "success");
+        this.toastrRef.current?.openSnackbar("message.success.save", "success");
       }
       this.setState({loading: false});
     })
     .catch(error => {
-        this.toastrRef.current?.openSnackbar("Sikertelen mentés! Kérjük próbálja meg újra később!", "error");
+        this.toastrRef.current?.openSnackbar("message.unsuccess.save", "error");
       });
   }
   

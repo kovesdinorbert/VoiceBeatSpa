@@ -149,20 +149,20 @@ export default class Profil extends React.Component<any>{
             var pwChanged = false;
             var socLogin = this.state.sociallogin;
             if (!response.ok) {
-              this.toastrRef.current?.openSnackbar("Sikertelen mentés!", "error");
+              this.toastrRef.current?.openSnackbar("message.unsuccess.save", "error");
               } else {
                 if (this.state.newPassword1 !== "")
                   pwChanged = true;
 
                   this.authenticationService.instance().userProfileUpdated(profil.email, profil.phoneNumber);
 
-                this.toastrRef.current?.openSnackbar("Sikeres mentés!", "success");
+                this.toastrRef.current?.openSnackbar("message.success.save", "success");
               }
               this.setState({oldPassword: "", blocking: false, newPassword1 : "", newPassword2 : "", sociallogin : pwChanged ? false : socLogin });
             })
             .catch(error => {
               this.setState({oldPassword: "", blocking: false, newPassword1 : "", newPassword2 : "" });
-              this.toastrRef.current?.openSnackbar("Sikertelen mentés!", "error");
+              this.toastrRef.current?.openSnackbar("message.unsuccess.save", "error");
             });
     }
 
@@ -184,15 +184,15 @@ export default class Profil extends React.Component<any>{
         .then(async response => {
           this.setState({blocking: false});
           if (!response.ok) {
-            this.toastrRef.current?.openSnackbar("Sikertelen törlés! Kérjük vegye fel a kapcsolatot velünk", "error");
+            this.toastrRef.current?.openSnackbar("message.unsuccess.profil.delete", "error");
             } else {
-              this.toastrRef.current?.openSnackbar("Sikeres törlés!", "error");
+              this.toastrRef.current?.openSnackbar("message.success.delete", "error");
               this.authenticationService.instance().logout();
             }
           })
           .catch(error => {
             this.setState({blocking: false});
-            this.toastrRef.current?.openSnackbar("Sikertelen törlés! Kérjük vegye fel a kapcsolatot velünk", "error");
+            this.toastrRef.current?.openSnackbar("message.unsuccess.profil.delete", "error");
           });
     }
 

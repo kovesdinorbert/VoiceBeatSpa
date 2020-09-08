@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert, { AlertProps } from '@material-ui/lab/Alert';
 import { IToastrSettings } from './toastr.settings';
+import { FormattedMessage } from 'react-intl';
 
 function Alert(props: AlertProps) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -22,7 +23,7 @@ export class Toastr extends Component<any, IToastrSettings> {
     handleClose = () => {
         this.setState({
         open: false,
-        message: ''
+        message: 'id'
         });
     };
 
@@ -36,7 +37,7 @@ export class Toastr extends Component<any, IToastrSettings> {
     <div>
       <Snackbar open={this.state.open} autoHideDuration={5000} onClose={this.handleClose}>
         <Alert onClose={this.handleClose} severity={this.state.severity}>
-          {this.state.message}
+          <FormattedMessage id={this.state.message} defaultMessage={this.state.message}/>
         </Alert>
       </Snackbar>
     </div>

@@ -96,13 +96,13 @@ export default class Users extends React.Component<any, IState> {
       .then(async response => {
         const data: IUser[] = await response.json();
         if (!response.ok) {
-            this.toastrRef.current?.openSnackbar("Nem sikerült a felhasználók lekérése! Kérjük próbálja meg újra később!", "error");
+            this.toastrRef.current?.openSnackbar("message.unsuccess.users.load", "error");
           } else {
           }
           this.setState({loading: false, users: data });
         })
         .catch(error => {
-          this.toastrRef.current?.openSnackbar("Nem sikerült az felhasználók lekérése! Kérjük próbálja meg újra később!", "error");
+          this.toastrRef.current?.openSnackbar("message.unsuccess.users.load", "error");
         });
     }
 
@@ -128,15 +128,15 @@ export default class Users extends React.Component<any, IState> {
         fetch(process.env.REACT_APP_API_PATH+'/user/'+this.selectedRow.toString(), requestOptions)
           .then(async response => {
             if (!response.ok) {
-              this.toastrRef.current?.openSnackbar("Sikertelen törlés! Kérjük próbálja meg újra később!", "error");
+              this.toastrRef.current?.openSnackbar("message.unsuccess.delete", "error");
             } else {
               this.getUsers();
-              this.toastrRef.current?.openSnackbar("Sikeres törlés!", "success");
+              this.toastrRef.current?.openSnackbar("message.success.delete", "success");
             }
             this.setState({loading: false});
           })
           .catch(error => {
-              this.toastrRef.current?.openSnackbar("Sikertelen törlés! Kérjük próbálja meg újra később!", "error");
+              this.toastrRef.current?.openSnackbar("message.unsuccess.delete", "error");
             });
       }
     }

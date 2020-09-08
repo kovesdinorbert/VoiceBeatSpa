@@ -66,7 +66,7 @@ export default class LoginDialog extends React.Component<any, IState>{
   
   public componentDidMount() {
     this.obs = this.authenticationService.instance().currentUser.subscribe(val => {this.setState({blocking: false}); if (val.token === "") {
-      this.toastrRef.current?.openSnackbar("Hibás felhasználónév vagy jelszó!", "error");}});
+      this.toastrRef.current?.openSnackbar("message.unsuccess.wrongusername", "error");}});
   }
 
   componentWillUnmount() {

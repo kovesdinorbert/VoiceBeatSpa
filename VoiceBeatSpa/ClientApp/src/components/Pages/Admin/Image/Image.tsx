@@ -76,7 +76,7 @@ export default class Image extends React.Component<any, IState>{
           );
         } else {
           this.setState({loading : false, imageType: undefined, images : undefined})
-          this.toastrRef.current?.openSnackbar("Sikertelen betöltés!", "error");
+          this.toastrRef.current?.openSnackbar("message.unsuccess.load", "error");
         }
       });
   }
@@ -96,15 +96,15 @@ export default class Image extends React.Component<any, IState>{
       fetch(process.env.REACT_APP_API_PATH+'/filedocument/'+id, requestOptions)
         .then(async response => {
           if (!response.ok) {
-            this.toastrRef.current?.openSnackbar("Sikertelen törlés! Kérjük próbálja meg újra később!", "error");
+            this.toastrRef.current?.openSnackbar("message.unsuccess.delete", "error");
           } else {
             this.getImages(type ?? ImageTypeEnum.AboutPagePicture);
-            this.toastrRef.current?.openSnackbar("Sikeres törlés!", "success");
+            this.toastrRef.current?.openSnackbar("message.success.delete", "success");
           }
           this.setState({loading: false});
         })
         .catch(error => {
-            this.toastrRef.current?.openSnackbar("Sikertelen törlés! Kérjük próbálja meg újra később!", "error");
+            this.toastrRef.current?.openSnackbar("message.unsuccess.delete", "error");
           });
     }
   }

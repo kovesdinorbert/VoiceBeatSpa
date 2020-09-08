@@ -122,15 +122,15 @@ export default class Registration extends React.Component<any>{
         fetch(url, requestOptions)
           .then(async response => {
             if (!response.ok) {
-              this.toastrRef.current?.openSnackbar("Sikertelen regisztráció!", "error");
+              this.toastrRef.current?.openSnackbar("message.unsuccess.register", "error");
               } else {
-                this.toastrRef.current?.openSnackbar("Regisztrációját kérjük erősítse meg az elküldött emailben található linkre kattintva!", "warning");
+                this.toastrRef.current?.openSnackbar("message.success.register", "warning");
               }
               this.setState({oldPassword: "", blocking: false, newPassword1 : "", newPassword2 : "" });
             })
             .catch(error => {
               this.setState({oldPassword: "", blocking: false, newPassword1 : "", newPassword2 : "" });
-              this.toastrRef.current?.openSnackbar("Sikertelen regisztráció!", "error");
+              this.toastrRef.current?.openSnackbar("message.unsuccess.register", "error");
             });
     }
 

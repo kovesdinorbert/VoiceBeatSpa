@@ -70,15 +70,15 @@ export default class RecoverPassword extends React.Component<any>{
         fetch(url, requestOptions)
           .then(async response => {
             if (!response.ok) {
-              this.toastrRef.current?.openSnackbar("Sikertelen módosítás!", "error");
+              this.toastrRef.current?.openSnackbar("message.unsuccess.modify", "error");
               } else {
-                this.toastrRef.current?.openSnackbar("Sikeres jelszócsere, bejelentkezhet az új jelszóval!", "success");
+                this.toastrRef.current?.openSnackbar("message.success.recoverpassword", "success");
               }
               this.setState({password1 : "", password2 : "", blocking: false });
             })
             .catch(error => {
               this.setState({blocking: false, password1 : "", password2 : "" });
-              this.toastrRef.current?.openSnackbar("Sikertelen módosítás!", "error");
+              this.toastrRef.current?.openSnackbar("message.unsuccess.modify", "error");
             });
     }
 

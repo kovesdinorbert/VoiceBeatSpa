@@ -51,14 +51,14 @@ export default class Newsletter extends React.Component<any, IState>{
   fetch(url, requestOptions)
     .then(async response => {
       if (!response.ok) {
-        this.toastrRef.current?.openSnackbar("Sikertelen mentés! Kérjük próbálja meg újra később!", "error");
+        this.toastrRef.current?.openSnackbar("message.unsuccess.save", "error");
       } else {
-        this.toastrRef.current?.openSnackbar("Sikeres mentés!", "success");
+        this.toastrRef.current?.openSnackbar("message.success.save", "success");
       }
       this.setState({loading: false, currentText: ''});
     })
     .catch(error => {
-        this.toastrRef.current?.openSnackbar("Sikertelen mentés! Kérjük próbálja meg újra később!", "error");
+        this.toastrRef.current?.openSnackbar("message.unsuccess.save", "error");
       });
   }
 

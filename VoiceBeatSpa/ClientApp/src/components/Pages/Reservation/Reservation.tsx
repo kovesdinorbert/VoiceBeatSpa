@@ -96,7 +96,7 @@ export default class Reservation extends React.Component<any, IState>{
     .then(async response => {
       const data: IEvent[] = await response.json();
       if (!response.ok) {
-          this.toastrRef.current?.openSnackbar("Nem sikerült az időpontok lekérése! Kérjük próbálja meg újra később!", "error");
+          this.toastrRef.current?.openSnackbar("message.unsuccess.reservation.getevents", "error");
         } else {
         }
 
@@ -105,7 +105,7 @@ export default class Reservation extends React.Component<any, IState>{
         this.setState({showScheduler: false, blocking: false, selectedDate : undefined, selectedDateStr : undefined, events: this.mapToCalendarEvents(data, false) });
       })
       .catch(error => {
-        this.toastrRef.current?.openSnackbar("Nem sikerült az időpontok lekérése! Kérjük próbálja meg újra később!", "error");
+        this.toastrRef.current?.openSnackbar("message.unsuccess.reservation.getevents", "error");
       });
   }
 
@@ -152,15 +152,15 @@ export default class Reservation extends React.Component<any, IState>{
       fetch(url, requestOptions)
         .then(async response => {
           if (!response.ok) {
-            this.toastrRef.current?.openSnackbar("Sikertelen időpont foglalás! Kérjük próbálja meg újra később!", "error");
+            this.toastrRef.current?.openSnackbar("message.unsuccess.reservation.reserve", "error");
           } else {
-            this.toastrRef.current?.openSnackbar("Sikeres foglalás!", "success");
+            this.toastrRef.current?.openSnackbar("message.success.reservation.reserve", "success");
             this.connection.invoke('sendToAll', "add").catch();
           }
           this.setState({showScheduler: false, blocking: false, selectedDate : undefined, selectedDateStr : undefined });
         })
         .catch(error => {
-            this.toastrRef.current?.openSnackbar("Sikertelen időpont foglalás! Kérjük próbálja meg újra később!", "error");
+            this.toastrRef.current?.openSnackbar("message.unsuccess.reservation.reserve", "error");
           });
     } else {
       url += '/' + deleteEventId.toString();
@@ -172,16 +172,16 @@ export default class Reservation extends React.Component<any, IState>{
       fetch(url, requestOptions)
         .then(async response => {
           if (!response.ok) {
-            this.toastrRef.current?.openSnackbar("Sikertelen törlés! Kérjük próbálja meg újra később!", "error");
+            this.toastrRef.current?.openSnackbar("message.unsuccess.reservation.delete", "error");
           } else {
-            this.toastrRef.current?.openSnackbar("Sikeres törlés!", "success");
+            this.toastrRef.current?.openSnackbar("message.success.reservation.delete", "success");
 
             this.connection.invoke('sendToAll', "delete").catch();
           }
           this.setState({showScheduler: false, blocking: false, selectedDate : undefined, selectedDateStr : undefined });
         })
         .catch(error => {
-          this.toastrRef.current?.openSnackbar("Sikertelen törlés! Kérjük próbálja meg újra később!", "error");
+          this.toastrRef.current?.openSnackbar("message.unsuccess.reservation.delete", "error");
         });
     }
   }
