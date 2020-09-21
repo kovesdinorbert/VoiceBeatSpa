@@ -13,6 +13,8 @@
 "login.login": "Bejelentkezés",
 "login.noaccount": "Nincs még fiókod?",
 "login.loginor": "vagy",
+"login.withfacebook": "Bejelentkezés Facebook fiókkal",
+"login.withgoogle": "Bejelentkezés Google fiókkal",
 "profile.email": "Email cím",
 "profile.phone": "Telefonszám",
 "profile.oldpassword": "Régi jelszó",

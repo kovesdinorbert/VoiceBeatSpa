@@ -120,11 +120,14 @@ export default class Scheduler extends React.Component<any, IState>{
                     type: "agenda",
                     duration:{days: 2},
             }}}
-            resources={ [
-                { id: RoomTypeEnum.Room1.toString(), title: this.languageService.instance().currentLanguageCode == 'en' ? 'Red room' : 'Piros terem', eventColor: '#F44336', eventClassName:"red-room" },
+            resources={ this.state.isAdmin
+              ? [{ id: RoomTypeEnum.Room1.toString(), title: this.languageService.instance().currentLanguageCode == 'en' ? 'Red room' : 'Piros terem', eventColor: '#F44336', eventClassName:"red-room" },
                 { id: RoomTypeEnum.Room2.toString(), title: this.languageService.instance().currentLanguageCode == 'en' ? 'Blue room' : 'Kék terem', eventColor: '#2196F3', eventClassName:"blue-room" },
                 { id: RoomTypeEnum.Room3.toString(), title: this.languageService.instance().currentLanguageCode == 'en' ? 'Gray room': 'Szürke terem', eventColor: '#9E9E9E', eventClassName:"gray-room" },
-            ]}
+                { id: RoomTypeEnum.Studio.toString(), title: this.languageService.instance().currentLanguageCode == 'en' ? 'Studio': 'Stúdió', eventColor: 'aquamarine', eventClassName:"studio-room" },]
+              : [{ id: RoomTypeEnum.Room1.toString(), title: this.languageService.instance().currentLanguageCode == 'en' ? 'Red room' : 'Piros terem', eventColor: '#F44336', eventClassName:"red-room" },
+              { id: RoomTypeEnum.Room2.toString(), title: this.languageService.instance().currentLanguageCode == 'en' ? 'Blue room' : 'Kék terem', eventColor: '#2196F3', eventClassName:"blue-room" },
+              { id: RoomTypeEnum.Room3.toString(), title: this.languageService.instance().currentLanguageCode == 'en' ? 'Gray room': 'Szürke terem', eventColor: '#9E9E9E', eventClassName:"gray-room" },]}
             events={this.props.onDayEvents}
             select={this.onEventSelected}
             eventClick={this.onEventClick}

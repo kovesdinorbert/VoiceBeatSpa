@@ -9,6 +9,11 @@ import moment from 'moment';
 import { FormControl, InputLabel, MenuItem, Select, Button } from '@material-ui/core';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/moment';
+import { faCheck  } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import './charts.css';
+import { RoomTypeEnum } from '../../Reservation/roomTypeEnum';
 
 export interface IState {
     loading : boolean,
@@ -27,7 +32,9 @@ export default class Charts extends React.Component<any, IState>{
   pieBandPerRoom: any;
   pieHoursPerRoom: any;
   barByDay: any;
+  studioByDay: any;
   lineByMonth: any;
+  studioByMonth: any;
     
   constructor(props: any) {
     super(props);
@@ -69,9 +76,9 @@ export default class Charts extends React.Component<any, IState>{
         } else {
         this.everyEvents = data;
         
-        let r1 = data.filter(event => (event.room.toString() == 'Room1'));
-        let r2 = data.filter(event => (event.room.toString() == 'Room2'));
-        let r3 = data.filter(event => (event.room.toString() == 'Room3'));
+        let r1 = data.filter(event => (event.room.toString() == 'Room1' && data.filter(d => d.room.toString() == "Studio" && d.startDate == event.startDate && d.endDate == event.endDate).length == 0));
+        let r2 = data.filter(event => (event.room.toString() == 'Room2' && data.filter(d => d.room.toString() == "Studio" && d.startDate == event.startDate && d.endDate == event.endDate).length == 0));
+        let r3 = data.filter(event => (event.room.toString() == 'Room3' && data.filter(d => d.room.toString() == "Studio" && d.startDate == event.startDate && d.endDate == event.endDate).length == 0));
 
         this.pieBandPerRoom = {
             labels: [
@@ -119,7 +126,8 @@ export default class Charts extends React.Component<any, IState>{
             }]
         };
         
-        let mapToDays = data.map(event => ((moment(event.startDate).format('dddd').toLowerCase())));
+        let dataWithoutStudio = data.filter(event => (event.room.toString() != 'Studio' && data.filter(d => d.room.toString() == "Studio" && d.startDate == event.startDate && d.endDate == event.endDate).length == 0));
+        let mapToDays = dataWithoutStudio.map(event => ((moment(event.startDate).format('dddd').toLowerCase())));
         
         this.barByDay = {
             labels: [
@@ -147,8 +155,38 @@ export default class Charts extends React.Component<any, IState>{
                        hoverBorderColor: 'rgba(255,99,132,1)',
             }]
         };
+        
+        let dataStudio = data.filter(event => (event.room.toString() == 'Studio'));
+        let studioToDays = dataStudio.map(event => ((moment(event.startDate).format('dddd').toLowerCase())));
+        
+        this.studioByDay = {
+            labels: [
+                'Hétfő',
+                'Kedd',
+                'Szerda',
+                'Csütörtök',
+                'Péntek',
+                'Szombat',
+                'Vasárnap',
+            ],
+            datasets: [{
+                data: [studioToDays.filter(day => (day == 'monday')).length, 
+                       studioToDays.filter(day => (day == 'tuesday')).length, 
+                       studioToDays.filter(day => (day == 'wednesday')).length, 
+                       studioToDays.filter(day => (day == 'thursday')).length, 
+                       studioToDays.filter(day => (day == 'friday')).length, 
+                       studioToDays.filter(day => (day == 'saturday')).length, 
+                       studioToDays.filter(day => (day == 'sunday')).length], 
+                       label: 'Stúdió foglalások száma napokra bontva',
+                       backgroundColor: 'rgba(255,99,132,0.2)',
+                       borderColor: 'rgba(255,99,132,1)',
+                       borderWidth: 1,
+                       hoverBackgroundColor: 'rgba(255,99,132,0.4)',
+                       hoverBorderColor: 'rgba(255,99,132,1)',
+            }]
+        };
 
-        let groupedResults = this.groupBy(data,'month');
+        let groupedResults = this.groupBy(dataWithoutStudio,'month');
 
         this.lineByMonth = {
             labels: [
@@ -178,6 +216,56 @@ export default class Charts extends React.Component<any, IState>{
                        groupedResults.filter((res:any) => moment(res.date).month() == 11)[0]?.count,
                        groupedResults.filter((res:any) => moment(res.date).month() == 12)[0]?.count], 
                        label: 'Próbák száma hónapokra bontva',
+                       fill: false,
+                       lineTension: 0.1,
+                       backgroundColor: 'rgba(75,192,192,0.4)',
+                       borderColor: 'rgba(75,192,192,1)',
+                       borderCapStyle: 'butt',
+                       borderDash: [],
+                       borderDashOffset: 0.0,
+                       borderJoinStyle: 'miter',
+                       pointBorderColor: 'rgba(75,192,192,1)',
+                       pointBackgroundColor: '#fff',
+                       pointBorderWidth: 1,
+                       pointHoverRadius: 5,
+                       pointHoverBackgroundColor: 'rgba(75,192,192,1)',
+                       pointHoverBorderColor: 'rgba(220,220,220,1)',
+                       pointHoverBorderWidth: 2,
+                       pointRadius: 1,
+                       pointHitRadius: 10,
+            }]
+        };
+
+        let groupedResultsStudio = this.groupBy(dataStudio,'month');
+
+        this.studioByMonth = {
+            labels: [
+                'Jan',
+                'Feb',
+                'Márc',
+                'Máj',
+                'Jún',
+                'Júl',
+                'Aug',
+                'Szept',
+                'Okt',
+                'Nov',
+                'Dec',
+            ],
+            datasets: [{
+                data: [groupedResultsStudio.filter((res:any) => moment(res.date).month() == 1)[0]?.count, 
+                       groupedResultsStudio.filter((res:any) => moment(res.date).month() == 2)[0]?.count, 
+                       groupedResultsStudio.filter((res:any) => moment(res.date).month() == 3)[0]?.count, 
+                       groupedResultsStudio.filter((res:any) => moment(res.date).month() == 4)[0]?.count, 
+                       groupedResultsStudio.filter((res:any) => moment(res.date).month() == 5)[0]?.count, 
+                       groupedResultsStudio.filter((res:any) => moment(res.date).month() == 6)[0]?.count, 
+                       groupedResultsStudio.filter((res:any) => moment(res.date).month() == 7)[0]?.count, 
+                       groupedResultsStudio.filter((res:any) => moment(res.date).month() == 8)[0]?.count, 
+                       groupedResultsStudio.filter((res:any) => moment(res.date).month() == 9)[0]?.count, 
+                       groupedResultsStudio.filter((res:any) => moment(res.date).month() == 10)[0]?.count, 
+                       groupedResultsStudio.filter((res:any) => moment(res.date).month() == 11)[0]?.count,
+                       groupedResultsStudio.filter((res:any) => moment(res.date).month() == 12)[0]?.count], 
+                       label: 'Stúdió foglalások száma hónapokra bontva',
                        fill: false,
                        lineTension: 0.1,
                        backgroundColor: 'rgba(75,192,192,0.4)',
@@ -243,16 +331,23 @@ export default class Charts extends React.Component<any, IState>{
             <MenuItem value={1}>Hónap</MenuItem>
             <MenuItem value={2}>Év</MenuItem>
           </Select>
-        </FormControl><MuiPickersUtilsProvider utils={DateFnsUtils}>
+        </FormControl>
+
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
           <DatePicker
+          className="chart-date-picker"
           views={this.state.yearSelected == 2 ? ["year"]:["month"]}
-          label="Év"
+          label={this.state.yearSelected == 2 ? 'Év':'Hónap'}
           value={this.state.selectedDate}
           onChange={this.handlePickerChange}
+          format={this.state.yearSelected == 2 ? "YYYY":"MMMM"}
           animateYearScrolling
           />
-          </MuiPickersUtilsProvider>
-        <Button onClick={_ => this.getReservations()}>Ok</Button>
+        </MuiPickersUtilsProvider>
+
+        <Button onClick={_ => this.getReservations()}>
+          <FontAwesomeIcon className="login-brand-icon" icon={faCheck} />
+        </Button>
         
         <br />
         <br />
@@ -275,7 +370,15 @@ export default class Charts extends React.Component<any, IState>{
                     <Bar data={this.barByDay}  />
                   </div>
                   <div className="col-md-6">
+                    <Bar data={this.studioByDay}  />
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-6">
                     {this.state.yearSelected == 2 && <Line data={this.lineByMonth}  />}
+                  </div>
+                  <div className="col-md-6">
+                    {this.state.yearSelected == 2 && <Line data={this.studioByMonth}  />}
                   </div>
                 </div>
             </div>}

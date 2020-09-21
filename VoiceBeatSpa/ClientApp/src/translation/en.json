@@ -13,6 +13,8 @@
 "login.login": "Login",
 "login.noaccount": "Don't have an account?",
 "login.loginor": "or",
+"login.withfacebook": "Sign in with Facebook",
+"login.withgoogle": "Sign in with Google",
 "profile.email": "Email",
 "profile.phone": "Phone number",
 "profile.oldpassword": "Old password",

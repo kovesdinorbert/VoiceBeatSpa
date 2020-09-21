@@ -72,10 +72,12 @@ export default class Reservation extends React.Component<any, IState>{
   componentDidMount() {
     this.getReservations();
     
-    this.connection.start();
-    this.connection.on('sendToAll', (e) => {
-      this.getReservations();
-    });
+    if (this.authenticationService.instance().currentUserSubject.getValue().token) {
+      this.connection.start();
+      this.connection.on('sendToAll', (e) => {
+        this.getReservations();
+      });
+    }
   }
   
   async getReservations() {
@@ -96,6 +98,10 @@ export default class Reservation extends React.Component<any, IState>{
     .then(async response => {
       const data: IEvent[] = await response.json();
       if (!response.ok) {
+        if (response.status == 401) {
+          this.toastrRef.current?.openSnackbar("message.success.reservation.reserve", "success");
+          this.authenticationService.instance().logout();
+          } 
           this.toastrRef.current?.openSnackbar("message.unsuccess.reservation.getevents", "error");
         } else {
         }
@@ -106,6 +112,7 @@ export default class Reservation extends React.Component<any, IState>{
       })
       .catch(error => {
         this.toastrRef.current?.openSnackbar("message.unsuccess.reservation.getevents", "error");
+        this.authenticationService.instance().logout();
       });
   }
 
@@ -232,9 +239,8 @@ export default class Reservation extends React.Component<any, IState>{
               datesRender={this.getReservations}
             />
           </>
-         <Dialog open={this.state.showScheduler} onClose={this.handleClose} aria-labelledby="form-dialog-title">
+         <Dialog open={this.state.showScheduler} onClose={this.handleClose} aria-labelledby="form-dialog-title" maxWidth={"md"} fullWidth={true} >
          <BlockUi tag="div" blocking={this.state.blocking}>
-           <DialogTitle id="form-dialog-title"></DialogTitle>
            <DialogContent>
              {this.state.blocking
              ? <CircularProgress />

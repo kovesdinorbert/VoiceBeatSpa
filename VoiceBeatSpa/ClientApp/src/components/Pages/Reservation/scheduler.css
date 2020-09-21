@@ -19,6 +19,10 @@
     background-color: #757575 !important;
 }
 
+.fc-event-container .studio-room:hover {
+    background-color: mediumaquamarine !important;
+}
+
 
 .fc-head {
     background-color:#616161 !important;

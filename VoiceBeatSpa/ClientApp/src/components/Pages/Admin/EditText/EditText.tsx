@@ -12,6 +12,7 @@ import { AuthenticationService } from '../../../../services/authentication.servi
 import Toastr from '../../../Common/Toastr/Toastr';
 import { PageLoading } from '../../../Common/PageLoading/PageLoading';
 import { LanguageSelector } from '../../../Common/LanguageSelector/LanguageSelector';
+import { Container } from 'reactstrap';
 
 export interface IState {
   livingText: ILivingText;
@@ -115,37 +116,44 @@ export default class EditText extends React.Component<any, IState>{
       <div>
         <PageLoading show={this.state.loading}></PageLoading>
         <div>
-          <FormControl variant="filled">
-            <InputLabel htmlFor="text-type-select">Típus</InputLabel>
-            <Select value={this.state.livingText.livingTextType} onChange={this.handleTypeChange} inputProps={{ name: 'Típus', id: 'text-type-select' }}>
-              <MenuItem value={LivingTextTypeEnum.StartPageText}>Startlap</MenuItem>
-              <MenuItem value={LivingTextTypeEnum.DiscountsText}>Kedvezmények</MenuItem>
-              <MenuItem value={LivingTextTypeEnum.PricesText}>Árak</MenuItem>
-              <MenuItem value={LivingTextTypeEnum.ReservationRulesText}>Foglalási szabályok</MenuItem>
-              <MenuItem value={LivingTextTypeEnum.EmailReservationSent}>Email - Foglalás elküldve</MenuItem>
-              <MenuItem value={LivingTextTypeEnum.EmailRegistration}>Email - regisztráció</MenuItem>
-              <MenuItem value={LivingTextTypeEnum.EmailForgottenPassword}>Email - elfelejtett jelszó</MenuItem>
-              <MenuItem value={LivingTextTypeEnum.EmailReservationDelete}>Email - Foglalás törlés</MenuItem>
-              <MenuItem value={LivingTextTypeEnum.RedRoomPrice}>Piros terem - árak</MenuItem>
-              <MenuItem value={LivingTextTypeEnum.RedRoomText}>Piros terem - leírás</MenuItem>
-              <MenuItem value={LivingTextTypeEnum.BlueRoomPrice}>Kék terem - árak</MenuItem>
-              <MenuItem value={LivingTextTypeEnum.BlueRoomText}>Kék terem - leírás</MenuItem>
-              <MenuItem value={LivingTextTypeEnum.GrayRoomPrice}>Szürke terem - árak</MenuItem>
-              <MenuItem value={LivingTextTypeEnum.GrayRoomText}>Szürke terem - leírás</MenuItem>
-              <MenuItem value={LivingTextTypeEnum.StudioRoomPrice}>Stúdió - árak</MenuItem>
-              <MenuItem value={LivingTextTypeEnum.StudioRoomText}>Stúdió - leírás</MenuItem>
-              <MenuItem value={LivingTextTypeEnum.MasterPrice}>Master árak</MenuItem>
-              <MenuItem value={LivingTextTypeEnum.StudioPrice}>Stúdió óradíj</MenuItem>
-              <MenuItem value={LivingTextTypeEnum.PhoneNumber}>Telefonszám</MenuItem>
-            </Select>
-          </FormControl>
-          <LanguageSelector locale={this.state.currentLanguage} changeLanguage={this.handleLanguageChange}></LanguageSelector>
+          <Container className="selector-container">
+            <FormControl variant="filled">
+              <InputLabel htmlFor="text-type-select">Típus</InputLabel>
+              <Select value={this.state.livingText.livingTextType} onChange={this.handleTypeChange} inputProps={{ name: 'Típus', id: 'text-type-select' }}>
+                <MenuItem value={LivingTextTypeEnum.StartPageText}>Startlap</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.DiscountsText}>Kedvezmények</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.PricesText}>Árak</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.ReservationRulesText}>Foglalási szabályok</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.EmailReservationSent}>Email - Foglalás elküldve</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.EmailRegistration}>Email - regisztráció</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.EmailForgottenPassword}>Email - elfelejtett jelszó</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.EmailReservationDelete}>Email - Foglalás törlés</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.RedRoomPrice}>Piros terem - árak</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.RedRoomText}>Piros terem - leírás</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.BlueRoomPrice}>Kék terem - árak</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.BlueRoomText}>Kék terem - leírás</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.GrayRoomPrice}>Szürke terem - árak</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.GrayRoomText}>Szürke terem - leírás</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.StudioRoomPrice}>Stúdió - árak</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.StudioRoomText}>Stúdió - leírás</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.MasterPrice}>Master árak</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.StudioPrice}>Stúdió óradíj</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.PhoneNumber}>Telefonszám</MenuItem>
+              </Select>
+            </FormControl>
+            <div className="language-selector-div">
+              <FormControl variant="filled">
+                <InputLabel htmlFor="text-type-select">Nyelv</InputLabel>
+                <LanguageSelector locale={this.state.currentLanguage} changeLanguage={this.handleLanguageChange}></LanguageSelector>
+              </FormControl>
+            </div>
+          </Container>
           <SunEditor
             onChange={this.handleTextChange}
             autoFocus={true} 
             setOptions={{
               icons: {},
-              minHeight: '300px',
+              minHeight: '500px',
               buttonList: [['undo', 'redo'],
                            ['font', 'fontSize', 'formatBlock'],
                            ['paragraphStyle', 'blockquote'], 

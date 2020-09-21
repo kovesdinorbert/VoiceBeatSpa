@@ -22,6 +22,10 @@
     content: "|";
     background-color: #9E9E9E;
   }
+.room-class-studio {
+    content: "|";
+    background-color: aquamarine;
+  }
 
 .fc-day-grid-event {
   pointer-events: none;
@@ -62,4 +66,14 @@
 
 span.fc-time {
   white-space: normal;
+}
+
+
+
+@media (max-width: 750px) {
+  .MuiDialog-paperScrollPaper,
+  .scheduler-dialog-content {
+    height: 100% !important;;
+  }
+  .fc-scroller {height:80% !important;}
 }

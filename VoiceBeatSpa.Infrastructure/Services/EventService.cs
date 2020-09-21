@@ -84,6 +84,30 @@ namespace VoiceBeatSpa.Infrastructure.Services
                 await _emailService.SendEmail(internalEmail, adminEmail, translationQHu.Subject, bodyHu, "Voice-Beat");
             }
 
+            if (isAdmin && newEvent.Room == RoomEnum.Studio)
+            {
+                await _eventRepository.CreateAsync(new Event()
+                {
+                    Subject = "Stúdió",
+                    StartDate = newEvent.StartDate,
+                    EndDate = newEvent.EndDate,
+                    Room = RoomEnum.Room1,
+                }, user.Id);
+                await _eventRepository.CreateAsync(new Event()
+                {
+                    Subject = "Stúdió",
+                    StartDate = newEvent.StartDate,
+                    EndDate = newEvent.EndDate,
+                    Room = RoomEnum.Room2,
+                }, user.Id);
+                await _eventRepository.CreateAsync(new Event()
+                {
+                    Subject = "Stúdió",
+                    StartDate = newEvent.StartDate,
+                    EndDate = newEvent.EndDate,
+                    Room = RoomEnum.Room3,
+                }, user.Id);
+            }
         }
 
         public async Task DeleteEvent(Guid eventToDelete, string userEmail, LanguageEnum languageCode)
@@ -125,6 +149,17 @@ namespace VoiceBeatSpa.Infrastructure.Services
             }
 
             await _eventRepository.DeleteAsync(eventToDelete);
+
+            if (isAdmin && eventEntity.Room == RoomEnum.Studio)
+            {
+                var rooms = await _eventRepository.FindAllAsync(e =>
+                    e.StartDate == eventEntity.StartDate && e.EndDate == eventEntity.EndDate);
+
+                foreach (var room in rooms)
+                {
+                    await _eventRepository.DeleteAsync(room);
+                }
+            }
         }
 
         public async Task UpdateEvent(Event eventToUpdate, string userEmail)
@@ -149,13 +184,13 @@ namespace VoiceBeatSpa.Infrastructure.Services
         public async Task<List<Event>> GetEvents(bool includeNotActive, string userEmail)
         {
             var events = await _eventRepository.FindAllAsync(e => includeNotActive || e.IsActive);
-            return await HideNotOwnEvents(events, userEmail);
+            return await HideNotOwnOrStudioEvents(events, userEmail);
         }
 
         public async Task<List<Event>> GetEvents(DateTime start, DateTime end, string userEmail)
         {
             var events = await _eventRepository.FindAllAsync(e => e.StartDate >= start && e.EndDate <= end);
-            return await HideNotOwnEvents(events, userEmail);
+            return await HideNotOwnOrStudioEvents(events, userEmail);
         }
 
         public async Task HandleEventsWhenUserDelete(Guid userId, string currentUserEmail)
@@ -204,7 +239,7 @@ namespace VoiceBeatSpa.Infrastructure.Services
             }
         }
 
-        private async Task<List<Event>> HideNotOwnEvents(List<Event> events, string userEmail)
+        private async Task<List<Event>> HideNotOwnOrStudioEvents(List<Event> events, string userEmail)
         {
             var user = await _userService.GetCurrentUserByEmail(userEmail);
 
@@ -218,6 +253,7 @@ namespace VoiceBeatSpa.Infrastructure.Services
             if (!isAdmin)
             {
                 events.Where(e => e.CreatedBy != user.Id).ToList().ForEach(e => e.Subject = "N/A");
+                events = events.Where(e => e.Room != RoomEnum.Studio).ToList();
             }
 
             return events;

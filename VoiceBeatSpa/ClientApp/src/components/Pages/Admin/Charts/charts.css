@@ -1,0 +1,9 @@
+.MuiFormControl-root {
+    height: 60px;
+}
+
+.chart-date-picker,
+.chart-date-picker label {
+    padding-left: 5px !important;
+    padding-top: 8px !important;
+}

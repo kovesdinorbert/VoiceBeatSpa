@@ -157,8 +157,8 @@ export default class Profil extends React.Component<any>{
                   this.authenticationService.instance().userProfileUpdated(profil.email, profil.phoneNumber);
 
                 this.toastrRef.current?.openSnackbar("message.success.save", "success");
+                this.setState({oldPassword: "", blocking: false, newPassword1 : "", newPassword2 : "", passwordchange:false, sociallogin : pwChanged ? false : socLogin });
               }
-              this.setState({oldPassword: "", blocking: false, newPassword1 : "", newPassword2 : "", sociallogin : pwChanged ? false : socLogin });
             })
             .catch(error => {
               this.setState({oldPassword: "", blocking: false, newPassword1 : "", newPassword2 : "" });
@@ -246,7 +246,7 @@ export default class Profil extends React.Component<any>{
             <Container><Agree text={<FormattedMessage id="profile.changepassword" defaultMessage={'Jelszó módosítása'}/>} handleChange={this.handlePasswordChange}></Agree></Container>
             {this.state.passwordchange
             ?<>
-              <>{!this.state.sociallogin && <TextInput config={confPw} value={this.state.oldPassword} onInputValueChange={this.handleOldPasswordChange}></TextInput>}</>
+              <>{!this.state.sociallogin ? <TextInput config={confPw} value={this.state.oldPassword} onInputValueChange={this.handleOldPasswordChange}></TextInput> : <></>}</>
               <><TextInput config={confNewPw1} value={this.state.newPassword1} onInputValueChange={this.handleNewPassword1Change}></TextInput></>
               <><TextInput config={confNewPw2} value={this.state.newPassword2} onInputValueChange={this.handleNewPassword2Change}></TextInput></>
               {this.state.passwordMismatch && <div className="validation-password-mismatch"><FormattedMessage id="passwordMismatch" defaultMessage={'A két jelszó nem egyezik'}/></div>}
@@ -254,7 +254,9 @@ export default class Profil extends React.Component<any>{
             :<></>}
             <Container>
               <Button className="btn-action" onClick={_ => this.setState({deleteOpen: true})}><FormattedMessage id="delete" defaultMessage={'Törlés'}/></Button>
-              <Button disabled={this.state.phone === "" || this.state.phone.length < 7 || this.state.email === "" || !(/\S+@\S+\.\S+/.test(this.state.email))} className="btn-action" onClick={this.submit}><FormattedMessage id="save" defaultMessage={'Mentés'}/></Button>
+              <Button disabled={(this.state.passwordchange && (this.state.newPassword1.length < 8 || this.state.newPassword1 != this.state.newPassword2)) 
+                                || this.state.phone === "" || this.state.phone.length < 7 || this.state.email === "" || !(/\S+@\S+\.\S+/.test(this.state.email) )} 
+                className="btn-action" onClick={this.submit}><FormattedMessage id="save" defaultMessage={'Mentés'}/></Button>
             </Container>
             <ConfirmDialog
               title={<FormattedMessage id="confirm" defaultMessage={'Megerősítés'}/>}
