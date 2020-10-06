@@ -49,3 +49,15 @@
 .reservation-action-button button:hover {
   background-color: #BDBDBD;
 } 
+
+
+#calendar-scheduler{
+    height: calc(100% - 64px) !important;
+}
+#admin-calendar-scheduler{
+    height: calc(100% - 125px) !important;
+}
+.fc-unthemed {
+    display: flex;
+    flex-direction: column;
+}

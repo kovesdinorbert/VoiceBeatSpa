@@ -3,6 +3,7 @@ import { Container } from 'reactstrap';
  import { NavMenu } from './NavMenu';
  import { AuthenticationService } from '../services/authentication.service';
  import Admin from './Pages/Admin/Admin';
+ import Footer from './Pages/Footer/Footer';
 
 export class Layout extends Component {
   static displayName = Layout.name;
@@ -34,6 +35,7 @@ export class Layout extends Component {
             <Container className="content-container">
               {this.props.children}
             </Container>
+            <Footer></Footer>
           </>}
       </div>
     );

@@ -10,7 +10,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { faSignOutAlt, faUsers, faKeyboard, faCalendar, faFile, faBars, faChartArea, faEnvelopeOpen  } from '@fortawesome/free-solid-svg-icons';
+import { faSignOutAlt, faUsers, faKeyboard, faCalendar, faFile, faBars, faChartArea, faEnvelopeOpen, faShieldAlt  } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { AuthenticationService } from '../../../services/authentication.service';
 import Reservation from '../Reservation/Reservation';
@@ -21,10 +21,11 @@ import EditText from './EditText/EditText';
 import Newsletter from './Newsletter/Newsletter';
 import Image from './Image/Image';
 import Charts from './Charts/Charts';
+import AAT from './AAT/AAAT';
 
 export interface IState {
   mobileOpen : boolean, 
-  activeItem : 'reservation' | 'text' | 'image' | 'user' | 'chart' | 'newletter'
+  activeItem : 'reservation' | 'text' | 'image' | 'user' | 'chart' | 'newletter' | 'aat'
 }
 
 
@@ -66,6 +67,8 @@ export default class Admin extends React.Component<any, IState>{
         return <Image></Image>;
       case 'chart':
         return <Charts></Charts>;
+      case 'aat':
+        return <AAT></AAT>;
       default:
         return <Reservation></Reservation>;
     }
@@ -100,6 +103,12 @@ export default class Admin extends React.Component<any, IState>{
               <FontAwesomeIcon className="login-brand-icon" icon={faFile} />
             </ListItemIcon>
             <ListItemText primary="Képek" />
+          </ListItem>
+          <ListItem className={this.state.activeItem=='aat'?'active-admin-menu': ''} button key="adminAatK" onClick={() => this.setActive('aat')}>
+            <ListItemIcon>
+              <FontAwesomeIcon className="login-brand-icon" icon={faShieldAlt} />
+            </ListItemIcon>
+            <ListItemText primary="Adatvédelmi tájékoztató frissítés" />
           </ListItem>
           <ListItem className={this.state.activeItem=='user'?'active-admin-menu': ''} button key="adminUsersK" onClick={() => this.setActive('user')}>
             <ListItemIcon>

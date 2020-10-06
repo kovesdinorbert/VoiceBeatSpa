@@ -3,5 +3,6 @@
     public enum FileTypeEnum
     {
         Image = 0,
+        Dataprotection = 1,
     }
 }

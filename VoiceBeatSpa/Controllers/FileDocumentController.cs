@@ -62,23 +62,18 @@ namespace VoiceBeatSpa.Web.Controllers
         public async Task<IActionResult> GetFiles(int fileType)
         {
             var files = await _fileRepository.FindAllAsync(f => f.FileType.HasValue && f.FileType == (FileTypeEnum)fileType);
-            if (!files.Any())
+            if (!files.Any(f => f.IsActive))
             {
                 return NotFound();
             }
 
-            var content = new MultipartContent();
-
-            foreach(var file in files)
+            if ((int) FileTypeEnum.Dataprotection == fileType)
             {
-                var fileContent = new StreamContent(new MemoryStream(file.FileContent));
-                fileContent.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(MimeTypesMap.GetMimeType(file.FileName));
-                content.Add(fileContent);
+                var file = files.First(f => f.IsActive);
+                return File(file.FileContent, MimeTypesMap.GetMimeType(file.FileName), file.FileName);
             }
 
-            var response = new HttpResponseMessage();
-            response.Content = content;
-            return Ok(response);
+            return NotFound();
         }
 
         [HttpGet("images/{imageType:int}")]
@@ -127,6 +122,30 @@ namespace VoiceBeatSpa.Web.Controllers
 
                 switch ((FileTypeEnum)fileType)
                 {
+                    case FileTypeEnum.Dataprotection:
+
+                        var f = new FileDocument()
+                        {
+                            FileType = (FileTypeEnum)fileType,
+                            IsActive = true,
+                            Size = file.Length,
+                            FileName = file.FileName
+                        };
+
+                        var olds = await _fileRepository.FindAllAsync(f => f.FileType == FileTypeEnum.Dataprotection);
+                        foreach (var o in olds)
+                        {
+                            o.IsActive = false;
+                            await _fileRepository.UpdateAsync(o, user.Id);
+                        }
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            file.CopyTo(memoryStream);
+                            f.FileContent = memoryStream.ToArray();
+                        }
+
+                        await _fileRepository.CreateAsync(f, user.Id);
+                        break;
                     case FileTypeEnum.Image:
 
                         var image = _mapper.Map<Image>(file);

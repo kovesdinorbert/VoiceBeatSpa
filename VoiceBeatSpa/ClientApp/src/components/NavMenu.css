@@ -58,11 +58,18 @@ html {
 .navbar-main nav {
   width: 100%;
   justify-content: space-between;
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .menu-phone div p {
   padding-top: 10px;
   width: max-content;
+}
+
+.menu-phone {
+  white-space: nowrap;
+  margin-top: 10px;
 }
 
 @media (max-width: 1000px) {
@@ -77,14 +84,24 @@ html {
   }
 }
 
+@media (max-width: 720px) {
+  .header-logo {
+    display: none;
+  }
+}
+
 @media (max-width: 576px) {
   .menu-facebook {
     display: flex !important;
+  }
+  .header-logo {
+    display: unset;
   }
 }
 
 .content-container {
   padding-top: 80px;
+  padding-bottom: 60px;
 }
 
 .navbar-nav-item, .navbar-nav-item a, .navbar-nav-item div{

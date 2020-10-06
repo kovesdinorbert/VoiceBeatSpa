@@ -205,7 +205,7 @@ export default class Reservation extends React.Component<any, IState>{
   }
 
   public render() {
-
+    const currentUser = this.authenticationService.instance().currentUserSubject.getValue();
     return (
       <div>
         <><PageLoading show={this.state.blocking}></PageLoading>
@@ -214,7 +214,7 @@ export default class Reservation extends React.Component<any, IState>{
               locale={this.languageService.instance().currentLanguageCode}
               defaultView="dayGridMonth"
               header={{
-                left: 'prev,next today',
+                left: 'prev,next',
                 center: 'title',
                 right: ''
               }}
@@ -239,12 +239,13 @@ export default class Reservation extends React.Component<any, IState>{
               datesRender={this.getReservations}
             />
           </>
-         <Dialog open={this.state.showScheduler} onClose={this.handleClose} aria-labelledby="form-dialog-title" maxWidth={"md"} fullWidth={true} >
+         <Dialog open={this.state.showScheduler} onClose={this.handleClose} aria-labelledby="form-dialog-title" maxWidth={"md"} fullWidth={true} className="reservation-dialog">
          <BlockUi tag="div" blocking={this.state.blocking}>
            <DialogContent>
              {this.state.blocking
              ? <CircularProgress />
-             : <Scheduler selectedDate={this.state.selectedDate}
+             : <Scheduler isAdmin={this.authenticationService.instance().isAdmin(currentUser.token)} userEmail={currentUser.email} userPhone={currentUser.phoneNumber}
+                          selectedDate={this.state.selectedDate}
                           onDayEvents={this.mapToCalendarEvents(this.state.onDayEvents, true)}
                           submitReservation={this.submitReservation}
                           handleClose={this.handleClose}>

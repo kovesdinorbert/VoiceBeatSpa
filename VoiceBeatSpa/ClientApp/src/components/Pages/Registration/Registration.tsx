@@ -186,7 +186,9 @@ export default class Registration extends React.Component<any>{
               <ReCAPTCHA sitekey="Your client site key" onChange={this.onCaptchaChange} />
               <Container><Agree text={<FormattedMessage id="register.agree1" defaultMessage={''}/>} handleChange={this.handleR1Change}></Agree></Container>
               <Container><Agree text={<FormattedMessage id="register.agree2" defaultMessage={''}/>} handleChange={this.handleR2Change}></Agree></Container>
-              <Container><Button className="btn-action" onClick={this.submit} disabled={!this.state.r1accepted || !this.state.r2accepted || this.state.password === "" || this.state.password2 === "" || this.state.passwordMismatch || this.state.phone === "" || this.state.phone.length < 7 || this.state.email === "" || !(/\S+@\S+\.\S+/.test(this.state.email)) || this.state.password.length < 8}><FormattedMessage id="save" defaultMessage={'Mentés'}/></Button></Container>
+              <Container className="registration-action-button-container">
+                <Button className="btn-action" onClick={this.submit} disabled={!this.state.r1accepted || !this.state.r2accepted || this.state.password === "" || this.state.password2 === "" || this.state.passwordMismatch || this.state.phone === "" || this.state.phone.length < 7 || this.state.email === "" || !(/\S+@\S+\.\S+/.test(this.state.email)) || this.state.password.length < 8}><FormattedMessage id="save" defaultMessage={'Mentés'}/></Button>
+              </Container>
             <Toastr ref={this.toastrRef}></Toastr>
           </div>
         </div>

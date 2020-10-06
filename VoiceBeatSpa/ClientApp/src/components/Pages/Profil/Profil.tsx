@@ -252,7 +252,7 @@ export default class Profil extends React.Component<any>{
               {this.state.passwordMismatch && <div className="validation-password-mismatch"><FormattedMessage id="passwordMismatch" defaultMessage={'A két jelszó nem egyezik'}/></div>}
             </>
             :<></>}
-            <Container>
+            <Container className="profile-action-button-container">
               <Button className="btn-action" onClick={_ => this.setState({deleteOpen: true})}><FormattedMessage id="delete" defaultMessage={'Törlés'}/></Button>
               <Button disabled={(this.state.passwordchange && (this.state.newPassword1.length < 8 || this.state.newPassword1 != this.state.newPassword2)) 
                                 || this.state.phone === "" || this.state.phone.length < 7 || this.state.email === "" || !(/\S+@\S+\.\S+/.test(this.state.email) )} 

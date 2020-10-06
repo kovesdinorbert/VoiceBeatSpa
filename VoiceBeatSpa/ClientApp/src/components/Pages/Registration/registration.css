@@ -8,13 +8,15 @@
     background-color: #BDBDBD;
 }
 .registration-container {
-    display: flex;
     flex-direction: column;
     color: black;
 }
 
 .registration-container .Mui-disabled span{
     color: gainsboro !important;
+}
+.registration-action-button-container {
+    display: flow-root;
 }
 
 .validation-password-mismatch {

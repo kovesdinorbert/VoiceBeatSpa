@@ -8,7 +8,7 @@
         flex: 1;
         border-bottom: groove 2px;
         margin: auto 0.25em;
-        box-shadow: 0 -1px; /* ou 0 1px si border-style:ridge */
+        box-shadow: 0 -1px;
     }
     .price-card {
         text-align: center;
@@ -19,7 +19,7 @@
     .price-card:hover {
         cursor: pointer;
         transform: scale(1.1);
-        z-index: 1300;
+        z-index: 1001;
     }
     .price-card .MuiCardHeader-root {
         background-color: lightgray;

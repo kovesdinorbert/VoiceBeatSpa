@@ -1,6 +1,9 @@
-/* Provide sufficient contrast against white background */
 a {
   color: #0366d6;
+}
+
+html, body, html * {
+  font-family: serif;
 }
 
 code {
@@ -22,28 +25,13 @@ body {
   min-height: 100%;
   display: inline-block;
   vertical-align: top;
-  position: sticky;
-  background-image: url("./content/background-pattern.jpg");
+  background-image: url("./content/background.jpg");
   color: whitesmoke;
   text-align: justify;
 }
 
 body div{
   position: relative;
-}
-
-body:before {
-  position: absolute;
-  content: " ";
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: none;
-  z-index: 0;
-  display: block;
-  background-color: deepskyblue;
-  opacity: 0.45 !important;
 }
 
 .content-container.container{

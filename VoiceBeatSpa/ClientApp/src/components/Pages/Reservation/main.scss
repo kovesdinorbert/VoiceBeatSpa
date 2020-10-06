@@ -61,19 +61,20 @@
 }
 
 .fc-today {
-  background: cornsilk !important;
+  background: gainsboro !important;
 } 
 
 span.fc-time {
   white-space: normal;
 }
 
+.MuiDialog-paperFullWidth,
+.MuiDialog-paperFullWidth > div,
+.reservation-dialog {
+  height: 100% !important;
+}
 
-
-@media (max-width: 750px) {
-  .MuiDialog-paperScrollPaper,
-  .scheduler-dialog-content {
-    height: 100% !important;;
-  }
-  .fc-scroller {height:80% !important;}
+.MuiDialogContent-root,
+.MuiDialogContent-root > div {
+  height: inherit !important;
 }

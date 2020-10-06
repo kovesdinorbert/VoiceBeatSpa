@@ -1,6 +1,10 @@
 .MuiFormControl-fullWidth {
     width: 100%;
     margin-bottom: 10px !important;
+    display: inline-table !important;
+}
+.MuiFormControl-fullWidth .MuiInputBase-root{
+    width: 100%;
 }
 
 .validation-error-message {
