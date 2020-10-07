@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { FormattedMessage } from 'react-intl';
 import './footer.css';
 
 export interface IState {
@@ -23,7 +24,7 @@ export default class Footer extends Component<any, IState> {
     return (
       <footer>
         <div>
-            <a className="text-light" onClick={this.download} href={''} target='_blank'>Adatvédelmi szabályzat</a>
+            <div className="text-light aat-div" onClick={this.download}><FormattedMessage id="aat" defaultMessage={'Adatvédelmi szabályzat'}/></div>
         </div>
       </footer>
     );

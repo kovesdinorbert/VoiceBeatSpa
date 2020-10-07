@@ -21,6 +21,7 @@ export interface IState {
     blocking : boolean, 
     showMessage : boolean, 
     formIsValid : boolean, 
+    captchaValid : boolean, 
   }
 
 export default class Contact extends React.Component<any>{
@@ -32,6 +33,7 @@ export default class Contact extends React.Component<any>{
       blocking : false, 
       showMessage : false, 
       formIsValid : false, 
+      captchaValid : false, 
     };
     
     authenticationService: AuthenticationService = new AuthenticationService();
@@ -46,6 +48,8 @@ export default class Contact extends React.Component<any>{
       this.handleContentChange = this.handleContentChange.bind(this);
       this.onCaptchaChange = this.onCaptchaChange.bind(this);
       this.sendEmail = this.sendEmail.bind(this);
+      this.onCaptchaChange = this.onCaptchaChange.bind(this);
+      this.onCaptchaExpired = this.onCaptchaExpired.bind(this);
       
       this.toastrRef = React.createRef();
     }
@@ -53,7 +57,7 @@ export default class Contact extends React.Component<any>{
     handleEmailChange(email: string) {
       let cState = this.state;
       cState.email = email;
-      cState.formIsValid = !(this.state.body === "" || this.state.email === "" || !(/\S+@\S+\.\S+/.test(this.state.email)));
+      cState.formIsValid = !(this.state.body === "" || !this.state.captchaValid || this.state.email === "" || !(/\S+@\S+\.\S+/.test(this.state.email)));
       this.setState(cState);
     }
   
@@ -72,12 +76,15 @@ export default class Contact extends React.Component<any>{
     handleContentChange(content: string) {
       let cState = this.state;
       cState.body = content;
-      cState.formIsValid = !(this.state.body === "" || this.state.email === "" || !(/\S+@\S+\.\S+/.test(this.state.email)));
+      cState.formIsValid = !(this.state.body === "" || !this.state.captchaValid || this.state.email === "" || !(/\S+@\S+\.\S+/.test(this.state.email)));
       this.setState(cState);
     }
 
     onCaptchaChange(value: any) {
-        console.log("Captcha value:", value);
+        this.setState({captchaValid: true, formIsValid: !(this.state.body === "" || false || this.state.email === "" || !(/\S+@\S+\.\S+/.test(this.state.email)))});
+    }
+    onCaptchaExpired() {
+        this.setState({captchaValid: false, formIsValid: !(this.state.body === "" || true || this.state.email === "" || !(/\S+@\S+\.\S+/.test(this.state.email)))});
     }
 
     sendEmail() {
@@ -155,8 +162,8 @@ export default class Contact extends React.Component<any>{
                 <><TextInput config={confEmail} value={this.state.email} onInputValueChange={this.handleEmailChange}></TextInput></>
                 <><TextInput config={confSubject} value={this.state.subject} onInputValueChange={this.handleSubjectChange}></TextInput></>
                 <><TextInput config={confContent} value={this.state.body} onInputValueChange={this.handleContentChange}></TextInput></>
-                <ReCAPTCHA sitekey="Your client site key" onChange={this.onCaptchaChange} />
-                <Button disabled={!this.state.formIsValid} className="btn-send-email" onClick={this.sendEmail}><FormattedMessage id="contact.send" defaultMessage={'Küldés'}/></Button>
+                <ReCAPTCHA size={window.innerWidth > 415 ? 'normal' : 'compact'} sitekey="6LeeudQZAAAAAFBgdmijuJm9wbVeAKvZZeFhhIF9" onChange={this.onCaptchaChange} onExpired={this.onCaptchaExpired} />
+                <Button disabled={!this.state.formIsValid} className="btn-send-email btn-action" onClick={this.sendEmail}><FormattedMessage id="contact.send" defaultMessage={'Küldés'}/></Button>
             </div>
             <div className="map-container">
                 <div>

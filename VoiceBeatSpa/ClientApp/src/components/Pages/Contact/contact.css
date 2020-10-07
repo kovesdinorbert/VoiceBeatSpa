@@ -44,3 +44,8 @@
 .Mui-disabled span {
     color: lightgray;
 }
+
+.btn-action:hover {
+    cursor: pointer !important;
+    background-color: #BDBDBD !important;
+}

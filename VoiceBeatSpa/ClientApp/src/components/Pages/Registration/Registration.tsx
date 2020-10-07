@@ -24,6 +24,7 @@ export interface IState {
     blocking : boolean, 
     r1accepted : boolean, 
     r2accepted : boolean, 
+    captchaValid : boolean, 
   }
 
 export default class Registration extends React.Component<any>{
@@ -37,6 +38,7 @@ export default class Registration extends React.Component<any>{
       blocking : false, 
       r1accepted : false, 
       r2accepted : false, 
+      captchaValid : false, 
     };
     
     authenticationService: AuthenticationService = new AuthenticationService();
@@ -55,6 +57,8 @@ export default class Registration extends React.Component<any>{
       this.handleR2Change = this.handleR2Change.bind(this);
       this.submit = this.submit.bind(this);
       this.delete = this.delete.bind(this);
+      this.onCaptchaExpired = this.onCaptchaExpired.bind(this);
+      this.onCaptchaChange = this.onCaptchaChange.bind(this);
       
       this.toastrRef = React.createRef();
     }
@@ -99,6 +103,10 @@ export default class Registration extends React.Component<any>{
 
     onCaptchaChange(value: any) {
         console.log("Captcha value:", value);
+        this.setState({captchaValid: true});
+    }
+    onCaptchaExpired() {
+        this.setState({captchaValid: false});
     }
 
     submit() {
@@ -183,11 +191,11 @@ export default class Registration extends React.Component<any>{
               <><TextInput config={confPw2} value={this.state.password2} onInputValueChange={this.handlePassword2Change}></TextInput></>
               {this.state.passwordMismatch && <div className="validation-password-mismatch"><FormattedMessage id="passwordMismatch" defaultMessage={'A két jelszó nem egyezik'}/></div>}
               <Container><Agree text={<FormattedMessage id="register.newsletter" defaultMessage={'Hírlevél'}/>} handleChange={this.handleNewsletterChange}></Agree></Container>
-              <ReCAPTCHA sitekey="Your client site key" onChange={this.onCaptchaChange} />
+              <ReCAPTCHA sitekey="6LeeudQZAAAAAFBgdmijuJm9wbVeAKvZZeFhhIF9" onChange={this.onCaptchaChange} onExpired={this.onCaptchaExpired} />
               <Container><Agree text={<FormattedMessage id="register.agree1" defaultMessage={''}/>} handleChange={this.handleR1Change}></Agree></Container>
               <Container><Agree text={<FormattedMessage id="register.agree2" defaultMessage={''}/>} handleChange={this.handleR2Change}></Agree></Container>
               <Container className="registration-action-button-container">
-                <Button className="btn-action" onClick={this.submit} disabled={!this.state.r1accepted || !this.state.r2accepted || this.state.password === "" || this.state.password2 === "" || this.state.passwordMismatch || this.state.phone === "" || this.state.phone.length < 7 || this.state.email === "" || !(/\S+@\S+\.\S+/.test(this.state.email)) || this.state.password.length < 8}><FormattedMessage id="save" defaultMessage={'Mentés'}/></Button>
+                <Button className="btn-action" onClick={this.submit} disabled={!this.state.captchaValid || !this.state.r1accepted || !this.state.r2accepted || this.state.password === "" || this.state.password2 === "" || this.state.passwordMismatch || this.state.phone === "" || this.state.phone.length < 7 || this.state.email === "" || !(/\S+@\S+\.\S+/.test(this.state.email)) || this.state.password.length < 8}><FormattedMessage id="save" defaultMessage={'Mentés'}/></Button>
               </Container>
             <Toastr ref={this.toastrRef}></Toastr>
           </div>

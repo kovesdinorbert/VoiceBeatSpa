@@ -50,7 +50,7 @@ export default class Admin extends React.Component<any, IState>{
   };
 
   setActive(active: any) {
-    this.setState({activeItem: active});
+    this.setState({activeItem: active, mobileOpen: false});
   }
 
   renderActive() {
