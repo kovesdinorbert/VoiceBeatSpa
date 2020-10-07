@@ -162,7 +162,7 @@ export default class Contact extends React.Component<any>{
                 <><TextInput config={confEmail} value={this.state.email} onInputValueChange={this.handleEmailChange}></TextInput></>
                 <><TextInput config={confSubject} value={this.state.subject} onInputValueChange={this.handleSubjectChange}></TextInput></>
                 <><TextInput config={confContent} value={this.state.body} onInputValueChange={this.handleContentChange}></TextInput></>
-                <ReCAPTCHA size={window.innerWidth > 415 ? 'normal' : 'compact'} sitekey="6LeeudQZAAAAAFBgdmijuJm9wbVeAKvZZeFhhIF9" onChange={this.onCaptchaChange} onExpired={this.onCaptchaExpired} />
+                <ReCAPTCHA size={window.innerWidth > 415 ? 'normal' : 'compact'} sitekey={process.env.REACT_APP_CAPTCHA_SITEKEY+''} onChange={this.onCaptchaChange} onExpired={this.onCaptchaExpired} />
                 <Button disabled={!this.state.formIsValid} className="btn-send-email btn-action" onClick={this.sendEmail}><FormattedMessage id="contact.send" defaultMessage={'Küldés'}/></Button>
             </div>
             <div className="map-container">

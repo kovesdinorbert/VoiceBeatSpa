@@ -102,7 +102,6 @@ export default class Registration extends React.Component<any>{
     }
 
     onCaptchaChange(value: any) {
-        console.log("Captcha value:", value);
         this.setState({captchaValid: true});
     }
     onCaptchaExpired() {
@@ -191,7 +190,7 @@ export default class Registration extends React.Component<any>{
               <><TextInput config={confPw2} value={this.state.password2} onInputValueChange={this.handlePassword2Change}></TextInput></>
               {this.state.passwordMismatch && <div className="validation-password-mismatch"><FormattedMessage id="passwordMismatch" defaultMessage={'A két jelszó nem egyezik'}/></div>}
               <Container><Agree text={<FormattedMessage id="register.newsletter" defaultMessage={'Hírlevél'}/>} handleChange={this.handleNewsletterChange}></Agree></Container>
-              <ReCAPTCHA sitekey="6LeeudQZAAAAAFBgdmijuJm9wbVeAKvZZeFhhIF9" onChange={this.onCaptchaChange} onExpired={this.onCaptchaExpired} />
+              <ReCAPTCHA sitekey={process.env.REACT_APP_CAPTCHA_SITEKEY+''} onChange={this.onCaptchaChange} onExpired={this.onCaptchaExpired} />
               <Container><Agree text={<FormattedMessage id="register.agree1" defaultMessage={''}/>} handleChange={this.handleR1Change}></Agree></Container>
               <Container><Agree text={<FormattedMessage id="register.agree2" defaultMessage={''}/>} handleChange={this.handleR2Change}></Agree></Container>
               <Container className="registration-action-button-container">
