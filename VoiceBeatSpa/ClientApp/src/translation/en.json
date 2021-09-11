@@ -55,7 +55,8 @@
 "message.unsuccess.reservation.reserve": "Unsuccessful date booking! Please try again later.",		
 "message.success.reservation.reserve": "Successful booking!",			
 "message.unsuccess.reservation.delete": "Delete failed! Please try again later.",		
-"message.success.reservation.delete": "Successful delete!",	
+"message.success.reservation.delete": "Successful delete!",		
+"message.success.login": "User is loged in!",		
 
   "reservationPossible": "Booking and cancellation is only possible at least 2 days in advance! Please call us on phone!",
   "reservationMissingPhoneNumber": "Booking and cancellation is only possible after phone number is filled in your profile",

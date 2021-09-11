@@ -171,7 +171,7 @@ export default class Contact extends React.Component<any>{
                         <FormattedMessage id="contact.us" defaultMessage={'Voice-Beat próbaterem és stúdió'}/><br />
                         <FormattedMessage id="contact.address" defaultMessage={'Címünk: 1033 Budapest, Bogdáni út 1.'}/><br />
                         <abbr title="Phone"><FormattedMessage id="contact.phone" defaultMessage={'Telefonszám'}/>: </abbr>
-                        (30) 710 0661<br />
+                        +36 30 219 4845<br />
                         <FormattedMessage id="contact.email" defaultMessage={'Email'}/>: <a href="mailto:voicebeat.bt@gmail.com">voicebeat.bt@gmail.com</a>
                     </address>
                 </div>

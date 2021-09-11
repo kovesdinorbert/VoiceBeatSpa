@@ -123,6 +123,7 @@ export default class EditText extends React.Component<any, IState>{
                 <MenuItem value={LivingTextTypeEnum.StartPageText}>Startlap</MenuItem>
                 <MenuItem value={LivingTextTypeEnum.DiscountsText}>Kedvezmények</MenuItem>
                 <MenuItem value={LivingTextTypeEnum.PricesText}>Árak</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.PhoneNumber}>Menü telefonszám</MenuItem>
                 <MenuItem value={LivingTextTypeEnum.ReservationRulesText}>Foglalási szabályok</MenuItem>
                 <MenuItem value={LivingTextTypeEnum.EmailReservationSent}>Email - Foglalás elküldve</MenuItem>
                 <MenuItem value={LivingTextTypeEnum.EmailRegistration}>Email - regisztráció</MenuItem>
