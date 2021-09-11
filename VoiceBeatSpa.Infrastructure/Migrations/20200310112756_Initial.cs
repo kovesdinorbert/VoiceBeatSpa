@@ -209,7 +209,7 @@ namespace VoiceBeatSpa.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserRole",
+                name: "UserRoles",
                 columns: table => new
                 {
                     UserId = table.Column<Guid>(nullable: false),
@@ -249,7 +249,7 @@ namespace VoiceBeatSpa.Infrastructure.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserRole_RoleId",
-                table: "UserRole",
+                table: "UserRoles",
                 column: "RoleId");
 
             migrationBuilder.Sql(@"INSERT INTO [dbo].[Users] ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[Email]
@@ -282,7 +282,7 @@ namespace VoiceBeatSpa.Infrastructure.Migrations
                 name: "PermissionRole");
 
             migrationBuilder.DropTable(
-                name: "UserRole");
+                name: "UserRoles");
 
             migrationBuilder.DropTable(
                 name: "Permissions");

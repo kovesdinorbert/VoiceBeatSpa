@@ -285,7 +285,7 @@ namespace VoiceBeatSpa.Infrastructure.Services
 
             await _userRepository.CreateAsync(user, Guid.Empty);
 
-            user.UserRoles.Add(new UserRole() {RoleId =  role.Id, UserId =  user.Id});
+            user.UserRoles.Add(new UserRoles() {RoleId =  role.Id, UserId =  user.Id});
             SetPassword(user, password);
 
             user.IsActive = isSocial;

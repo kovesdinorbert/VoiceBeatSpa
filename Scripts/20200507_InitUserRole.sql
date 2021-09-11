@@ -1,4 +1,4 @@
-DELETE FROM [dbo].[UserRole]
+DELETE FROM [dbo].[UserRoles]
 DELETE FROM [dbo].[Roles]
 DELETE FROM [dbo].[Users] WHERE [dbo].[Users].[Email] != 'system'
 
@@ -53,7 +53,7 @@ INSERT INTO [dbo].[Users]
            ,0
            ,'')
 		   
-INSERT INTO [dbo].[UserRole]
+INSERT INTO [dbo].[UserRoles]
            ([UserId]
            ,[RoleId])
      VALUES

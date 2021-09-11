@@ -14,5 +14,6 @@
         public string SiteUrl { get; set; }
         public string SecretKey { get; set; }
         public int TokenExpiresDay { get; set; }
+        public string CurrentVersion { get; set; }
     }
 }

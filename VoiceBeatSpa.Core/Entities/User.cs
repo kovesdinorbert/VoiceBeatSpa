@@ -21,7 +21,7 @@ namespace VoiceBeatSpa.Core.Entities
 
         public int WrongPasswordCount { get; set; }
 
-        public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+        public ICollection<UserRoles> UserRoles { get; set; } = new List<UserRoles>();
 
         public IList<PasswordRecoveryConfirmation> PasswordRecoveryConfirmations { get; set; } = new List<PasswordRecoveryConfirmation>();
         public IList<ForgottenPassword> ForgottenPasswords { get; set; } = new List<ForgottenPassword>();

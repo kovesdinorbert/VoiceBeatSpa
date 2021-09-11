@@ -28,13 +28,13 @@ namespace VoiceBeatSpa.Infrastructure.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<UserRole>()
+            modelBuilder.Entity<UserRoles>()
                 .HasKey(bc => new { bc.UserId, bc.RoleId });
-            modelBuilder.Entity<UserRole>()
+            modelBuilder.Entity<UserRoles>()
                 .HasOne(bc => bc.Role)
                 .WithMany(b => b.UserRoles)
                 .HasForeignKey(bc => bc.RoleId);
-            modelBuilder.Entity<UserRole>()
+            modelBuilder.Entity<UserRoles>()
                 .HasOne(bc => bc.User)
                 .WithMany(c => c.UserRoles)
                 .HasForeignKey(bc => bc.UserId);

@@ -15,6 +15,6 @@ namespace VoiceBeatSpa.Core.Entities
         public string Name { get; set; }
 
 
-        public ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+        public ICollection<UserRoles> UserRoles { get; set; } = new List<UserRoles>();
     }
 }

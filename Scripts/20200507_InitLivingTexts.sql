@@ -375,3 +375,114 @@ INSERT INTO [dbo].[Translations]
      VALUES
            (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'<p><span style=\"font-weight: bold; color: rgb(0, 0, 0);\">Dear User,</span></p><p><span style=\"color: rgb(0, 0, 0);\">Reservations for the following dates have been canceled:</span></p><p><span style=\"color: rgb(0, 0, 0);\">#Times#</span></p><p><span style=\"font-weight: bold; color: rgb(0, 0, 0);\">Best regards, <br>Voice-Beat</span></p><br /><br /><p>This is an automated message, please don not reply! Contact: voicebeat.bt@gmail.com</p>','noreply - Voice-Beat deleted reservation')
 		      
+
+------RehearsalRecord = 19,
+SET @currentText = NEWID();
+
+INSERT INTO [dbo].[LivingTexts]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LivingTextType],[IsHtmlEncoded])
+     VALUES
+           (@currentText,GETDATE(),@systemId,null,null,1,19,1)
+
+INSERT INTO [dbo].[Translations]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
+     VALUES
+           (NEWID(),GETDATE(),@systemId,null,null,1,@huId,@currentText,'Kérdezz minket!', '')
+
+INSERT INTO [dbo].[Translations]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
+     VALUES
+           (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'Ask us!', '')
+		      		      
+
+------RehearsalRecord = 20,
+SET @currentText = NEWID();
+
+INSERT INTO [dbo].[LivingTexts]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LivingTextType],[IsHtmlEncoded])
+     VALUES
+           (@currentText,GETDATE(),@systemId,null,null,1,20,1)
+
+INSERT INTO [dbo].[Translations]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
+     VALUES
+           (NEWID(),GETDATE(),@systemId,null,null,1,@huId,@currentText,'Kérdezz minket!', '')
+
+INSERT INTO [dbo].[Translations]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
+     VALUES
+           (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'Ask us!', '')
+		            
+
+------MonthlyRoom = 21,
+SET @currentText = NEWID();
+
+INSERT INTO [dbo].[LivingTexts]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LivingTextType],[IsHtmlEncoded])
+     VALUES
+           (@currentText,GETDATE(),@systemId,null,null,1,21,1)
+
+INSERT INTO [dbo].[Translations]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
+     VALUES
+           (NEWID(),GETDATE(),@systemId,null,null,1,@huId,@currentText,'Kérdezz minket!', '')
+
+INSERT INTO [dbo].[Translations]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
+     VALUES
+           (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'Ask us!', '')
+		      
+------NewEvent = 22,
+SET @currentText = NEWID();
+
+INSERT INTO [dbo].[LivingTexts]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LivingTextType],[IsHtmlEncoded])
+     VALUES
+           (@currentText,GETDATE(),@systemId,null,null,1,22,1)
+
+INSERT INTO [dbo].[Translations]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
+     VALUES
+           (NEWID(),GETDATE(),@systemId,null,null,1,@huId,@currentText,'Kérdezz minket!', '')
+
+INSERT INTO [dbo].[Translations]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
+     VALUES
+           (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'Ask us!', '')
+		      
+------CustomEvent = 23,
+SET @currentText = NEWID();
+
+INSERT INTO [dbo].[LivingTexts]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LivingTextType],[IsHtmlEncoded])
+     VALUES
+           (@currentText,GETDATE(),@systemId,null,null,1,23,1)
+
+INSERT INTO [dbo].[Translations]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
+     VALUES
+           (NEWID(),GETDATE(),@systemId,null,null,1,@huId,@currentText,'Kérdezz minket!', '')
+
+INSERT INTO [dbo].[Translations]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
+     VALUES
+           (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'Ask us!', '')
+		      
+------RentAndShipInstrument = 24,
+SET @currentText = NEWID();
+
+INSERT INTO [dbo].[LivingTexts]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LivingTextType],[IsHtmlEncoded])
+     VALUES
+           (@currentText,GETDATE(),@systemId,null,null,1,24,1)
+
+INSERT INTO [dbo].[Translations]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
+     VALUES
+           (NEWID(),GETDATE(),@systemId,null,null,1,@huId,@currentText,'Kérdezz minket!', '')
+
+INSERT INTO [dbo].[Translations]
+           ([Id],[Created],[CreatedBy],[Modified],[ModifiedBy],[IsActive],[LanguageId],[LivingTextId],[Text],[Subject])
+     VALUES
+           (NEWID(),GETDATE(),@systemId,null,null,1,@enId,@currentText,'Ask us!', '')
+		      

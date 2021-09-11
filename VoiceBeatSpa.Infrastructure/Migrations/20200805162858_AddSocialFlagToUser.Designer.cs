@@ -364,7 +364,7 @@ namespace VoiceBeatSpa.Infrastructure.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("VoiceBeatSpa.Core.Entities.UserRole", b =>
+            modelBuilder.Entity("VoiceBeatSpa.Core.Entities.UserRoles", b =>
                 {
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -376,7 +376,7 @@ namespace VoiceBeatSpa.Infrastructure.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserRole");
+                    b.ToTable("UserRoles");
                 });
 
             modelBuilder.Entity("VoiceBeatSpa.Core.Entities.Image", b =>
@@ -424,7 +424,7 @@ namespace VoiceBeatSpa.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("VoiceBeatSpa.Core.Entities.UserRole", b =>
+            modelBuilder.Entity("VoiceBeatSpa.Core.Entities.UserRoles", b =>
                 {
                     b.HasOne("VoiceBeatSpa.Core.Entities.Role", "Role")
                         .WithMany("UserRoles")

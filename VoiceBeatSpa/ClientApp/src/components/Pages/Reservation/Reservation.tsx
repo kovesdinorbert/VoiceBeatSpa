@@ -85,8 +85,8 @@ export default class Reservation extends React.Component<any, IState>{
 
     this.setState({showScheduler: false, blocking: true, selectedDate : undefined, selectedDateStr : undefined });
     
-    let start = moment(this.calendarRef?.current?.getApi().view.activeStart).toISOString();
-    let end = moment(this.calendarRef?.current?.getApi().view.activeEnd).toISOString();
+    let start = moment(this.calendarRef?.current?.getApi().view.activeStart).format('LL');
+    let end = moment(this.calendarRef?.current?.getApi().view.activeEnd).format('LL');
 
     const url = `${process.env.REACT_APP_API_PATH}/event/`+start+'/'+ end;
     const requestOptions = {

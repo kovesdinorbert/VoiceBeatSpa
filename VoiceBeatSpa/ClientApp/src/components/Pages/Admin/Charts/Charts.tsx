@@ -54,11 +54,11 @@ export default class Charts extends React.Component<any, IState>{
     let start;
     let end;
     if (this.state.yearSelected == 2) {
-      start = moment(this.state.selectedDate).startOf('year').toISOString();
-      end = moment(this.state.selectedDate).endOf('year').toISOString();
+      start = moment(this.state.selectedDate).startOf('year').format('LL');
+      end = moment(this.state.selectedDate).endOf('year').format('LL');
     } else {
-      start = moment(this.state.selectedDate).startOf('month').toISOString();
-      end = moment(this.state.selectedDate).endOf('month').toISOString();
+      start = moment(this.state.selectedDate).startOf('month').format('LL');
+      end = moment(this.state.selectedDate).endOf('month').format('LL');
     }
 
     const url = `${process.env.REACT_APP_API_PATH}/event/`+start+'/'+ end;

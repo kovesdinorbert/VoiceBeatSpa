@@ -88,5 +88,11 @@
   "mastering": "Mastering",
   "reserveToName": "Foglalási név",
   "rooms": "Termek",
-  "aat": "Adatvédelmi szabályzat"
+  "aat": "Adatvédelmi szabályzat",
+  "rehearsalRecord": "Próbák felvétele",
+  "onemanRehearsal": "Egyszemélyes próba",
+  "monthlyRoom": "Havi díjas próbaterem",
+  "newEvent": "Rendezényszervezés",
+  "customEvent": "Magánrendezvény",
+  "rentAndShipInstrument": "Hangszer bérlés és szállítás"
 }

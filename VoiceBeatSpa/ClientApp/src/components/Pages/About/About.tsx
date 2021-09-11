@@ -60,6 +60,70 @@ export default class About extends React.Component<any>{
               </Card>
             </div>
           </div>
+          <div className="row">
+            <div className="col-md-4">
+              <Card className="price-card">
+                <CardHeader title={<FormattedMessage id="rehearsalRecord" defaultMessage={'Próbák felvétele'}/>}>
+                </CardHeader>
+                <Divider></Divider>
+                  <CardContent>
+                    <LivingText livingTextType={LivingTextTypeEnum.RehearsalRecord}></LivingText>
+                  </CardContent>
+              </Card>
+            </div>
+            <div className="col-md-4">
+              <Card className="price-card">
+                <CardHeader title={<FormattedMessage id="onemanRehearsal" defaultMessage={'Egyszemélyes próba'}/>}>
+                </CardHeader>
+                <Divider></Divider>
+                  <CardContent>
+                    <LivingText livingTextType={LivingTextTypeEnum.OnemanRehearsal}></LivingText>
+                  </CardContent>
+              </Card>
+            </div>
+            <div className="col-md-4">
+              <Card className="price-card">
+                <CardHeader title={<FormattedMessage id="monthlyRoom" defaultMessage={'Havi díjas próbaterem'}/>}>
+                </CardHeader>
+                <Divider></Divider>
+                  <CardContent>
+                    <LivingText livingTextType={LivingTextTypeEnum.MonthlyRoom}></LivingText>
+                  </CardContent>
+              </Card>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col-md-4">
+              <Card className="price-card">
+                <CardHeader title={<FormattedMessage id="newEvent" defaultMessage={'Rendezényszervezés'}/>}>
+                </CardHeader>
+                <Divider></Divider>
+                  <CardContent>
+                    <LivingText livingTextType={LivingTextTypeEnum.NewEvent}></LivingText>
+                  </CardContent>
+              </Card>
+            </div>
+            <div className="col-md-4">
+              <Card className="price-card">
+                <CardHeader title={<FormattedMessage id="customEvent" defaultMessage={'Magánrendezvény'}/>}>
+                </CardHeader>
+                <Divider></Divider>
+                  <CardContent>
+                    <LivingText livingTextType={LivingTextTypeEnum.CustomEvent}></LivingText>
+                  </CardContent>
+              </Card>
+            </div>
+            <div className="col-md-4">
+              <Card className="price-card">
+                <CardHeader title={<FormattedMessage id="rentAndShipInstrument" defaultMessage={'Hangszer bérlés és szállítás'}/>}>
+                </CardHeader>
+                <Divider></Divider>
+                  <CardContent>
+                    <LivingText livingTextType={LivingTextTypeEnum.RentAndShipInstrument}></LivingText>
+                  </CardContent>
+              </Card>
+            </div>
+          </div>
         </div>
         );
     }

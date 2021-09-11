@@ -147,7 +147,7 @@ namespace Test
             var user4Id = Guid.NewGuid();
             var roles = new List<Role>() { new Role() { Name = "test role" } };
 
-            var userRoles = new List<UserRole>() { new UserRole() { /*UserId = user2Id = "test role" */} };
+            var userRoles = new List<UserRoles>() { new UserRoles() { /*UserId = user2Id = "test role" */} };
 
             await _repository.CreateAsync(new User() { Id = testGuid, IsActive = true, UserRoles = userRoles }, Guid.Empty);
             await _repository.CreateAsync(new User() { Id = user2Id, IsActive = false, UserRoles = userRoles }, Guid.Empty);

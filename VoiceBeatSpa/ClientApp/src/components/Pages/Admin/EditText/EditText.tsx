@@ -138,7 +138,12 @@ export default class EditText extends React.Component<any, IState>{
                 <MenuItem value={LivingTextTypeEnum.StudioRoomText}>Stúdió - leírás</MenuItem>
                 <MenuItem value={LivingTextTypeEnum.MasterPrice}>Master árak</MenuItem>
                 <MenuItem value={LivingTextTypeEnum.StudioPrice}>Stúdió óradíj</MenuItem>
-                <MenuItem value={LivingTextTypeEnum.PhoneNumber}>Telefonszám</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.RehearsalRecord}>Próba felvétel - árak</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.OnemanRehearsal}>Egyszemélyes próba - árak</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.MonthlyRoom}>Havidíjas terem - árak</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.NewEvent}>Rendezvény szervezés - árak</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.CustomEvent}>Magánrendezvény - árak</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.RentAndShipInstrument}>Bérlés és szállítás - árak</MenuItem>
               </Select>
             </FormControl>
             <div className="language-selector-div">

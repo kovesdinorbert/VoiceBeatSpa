@@ -1,15 +1,35 @@
 footer {
-    bottom: 0;
-    background-color: black;
-    position: fixed;
-    width: 100%;
-    z-index: 1030;
-    display: flex;
-    height: 40px;
-    align-items: center;
-    justify-content: center;
-  }
+  bottom: 0;
+  background-color: black;
+  position: fixed;
+  width: 100%;
+  z-index: 1030;
+  display: flex;
+  height: 40px;
+  align-items: center;
+  justify-content: space-between;
+}
 
 .aat-div {
-  cursor: pointer;
+cursor: pointer;
+}
+
+.version-number {
+margin-right: 15px;
+font-size: smaller;
+}
+
+.fb-g-1 {
+  flex-grow: 1;
+}
+
+.fb-g-2 {
+  flex-grow: 2;
+}
+
+.text-alig-c {
+  text-align: center;
+}
+.text-alig-r {
+  text-align: right;
 }

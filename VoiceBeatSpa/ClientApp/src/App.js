@@ -19,6 +19,7 @@ import Studio from './components/Pages/Rooms/Studio';
 
 import AuthRoute from './components/AuthRoute';
 import { AuthenticationService } from './services/authentication.service'
+import { VersionService } from './services/version.service'
 import { LanguageService } from './services/language.service'
 import messages_hu from './translation/hu.json';
 import messages_en from './translation/en.json';
@@ -36,6 +37,7 @@ export default class App extends Component {
   static displayName = App.name;
   
   authenticationService = new AuthenticationService();
+  versionService = new VersionService();
   languageService = new LanguageService();
 
   constructor (props) {
@@ -57,7 +59,8 @@ export default class App extends Component {
     });
 }
 
-  componentDidMount() {
+  async componentDidMount() {
+    await this.versionService.getServerVersion();
     this.authenticationService.instance().currentUser.subscribe(val => 
       {this.setState({token: val.token})});
   }

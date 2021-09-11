@@ -88,5 +88,11 @@
   "mastering": "Mastering",
   "reserveToName": "Reserve to",
   "rooms": "Rooms",
-  "aat": "Policies"
+  "aat": "Policies",
+  "rehearsalRecord": "Record rehearsal",
+  "onemanRehearsal": "One person rehearsal",
+  "monthlyRoom": "Rent monthly rehearsal room",
+  "newEvent": "Organize event",
+  "customEvent": "Private event",
+  "rentAndShipInstrument": "Rent and transfer instrument"
 }

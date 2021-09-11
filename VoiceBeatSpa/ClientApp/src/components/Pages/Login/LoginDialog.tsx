@@ -174,10 +174,12 @@ export default class LoginDialog extends React.Component<any, IState>{
                     <FormattedMessage id="cancel" defaultMessage={'Mégse'}/>
                   </Button>
                   </Container>
-                  <h3><FormattedMessage id="login.loginor" defaultMessage={'Vagy'}/></h3>
+                  {process.env.REACT_APP_SOCIALLOGIN_ENABLED+''==='true' ?
+                  <><h3><FormattedMessage id="login.loginor" defaultMessage={'Vagy'}/></h3>
                   <DialogContent>
                     <SocialForm />
-                  </DialogContent>
+                  </DialogContent></>
+                  :<></>}
                   <br></br>
                   <h3><FormattedMessage id="login.noaccount" defaultMessage={'Nincs még fiókod?'}/></h3>
                   <Button onClick={_ => {this.setState({open: false}); this.props.closeNavbar();}}>

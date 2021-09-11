@@ -28,6 +28,13 @@
 
         EmailReservationDelete = 18,
 
+        RehearsalRecord = 19,
+        OnemanRehearsal = 20,
+        MonthlyRoom = 21,
+        NewEvent = 22,
+        CustomEvent = 23,
+        RentAndShipInstrument = 24,
+
         Newsletter = 9999,
     }
 }
