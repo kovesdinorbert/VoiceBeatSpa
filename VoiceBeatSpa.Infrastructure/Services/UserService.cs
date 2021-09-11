@@ -356,6 +356,18 @@ namespace VoiceBeatSpa.Infrastructure.Services
                 throw new ArgumentException($"Somebody from {currentUserEmail} wanted to delete User {id}");
             }
 
+            var prs = await _forgottenPasswordRepository.FindAllAsync(fp => fp.UserId == id);
+            var pcs = await _passwordRecoveryConfirmationRepository.FindAllAsync(fp => fp.UserId == id);
+
+            for (int i = 0; i < prs.Count; i++)
+            {
+                await _forgottenPasswordRepository.DeleteAsync(prs[i].Id);
+            }
+            for (int i = 0; i < pcs.Count; i++)
+            {
+                await _passwordRecoveryConfirmationRepository.DeleteAsync(pcs[i].Id);
+            }
+
             await _userRepository.DeleteAsync(id);
         }
 

@@ -7,6 +7,7 @@ import { PageLoading } from '../../Common/PageLoading/PageLoading';
 import { FormattedMessage } from 'react-intl';
 import { IRecoverPassword } from './recoverPassword.model';
 import { Button, Container } from '@material-ui/core';
+import './recoverPassword.css';
 
 export interface IState {
     password1?: string;
@@ -107,7 +108,7 @@ export default class RecoverPassword extends React.Component<any>{
               <><TextInput config={confNewPw1} value={this.state.password1} onInputValueChange={this.handleNewPassword1Change}></TextInput></>
               <><TextInput config={confNewPw2} value={this.state.password2} onInputValueChange={this.handleNewPassword2Change}></TextInput></>
               {this.state.passwordMismatch && <div className="validation-password-mismatch"><FormattedMessage id="passwordMismatch" defaultMessage={'A két jelszó nem egyezik'}/></div>}
-            <Container>
+            <Container className="f-root">
               <Button className="btn-action" onClick={this.submit}><FormattedMessage id="save" defaultMessage={'Mentés'}/></Button>
             </Container>
         </div>
