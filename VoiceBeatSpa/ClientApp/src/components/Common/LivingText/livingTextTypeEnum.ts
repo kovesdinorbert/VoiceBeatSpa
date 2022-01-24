@@ -31,5 +31,6 @@ export enum LivingTextTypeEnum {
     'NewEvent' = 22,
     'CustomEvent' = 23,
     'RentAndShipInstrument' = 24,
+    'Services' = 25,
   }
   

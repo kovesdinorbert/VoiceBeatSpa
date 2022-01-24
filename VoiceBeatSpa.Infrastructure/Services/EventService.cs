@@ -50,7 +50,7 @@ namespace VoiceBeatSpa.Infrastructure.Services
             }
 
             var overlappingEvents = await _eventRepository.FindAllAsync(e => e.Room == newEvent.Room
-                                               && e.StartDate <= newEvent.EndDate && newEvent.EndDate <= e.EndDate);
+                                               && e.StartDate < newEvent.EndDate && newEvent.EndDate < e.EndDate);
 
             if (overlappingEvents.Any())
             {

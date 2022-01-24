@@ -121,6 +121,7 @@ export default class EditText extends React.Component<any, IState>{
               <InputLabel htmlFor="text-type-select">Típus</InputLabel>
               <Select value={this.state.livingText.livingTextType} onChange={this.handleTypeChange} inputProps={{ name: 'Típus', id: 'text-type-select' }}>
                 <MenuItem value={LivingTextTypeEnum.StartPageText}>Startlap</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.Services}>Szolgáltatások</MenuItem>
                 <MenuItem value={LivingTextTypeEnum.DiscountsText}>Kedvezmények</MenuItem>
                 <MenuItem value={LivingTextTypeEnum.PricesText}>Árak</MenuItem>
                 <MenuItem value={LivingTextTypeEnum.PhoneNumber}>Menü telefonszám</MenuItem>

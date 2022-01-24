@@ -10,7 +10,7 @@ html {
 .nav-item-action-button span {
   font-size: large;
 }
-@media (min-width: 800px) {
+@media (min-width: 915px) {
   html {
     font-size: 16px;
   }
@@ -72,25 +72,25 @@ html {
   margin-top: 10px;
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1040px) {
   .menu-phone {
     display: none !important;
   }
 }
 
-@media (max-width: 750px) {
+@media (max-width: 875px) {
   .menu-facebook {
     display: none !important;
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 830px) {
   .header-logo {
     display: none;
   }
 }
 
-@media (max-width: 576px) {
+@media (max-width: 750px) {
   .menu-facebook {
     display: flex !important;
   }

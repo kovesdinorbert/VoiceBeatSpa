@@ -96,6 +96,9 @@ export class NavMenu extends Component<any, IState> {
                     <RoomMenuOpen closeNavbar={this.closeNavbar}></RoomMenuOpen>
                   </NavItem>
                   <NavItem className="navbar-nav-item navbar-nav-item-flex">
+                    <NavLink className="text-dark" to="/services"><Button onClick={this.closeNavbar} className="text-light"><FormattedMessage id="services" defaultMessage={'Szolgáltatások'}/></Button></NavLink>
+                  </NavItem>
+                  <NavItem className="navbar-nav-item navbar-nav-item-flex">
                     <NavLink className="text-dark" to="/reservation"><Button onClick={this.closeNavbar} className="text-light"><FormattedMessage id="reservation" defaultMessage={'Foglalás'}/></Button></NavLink>
                   </NavItem>
                   <NavItem className="navbar-nav-item navbar-nav-item-flex">

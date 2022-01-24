@@ -11,6 +11,7 @@ import Contact from './components/Pages/Contact/Contact';
 import Profil from './components/Pages/Profil/Profil';
 import Registration from './components/Pages/Registration/Registration';
 import News from './components/Pages/News/News';
+import Services from './components/Pages/Services/Services';
 import ReservationIndex from './components/Pages/Reservation/ReservationIndex';
 import Red from './components/Pages/Rooms/Red';
 import Gray from './components/Pages/Rooms/Gray';
@@ -95,6 +96,7 @@ export default class App extends Component {
             <AuthRoute {...adminRouteProps} path='/admin' component={Admin} />
             <Route path='/contact' component={Contact} />
             <Route path='/news' component={News} />
+            <Route path='/services' component={Services} />
             <AuthRoute {...reservationRouteProps} path='/reservation' component={ReservationIndex} />
             <AuthRoute {...profilRouteProps} path='/profil' component={Profil} />
             <Route path='/rooms/red' component={Red} />

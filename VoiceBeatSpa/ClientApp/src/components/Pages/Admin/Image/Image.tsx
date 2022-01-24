@@ -75,7 +75,7 @@ export default class Image extends React.Component<any, IState>{
             }
           );
         } else {
-          this.setState({loading : false, imageType: undefined, images : undefined})
+          this.setState({loading : false, imageType: type, images : undefined})
           this.toastrRef.current?.openSnackbar("message.unsuccess.load", "error");
         }
       });

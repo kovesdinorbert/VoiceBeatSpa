@@ -35,12 +35,14 @@ namespace VoiceBeatSpa.Web.Controllers
         public async Task<IActionResult> SendEmail([FromBody] EmailDto email)
         {
             List<string> adminEmails = _voiceBeatConfiguration.SendEmailTo.Split(';').ToList();
+            email.Body = email.Body + "\n\n<p><strong>Az üzenet feladója:</strong> " + email.Email + "</p>";
+            string internalEmail = _voiceBeatConfiguration.SendEmailFromDomain;
 
             try
             {
                 foreach (var to in adminEmails)
                 {
-                    await _emailService.SendEmail(email.Email, to, email.Subject, email.Body, email.Name);
+                    await _emailService.SendEmail(internalEmail, to, email.Subject, email.Body, email.Name);
                 }
                 return StatusCode(StatusCodes.Status201Created);
             }
