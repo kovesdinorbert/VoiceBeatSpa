@@ -96,5 +96,9 @@
   "monthlyRoom": "Havi díjas próbaterem",
   "newEvent": "Rendezényszervezés",
   "customEvent": "Magánrendezvény",
-  "rentAndShipInstrument": "Hangszer bérlés és szállítás"
+  "rentAndShipInstrument": "Hangszer bérlés és szállítás",
+  "services.rooms": "Próbatermek",
+  "services.rent": "Bérlés",
+  "services.studio": "Stúdió",
+  "services.events": "Rendezvényszervezés"
 }

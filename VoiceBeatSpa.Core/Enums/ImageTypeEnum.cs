@@ -8,5 +8,9 @@
         StudioPicture = 3,
 
         AboutPagePicture = 4,
+
+        RoomsPicture = 5,
+        EventsPicture = 6,
+        RentsPicture = 7,
     }
 }

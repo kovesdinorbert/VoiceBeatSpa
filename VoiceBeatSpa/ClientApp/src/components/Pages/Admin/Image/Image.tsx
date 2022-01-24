@@ -139,10 +139,13 @@ export default class Image extends React.Component<any, IState>{
             <Select value={this.state.imageType ?? "-1"} onChange={this.handleTypeChange} inputProps={{ name: 'Típus', id: 'text-type-select' }}>
               <MenuItem value="-1">nincs kiválasztva</MenuItem>
               <MenuItem value={ImageTypeEnum.AboutPagePicture}>Startlap</MenuItem>
-              <MenuItem value={ImageTypeEnum.BlueRoomPicture}>Kék terem</MenuItem>
+              {/* <MenuItem value={ImageTypeEnum.BlueRoomPicture}>Kék terem</MenuItem>
               <MenuItem value={ImageTypeEnum.GrayRoomPicture}>Szürke terem</MenuItem>
-              <MenuItem value={ImageTypeEnum.RedRoomPicture}>Piros terem</MenuItem>
-              <MenuItem value={ImageTypeEnum.StudioPicture}>Stúdió</MenuItem>
+              <MenuItem value={ImageTypeEnum.RedRoomPicture}>Piros terem</MenuItem> */}
+              <MenuItem value={ImageTypeEnum.EventsPicture}>Szolgáltatsok/Rendezvényszervezés</MenuItem>
+              <MenuItem value={ImageTypeEnum.RentsPicture}>Szolgáltatsok/Bérlés</MenuItem>
+              <MenuItem value={ImageTypeEnum.RoomsPicture}>Szolgáltatsok/Próbatermek</MenuItem>
+              <MenuItem value={ImageTypeEnum.StudioPicture}>Szolgáltatsok/Stúdió</MenuItem>
             </Select>
           </FormControl>
           {this.state.loading

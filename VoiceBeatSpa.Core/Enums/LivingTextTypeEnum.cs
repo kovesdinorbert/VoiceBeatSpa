@@ -34,7 +34,11 @@
         NewEvent = 22,
         CustomEvent = 23,
         RentAndShipInstrument = 24,
-        Services = 25,
+
+        ServicesRent = 25,
+        ServicesRooms = 26,
+        ServicesEvents = 27,
+        ServicesStudio = 28,
 
         Newsletter = 9999,
     }

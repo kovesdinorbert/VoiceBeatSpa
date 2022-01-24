@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import './NavMenu.css';
 import { Subscription } from 'rxjs';
 
-import RoomMenuOpen from "./RoomMenuOpen.js";
+import ServicesMenuOpen from "./ServicesMenuOpen.js";
 
 import { Button } from '@material-ui/core';
 import LoginDialog from './Pages/Login/LoginDialog';
@@ -93,10 +93,7 @@ export class NavMenu extends Component<any, IState> {
                     <NavLink className="text-dark" to="/news"><Button onClick={this.closeNavbar} className="text-light"><FormattedMessage id="news" defaultMessage={'Hírek'}/></Button></NavLink>
                   </NavItem>
                   <NavItem className="navbar-nav-item navbar-nav-item-flex">
-                    <RoomMenuOpen closeNavbar={this.closeNavbar}></RoomMenuOpen>
-                  </NavItem>
-                  <NavItem className="navbar-nav-item navbar-nav-item-flex">
-                    <NavLink className="text-dark" to="/services"><Button onClick={this.closeNavbar} className="text-light"><FormattedMessage id="services" defaultMessage={'Szolgáltatások'}/></Button></NavLink>
+                    <ServicesMenuOpen closeNavbar={this.closeNavbar}></ServicesMenuOpen>
                   </NavItem>
                   <NavItem className="navbar-nav-item navbar-nav-item-flex">
                     <NavLink className="text-dark" to="/reservation"><Button onClick={this.closeNavbar} className="text-light"><FormattedMessage id="reservation" defaultMessage={'Foglalás'}/></Button></NavLink>

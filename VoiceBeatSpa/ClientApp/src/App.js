@@ -11,12 +11,14 @@ import Contact from './components/Pages/Contact/Contact';
 import Profil from './components/Pages/Profil/Profil';
 import Registration from './components/Pages/Registration/Registration';
 import News from './components/Pages/News/News';
-import Services from './components/Pages/Services/Services';
+import ServicesRent from './components/Pages/Services/Rent';
+import ServicesEvents from './components/Pages/Services/Events';
+import ServicesRooms from './components/Pages/Services/Rooms';
+import ServicesStudio from './components/Pages/Services/Studio';
 import ReservationIndex from './components/Pages/Reservation/ReservationIndex';
 import Red from './components/Pages/Rooms/Red';
 import Gray from './components/Pages/Rooms/Gray';
 import Blue from './components/Pages/Rooms/Blue';
-import Studio from './components/Pages/Rooms/Studio';
 
 import AuthRoute from './components/AuthRoute';
 import { AuthenticationService } from './services/authentication.service'
@@ -96,13 +98,12 @@ export default class App extends Component {
             <AuthRoute {...adminRouteProps} path='/admin' component={Admin} />
             <Route path='/contact' component={Contact} />
             <Route path='/news' component={News} />
-            <Route path='/services' component={Services} />
             <AuthRoute {...reservationRouteProps} path='/reservation' component={ReservationIndex} />
             <AuthRoute {...profilRouteProps} path='/profil' component={Profil} />
-            <Route path='/rooms/red' component={Red} />
-            <Route path='/rooms/gray' component={Gray} />
-            <Route path='/rooms/blue' component={Blue} />
-            <Route path='/rooms/studio' component={Studio} />
+            <Route path='/services/rooms' component={ServicesRooms} />
+            <Route path='/services/rent' component={ServicesRent} />
+            <Route path='/services/events' component={ServicesEvents} />
+            <Route path='/services/studio' component={ServicesStudio} />
             <AuthRoute {...anonymRouteProps} path='/register' component={Registration} />
             <Route exact path='/about' component={About}/>
             <Route exact path='/recoverpassword' component={RecoverPassword}/>

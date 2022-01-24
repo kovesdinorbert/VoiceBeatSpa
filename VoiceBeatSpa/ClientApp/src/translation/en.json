@@ -96,5 +96,9 @@
   "monthlyRoom": "Rent monthly rehearsal room",
   "newEvent": "Organize event",
   "customEvent": "Private event",
-  "rentAndShipInstrument": "Rent and transfer instrument"
+  "rentAndShipInstrument": "Rent and transfer instrument",
+  "services.rooms": "Rooms",
+  "services.rent": "Renting",
+  "services.studio": "Studio",
+  "services.events": "Events"
 }

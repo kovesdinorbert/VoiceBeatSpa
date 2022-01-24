@@ -60,12 +60,15 @@ export default class EditText extends React.Component<any, IState>{
   }
 
   private getLivingText(type: LivingTextTypeEnum, lang: string) {
+    debugger;
     this.setState({loading: true, currentLanguage: lang});
     fetch(process.env.REACT_APP_API_PATH+'/livingtext/type/'+type+'/'+lang)
       .then((res) => {
         if (res.ok) {
           res.json().then((livingText: ILivingText) => {
             livingText.loading = false; 
+            if (!livingText.text) livingText.text = "";
+
             this.setState({livingText: livingText, loading: false})
             }
           );
@@ -121,7 +124,10 @@ export default class EditText extends React.Component<any, IState>{
               <InputLabel htmlFor="text-type-select">Típus</InputLabel>
               <Select value={this.state.livingText.livingTextType} onChange={this.handleTypeChange} inputProps={{ name: 'Típus', id: 'text-type-select' }}>
                 <MenuItem value={LivingTextTypeEnum.StartPageText}>Startlap</MenuItem>
-                <MenuItem value={LivingTextTypeEnum.Services}>Szolgáltatások</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.ServicesEvents}>Szolgáltatások/Rendezvényszervezés</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.ServicesRent}>Szolgáltatások/Bérlés</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.ServicesRooms}>Szolgáltatások/Próbatermek</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.ServicesStudio}>Szolgáltatások/Stúdió</MenuItem>
                 <MenuItem value={LivingTextTypeEnum.DiscountsText}>Kedvezmények</MenuItem>
                 <MenuItem value={LivingTextTypeEnum.PricesText}>Árak</MenuItem>
                 <MenuItem value={LivingTextTypeEnum.PhoneNumber}>Menü telefonszám</MenuItem>
@@ -130,14 +136,14 @@ export default class EditText extends React.Component<any, IState>{
                 <MenuItem value={LivingTextTypeEnum.EmailRegistration}>Email - regisztráció</MenuItem>
                 <MenuItem value={LivingTextTypeEnum.EmailForgottenPassword}>Email - elfelejtett jelszó</MenuItem>
                 <MenuItem value={LivingTextTypeEnum.EmailReservationDelete}>Email - Foglalás törlés</MenuItem>
-                <MenuItem value={LivingTextTypeEnum.RedRoomPrice}>Piros terem - árak</MenuItem>
+                {/* <MenuItem value={LivingTextTypeEnum.RedRoomPrice}>Piros terem - árak</MenuItem>
                 <MenuItem value={LivingTextTypeEnum.RedRoomText}>Piros terem - leírás</MenuItem>
                 <MenuItem value={LivingTextTypeEnum.BlueRoomPrice}>Kék terem - árak</MenuItem>
                 <MenuItem value={LivingTextTypeEnum.BlueRoomText}>Kék terem - leírás</MenuItem>
                 <MenuItem value={LivingTextTypeEnum.GrayRoomPrice}>Szürke terem - árak</MenuItem>
                 <MenuItem value={LivingTextTypeEnum.GrayRoomText}>Szürke terem - leírás</MenuItem>
                 <MenuItem value={LivingTextTypeEnum.StudioRoomPrice}>Stúdió - árak</MenuItem>
-                <MenuItem value={LivingTextTypeEnum.StudioRoomText}>Stúdió - leírás</MenuItem>
+                <MenuItem value={LivingTextTypeEnum.StudioRoomText}>Stúdió - leírás</MenuItem> */}
                 <MenuItem value={LivingTextTypeEnum.MasterPrice}>Master árak</MenuItem>
                 <MenuItem value={LivingTextTypeEnum.StudioPrice}>Stúdió óradíj</MenuItem>
                 <MenuItem value={LivingTextTypeEnum.RehearsalRecord}>Próba felvétel - árak</MenuItem>

@@ -41,6 +41,7 @@ export class LivingText extends Component<any, ILivingText> {
     }
 
   render () {
+    if (!this.state.text) this.state.text = "";
     let parsedHtml = parse(this.state.text);
     let aboutContent = this.state.loading
       ? <CircularProgress />
